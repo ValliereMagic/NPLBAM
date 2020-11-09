@@ -1,3 +1,4 @@
 .vscode
 nplbam/app/__pycache__
 nplbamNV
+*.code-workspace
