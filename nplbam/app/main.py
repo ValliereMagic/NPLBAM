@@ -1,12 +1,9 @@
-from fastapi import FastAPI, Request
-from fastapi.templating import Jinja2Templates
+from flask import render_template, Blueprint
 
-# FastAPI and templates engine initialization
-nplbam: FastAPI = FastAPI()
-templates = Jinja2Templates(directory="nplbam/templates/")
+bp = Blueprint('index', __name__, url_prefix="")
 
 
-@nplbam.get("/")
-async def index_test(request: Request):
-    test = "Banana Bread"
-    return templates.TemplateResponse('index.html', context={'request': request, 'test': test})
+@bp.route("/")
+def index():
+    test_str: str = "Banana Bread"
+    return render_template("index.html", test=test_str)

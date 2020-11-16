@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="static/css/q4style.css">
+</head>
+
+<body>
+    <header>
+        <div>
+            <img src="static/img/profile_picture_2018-05-02_cropped.jpg" alt="Joseph side profile Left" width="150"
+                height="150" />
+            <h1>
+                Joseph &#47; Cartaphilus {{ test }}
+            </h1>
+            <img src="static/img/profile_picture_2018-05-02_cropped.jpg" alt="Joseph side profile Right" width="150"
+                height="150" />
+        </div>
+    </header>
+    <main>
+        <div>
+            <form action="/authorize" method="POST">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" />
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" />
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div>
+            Character stats retrieved (2019-05-20) from:
+            <a href="https://ancientmagusbride.fandom.com/wiki/Joseph">
+                https://ancientmagusbride.fandom.com/wiki/Joseph
+            </a>
+        </div>
+        &copy; The Blargato Tomato Electric Brigade
+    </footer>
+</body>
+
+</html>
