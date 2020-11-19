@@ -2,3 +2,5 @@
 nplbam/app/__pycache__
 nplbamNV
 *.code-workspace
+postgres_password.enc
+nplbam/app/config.py
