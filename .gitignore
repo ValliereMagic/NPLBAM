@@ -2,5 +2,8 @@
 nplbam/app/__pycache__
 nplbamNV
 *.code-workspace
-postgres_password.enc
+postgres_root_password.enc
+docker/nplbam_postgres/init-user-db.sh
 nplbam/app/config.py
+secrets/
+secrets.tar.gz
