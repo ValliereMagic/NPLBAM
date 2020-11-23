@@ -4,6 +4,10 @@ bp = Blueprint('index', __name__, url_prefix="")
 
 
 @bp.route("/")
+@bp.route("/index")
 def index():
-    test_str: str = "Banana Bread"
-    return render_template("index.html", test=test_str)
+    return render_template("index.html")
+
+@bp.route("/query")
+def query():
+    return render_template("query.html")
