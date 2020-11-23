@@ -1,62 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <title>Joseph &#47; Cartaphilus</title>
-    <link rel="stylesheet" href="static/css/q4style.css">
-</head>
-
-<body>
-    <header>
-        <div>
-            <img src="static/img/profile_picture_2018-05-02_cropped.jpg" alt="Joseph side profile Left" width="150"
-                height="150" />
-            <h1>
-                Joseph &#47; Cartaphilus {{ test }}
-            </h1>
-            <img src="static/img/profile_picture_2018-05-02_cropped.jpg" alt="Joseph side profile Right" width="150"
-                height="150" />
-        </div>
-    </header>
-    <main>
-        <div class="left_column">
-            <h2>
-                About:
-            </h2>
-            <ul>
-                <li>
-                    Age: <span>2000+ years</span>
-                </li>
-                <li>
-                    Hair Colour: <span>Silver</span>
-                </li>
-                <li>
-                    Eye Colour: <span>Blue</span>
-                </li>
-            </ul>
-        </div>
-        <div>
-            <h2>
-                Gist:
-            </h2>
-            <p>
-                Joseph appeared in <em>The Ancient Magus' Bride</em> as a
-                &quot;villain&quot;, but is one of my most favourite characters which
-                I relate with and empathise with, as you either die a hero&semi; or
-                see yourself become the villain.
-            </p>
-        </div>
-    </main>
-    <footer>
-        <div>
-            Character stats retrieved (2019-05-20) from:
-            <a href="https://ancientmagusbride.fandom.com/wiki/Joseph">
-                https://ancientmagusbride.fandom.com/wiki/Joseph
-            </a>
-        </div>
-        &copy; The Blargato Tomato Electric Brigade
-    </footer>
-</body>
-
+    <head>
+        <meta charset="UTF-8" />
+        <title>NPLB Home</title>
+        <link rel="stylesheet" href="static/css/index.css" />
+    </head>
+    <body>
+        <header>
+            <div id="company"> 
+                <img src="static/img/logo.jpg" alt="Logo"/>
+                No Paw Left Behind 
+            </div>
+            <div class="links">
+                <a href="https://www.facebook.com/NPLBDogs">Facebook</a>
+                <a href="https://nopawleftbehind.ca">Main Site</a>
+            </div>
+        </header> 
+        <main>
+            <div> 
+                <form action="login" method="post" class="login">
+                    <div class="item">
+                        <label for="username">Username: </label>
+                        <input type="text" id="username" name="username"/>
+                    </div>
+                    <div class="item">
+                        <label for="password">Password: </label>
+                        <input type="text" id="password" name="password"/>
+                    </div>
+                    <button type="submit" name="login">Login</button>
+                    <p><a href="mailto:someone@example.com">Forgot Your Password?</a></p>
+                </form>
+            </div>
+        </main>
+    </body>
 </html>
