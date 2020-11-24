@@ -7,3 +7,4 @@ docker/nplbam_postgres/init-user-db.sh
 nplbam/app/config.py
 secrets/
 secrets.tar.gz
+postgres/
