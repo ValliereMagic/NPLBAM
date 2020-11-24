@@ -8,6 +8,7 @@ bp = Blueprint('index', __name__, url_prefix="")
 def index():
     return render_template("index.html")
 
-@bp.route("/query")
+@bp.route("/animals")
 def query():
-    return render_template("query.html")
+    return render_template("animals.html", title = "Animals")
+
