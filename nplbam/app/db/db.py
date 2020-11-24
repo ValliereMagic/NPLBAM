@@ -166,21 +166,26 @@ class Files(Base):
 
 # This class is the pounds table, which represents information for each pound.
 class Pounds(Base):
+    __tablename__ = "Pounds"
     poundID = Column('poundID', Integer, primary_key=True,
                      autoincrement=True, unique=True, nullable=False)
     poundName = Column('poundName', Text)
 
 # This class is the rescues table, which represents infromation for each rescue.
 class Rescues(Base):
+    __tablename__ = "Rescues"
     rescueID = Column('rescueID', Integer, primary_key=True,
                       autoincrement=True, unique=True, nullable=False)
     rescueName = Column('rescueName', Text)
 
 # This class is the users table, which represents information for each user.
 class Users(Base):
+    __tablename__ = "Users"
     userID = Column('userID', Integer, primary_key=True,
                     autoincrement=True, unique=True, nullable=False)
     password = Column('password', LargeBinary)
+    # 0 = Admin, 1 = NPLB user, 2 = SudoPound, 3 = Pound, 4 = SudoRescue, 5 = Rescue
+    # SudoPound + SudoRescue both have ability to create new pound/rescue users.
     userLVL = Column('userLVL', Integer)
     rescueID = Column('rescueID', Integer, ForeignKey('Rescues.rescueID'))
     poundID = Column('poundID', ForeignKey('Pounds.poundID'))
