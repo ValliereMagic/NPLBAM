@@ -6,9 +6,11 @@ from flask import Flask
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    from . import main
+    from . import main, animals
     # Index Blueprint
     app.register_blueprint(main.bp)
+    # Animals Blueprint
+    app.register_blueprint(animals.bp)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
