@@ -9,7 +9,7 @@ RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-k
 # Install required system programs and libraries using the package manager
 RUN apt-get update && apt-get install python3 python3-pip libsodium-dev postgresql-client-13 -y
 # Install the required python libraries using pip
-RUN SODIUM_INSTALL=system pip3 install flask gunicorn pynacl bleach SQLAlchemy
+RUN SODIUM_INSTALL=system pip3 install flask gunicorn pynacl bleach SQLAlchemy psycopg2-binary
 # Run the internal webserver gunicorn on port 8080 exposed to the rest of the machine
 EXPOSE 8080
 # App volume entry point

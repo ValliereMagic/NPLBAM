@@ -1,14 +1,19 @@
 from .. import config
-from sqlalchemy import create_engine, Column, Integer, Text, ForeignKey, Date, ARRAY, Boolean, LargeBinary
+from sqlalchemy import create_engine, Column, Integer, Text, ForeignKey, \
+    Date, ARRAY, Boolean, LargeBinary
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
 engine = create_engine(
-    'postgressql://nplbam:{}@nplbam_db/nplbam'.format(config.DATABASE_KEY))
+    'postgres://nplbam:{}@nplbam_db/nplbam'.format(config.DATABASE_KEY))
 
-# This class is the animal table, which represents the basic information created by the system
+
 class Animals(Base):
+    """
+    This class is the animal table, which represents
+    the basic information created by the system
+    """
     __tablename__ = "Animals"
     # Primary key for an animal
     animalID = Column('animalID', Integer, primary_key=True,
@@ -66,15 +71,18 @@ class Animals(Base):
     stage8EFinish = Column('stage8EFinish', Date)
     stage8Finish = Column('stage8Finish', Date)
 
-# This class is the dog table, which represents the information given by the pounds for dogs.
+
 class Dog(Base):
+    """
+    This class is the dog table, which represents the information given by the pounds for dogs.
+    """
     __tablename__ = "Dog"
     animalID = Column('animalID', Integer, ForeignKey('Animals.animalID'),
                       nullable=False, unique=True, primary_key=True)
     poundID = Column('poundID', Integer, nullable=False)
     name = Column('name', Text)
     inDate = Column('inDate', Date)
-    releaseDate = Column('inDate', Date)
+    releaseDate = Column('releaseDate', Date)
     age = Column('age', Text)
     weight = Column('weight', Integer)
     breed = Column('breed', Text)
@@ -114,8 +122,7 @@ class Dog(Base):
     # 0 = Normal, 1 = Soft, 2 = Diarrhea, 3 = IDK
     stool = Column('stool', Integer)
     # 0 = Never, 1 = Hardly, 2 = Often, 3 = Constantly, 4 = IDK
-    vocal = Column('commands', Integer(Boolean))
-    #
+    vocal = Column('vocal', Integer)
     # Using an array to store these fields as many of them may be chosen
     # [0]=Aggresive, [1]=Uneasy, [2]=Fearful, [3]=Tolerant, [4]=Relaxed, [5]=IDK
     temperamentPaw = Column('temperamentPaw', ARRAY(Boolean))
@@ -155,8 +162,11 @@ class Dog(Base):
     # [0]=Sit, [1]=Paw, [2]=Lie Down, [3]=Stay, [4]=IDK
     commands = Column('commands', ARRAY(Boolean))
 
-# This class is the files table, which represents locations for each file.
+
 class Files(Base):
+    """
+    This class is the files table, which represents locations for each file.
+    """
     __tablename__ = "Files"
     fileID = Column('fileID', Integer, primary_key=True,
                     autoincrement=True, unique=True, nullable=False)
@@ -164,25 +174,34 @@ class Files(Base):
         'Animals.animalID'), nullable=False)
     fileName = Column('name', Text)
 
-# This class is the pounds table, which represents information for each pound.
+
 class Pounds(Base):
+    """
+    This class is the pounds table, which represents information for each pound.
+    """
     __tablename__ = "Pounds"
     poundID = Column('poundID', Integer, primary_key=True,
                      autoincrement=True, unique=True, nullable=False)
     poundName = Column('poundName', Text)
 
-# This class is the rescues table, which represents infromation for each rescue.
+
 class Rescues(Base):
+    """
+    This class is the rescues table, which represents infromation for each rescue.
+    """
     __tablename__ = "Rescues"
     rescueID = Column('rescueID', Integer, primary_key=True,
                       autoincrement=True, unique=True, nullable=False)
     rescueName = Column('rescueName', Text)
 
-# This class is the users table, which represents information for each user.
+
 class Users(Base):
+    """
+    This class is the users table, which represents information for each user.
+    """
     __tablename__ = "Users"
-    userID = Column('userID', Integer, primary_key=True,
-                    autoincrement=True, unique=True, nullable=False)
+    userID = Column('userID', Text, primary_key=True,
+                    unique=True, nullable=False)
     password = Column('password', LargeBinary)
     # 0 = Admin, 1 = NPLB user, 2 = SudoPound, 3 = Pound, 4 = SudoRescue, 5 = Rescue
     # SudoPound + SudoRescue both have ability to create new pound/rescue users.
@@ -190,7 +209,9 @@ class Users(Base):
     rescueID = Column('rescueID', Integer, ForeignKey('Rescues.rescueID'))
     poundID = Column('poundID', ForeignKey('Pounds.poundID'))
 
+
 # Missing the Meta Table which represents quick information about the database.
+
 
 def create_database_if_not_exists():
     """
