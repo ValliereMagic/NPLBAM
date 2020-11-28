@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>NPLB - Home</title>
-        <link rel="stylesheet" href="static/css/index.css" />
-    </head>
-    <body>
-        <header>
-            <div id="company"> 
-                <img src="static/img/logo.jpg" alt="Logo"/>
-                No Paw Left Behind 
-            </div>
-            <div class="links">
-                <a href="https://www.facebook.com/NPLBDogs">Facebook</a>
-                <a href="https://nopawleftbehind.ca">Main Site</a>
-            </div>
-        </header> 
-        <main>
-            <div> 
-                <form action="login" method="post" class="login">
-                    <div class="item">
-                        <label for="username">Username: </label>
-                        <input type="text" id="username" name="username"/>
-                    </div>
-                    <div class="item">
-                        <label for="password">Password: </label>
-                        <input type="text" id="password" name="password"/>
-                    </div>
-                    <button type="submit" name="login">Login</button>
-                    <p><a href="mailto:someone@example.com">Forgot Your Password?</a></p>
-                </form>
-            </div>
-        </main>
-    </body>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>NPLB - Home</title>
+    <link rel="stylesheet" href="static/css/index.css" />
+</head>
+
+<body>
+    <header>
+        <div id="company">
+            <img src="static/img/logo.jpg" alt="Logo" />
+            No Paw Left Behind
+        </div>
+        <div class="links">
+            <a href="https://www.facebook.com/NPLBDogs">Facebook</a>
+            <a href="https://nopawleftbehind.ca">Main Site</a>
+        </div>
+    </header>
+    <main>
+        <div>
+            <form method="post" class="login">
+                <div class="item">
+                    <label for="username">Username: </label>
+                    <input type="text" id="username" name="username" />
+                </div>
+                <div class="item">
+                    <label for="password">Password: </label>
+                    <input type="password" id="password" name="password" />
+                </div>
+                <button type="submit" name="login">Login</button>
+                {% for message in errors %}
+                <span>{{ message }}</span>
+                {% endfor %}
+                <p><a href="mailto:someone@example.com">Forgot Your Password?</a></p>
+            </form>
+        </div>
+    </main>
+</body>
+
 </html>
