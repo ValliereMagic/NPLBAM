@@ -18,15 +18,19 @@ class Animals(Base):
     # Primary key for an animal
     animalID = Column('animalID', Integer, primary_key=True,
                       autoincrement=True, unique=True, nullable=False)
+    supervisor = Column('supervisor', Integer,  ForeignKey('Users.userID'))
+    # a pound.
+    poundID = Column('poundID', Integer, ForeignKey('Pounds.poundID'))
+    # The rescue that the animal is going to
+    rescueID = Column('rescueID', Integer, ForeignKey('Resues.rescueID'))
+
+
     # The stage that animal is in throughout the rescue process
     stage = Column('stage', Integer, nullable=False)
     # The type of animal this record refers to
     animalType = Column('animalType', Text, nullable=False)
     # The pound that the animal came from, if it came from
-    # a pound.
-    poundID = Column('poundID', Integer, nullable=False)
-    # The rescue that the animal is going to
-    rescueID = Column('rescueID', Integer)
+
     notes = Column('notes', Text)
     # Entered the database
     stage0Finish = Column('stage0Finish', Date)
