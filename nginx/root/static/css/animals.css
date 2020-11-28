@@ -9,6 +9,10 @@
 body { 
     padding: 0; 
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 
@@ -34,47 +38,65 @@ header>div>a {
 }
 
 
-  /* Flexbox header and styling for logo image and buttons */
+/* Flexbox header and styling for logo image and buttons */
 body>header {
     background-color: #ffffff;
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
     align-items: center;
+    width: 100%;
 }
-  
+ 
 
 main {
+    margin-top: 1em;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     align-items: center;
     min-height: 80vh;
+    width: 60%;
+    min-width: 50em;
+    background-color: #ffffff;
 }  
+
 
 form {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: center;
     margin-top: auto;
     margin-bottom: auto;
     flex-grow: 1;
-    background-color: #ffffff;
-    height: 20em;
-    width: 30em;    
+    width: 100%;    
 }
 
-form>.item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+select {
+    background-attachment: #ffffff;
 }
 
-form>button {
+button {
     background-color: #b3cfd1;
 }
 
-form>p>a {
-    color: #c6c6c6;
-    font-size: small;
+table {
+    width: 95%;
+}
+
+th {
+    border-bottom: 1px solid #000000;
+}
+
+
+
+tr:nth-child(even) {
+    background-color: #c5c5c5;
+}
+
+tr:hover {
+    background-color: #b3cfd1;
+}
+
+#newAnimal {
+    margin-left: auto;
 }
