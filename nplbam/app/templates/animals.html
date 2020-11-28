@@ -3,14 +3,80 @@
     <head>
         <meta charset="UTF-8" />
         <title>NPLB - {{ title }}</title>
-        <link rel="stylesheet" href="static/css/index.css" />
+        <link rel="stylesheet" href="static/css/animals.css" />
     </head>
     <body>
-        {% extends "header.html" %} 
+        <header>
+            <div id="company">
+                <img src="static/img/logo.jpg" alt="Logo" />
+                No Paw Left Behind
+            </div>
+            <div class="links">
+                <!--Needs to be Hidden from non-NPLB -->
+                {% if title != "Dashboard" %}
+                    <a href="/dashboard">Dashboard</a>
+                {% endif %}
+                <!--Needs to be Hidden from non-Admin -->
+                {% if title != "Accounts" %}
+                    <a href="/accounts">Accounts</a>
+                {% endif %}
+                
+                <!--Every User Can see and Use-->
+                {% if title != "Animals" %}
+                    <a href="/animals">Animals</a>
+                {% endif %}
+                {% if title != "Options" %}
+                    <a href="/options">Options</a>
+                {% endif %}
+                <a href="/logout">Log Out</a>
+            </div>
+        </header>   
+        <main>
+            <div id="newAnimal">
+                <a href="newAnimal">New Animal</a>
+            </div>
+            <form>
+                <div>
+                    <label for="searchBy">Search By:</label>
+                    <select id="searchBy" name="searchBy">
+                        <option value="ID" selected>ID</option>
+                        <option value="name">Name</option>
+                        <option value="species">Species</option>
+                        <option value="stage">Stage</option>
+                    </select>
+                    <input type="search" id="searchText" name="searchText">
+                </div>
+                <div>
+                    <label for="sortBy">Sort By:</label>
+                    <select id="sortBy" name="sortBy">
+                        <option value="ID" selected>ID</option>
+                        <option value="name">Name</option>
+                        <option value="species">Species</option>
+                        <option value="stage">Stage</option>
+                    </select>
+                    <label for="asc">Asc</label>
+                    <input type="radio" id="asc" name="order" value="asc">
+                    <label for="desc">Desc</label>
+                    <input type="radio" id="desc" name="order" value="desc">
+                    <button type="submit" name="refresh">Filter</button>    
+                </div>
+            </form>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Species</th>
+                    <th>Stage</th>
+                </tr>
+                {% for x in range (0, 100) %}
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </main>
     </body>
-    <main>
-       <form>
-           
-       </form> 
-    </main>
 </html>
