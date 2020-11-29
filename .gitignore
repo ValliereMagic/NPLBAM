@@ -1,5 +1,6 @@
 .vscode
 nplbam/app/__pycache__
+nplbam/app/db/__pycache__
 nplbamNV
 *.code-workspace
 postgres_root_password.enc
