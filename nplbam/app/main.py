@@ -58,3 +58,9 @@ def index():
             return render_template("index.html", errors=errors)
     else:
         return render_template("index.html", errors=[])
+
+
+@bp.route('/logout')
+def logout():
+    flask_session.clear()
+    return redirect("/")
