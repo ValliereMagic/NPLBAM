@@ -18,11 +18,11 @@ class Animals(Base):
     # Primary key for an animal
     animalID = Column('animalID', Integer, primary_key=True,
                       autoincrement=True, unique=True, nullable=False)
-    supervisor = Column('supervisor', Integer,  ForeignKey('Users.userID'))
+    supervisor = Column('supervisor', Text,  ForeignKey('Users.userID'))
     # a pound.
     poundID = Column('poundID', Integer, ForeignKey('Pounds.poundID'))
     # The rescue that the animal is going to
-    rescueID = Column('rescueID', Integer, ForeignKey('Resues.rescueID'))
+    rescueID = Column('rescueID', Integer, ForeignKey('Rescues.rescueID'))
 
 
     # The stage that animal is in throughout the rescue process
