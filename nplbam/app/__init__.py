@@ -13,11 +13,13 @@ def create_app():
     app.testing = True
     # Set the secret key from the config file
     app.secret_key = config.SECRET_KEY
-    from . import main, animals
+    from . import main, animals, newAnimal
     # Index Blueprint
     app.register_blueprint(main.bp)
     # Animals Blueprint
     app.register_blueprint(animals.bp)
+    # New Animal Blueprint
+    app.register_blueprint(newAnimal.bp)
 
     # ensure the instance folder exists
     try:
