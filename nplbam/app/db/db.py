@@ -231,4 +231,4 @@ def get_db_engine():
     return engine
 
 
-get_db_engine()
+create_database_if_not_exists()
