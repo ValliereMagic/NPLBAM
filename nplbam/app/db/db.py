@@ -24,7 +24,6 @@ class Animals(Base):
     # The rescue that the animal is going to
     rescueID = Column('rescueID', Integer, ForeignKey('Rescues.rescueID'))
 
-
     # The stage that animal is in throughout the rescue process
     stage = Column('stage', Integer, nullable=False)
     # The type of animal this record refers to
@@ -230,3 +229,6 @@ def get_db_engine():
     """
     create_database_if_not_exists()
     return engine
+
+
+create_database_if_not_exists()
