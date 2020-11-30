@@ -1,0 +1,131 @@
+/* Fancy background image*/
+:root {
+    background-image: url("../img/NPLB-Background.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-attachment: fixed;
+}
+
+body { 
+    padding: 0; 
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+
+/* Application logo styling */
+header>div>img {
+    height: 2em;
+  }
+
+header>#company {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    color: #8e2e0b;
+    font-size: 3em;
+}
+
+
+header>div>a {
+    font-size:1.5em;
+    color: #000000;
+    margin-right: auto;
+    padding: 0.25em;
+}
+
+
+/* Flexbox header and styling for logo image and buttons */
+body>header {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+ 
+
+main {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 80vh;
+    width: 70%;
+    min-width: 50em;
+    background-color: #ffffff;
+}  
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-top: auto;
+    margin-bottom: auto;
+    flex-grow: 1;
+    width: 100%;
+        
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    min-height:1em;
+}
+
+.item:nth-child(even) {
+    background-color: #c5c5c5;
+}
+
+.item:nth-child(odd) {
+    background-color: #f0f1f2;
+}
+
+
+.item > label {
+    width: 25%;
+    margin-left: 1em;
+}
+
+.radioQ {
+    width: 70%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.checkQ {
+    width: 70%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.checkQ > div {
+    padding:0.2em;
+}
+
+textarea, input[type=text] {
+    width: 70%;
+    border: 1px solid #000000;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+button {
+    background-color: #b3cfd1;
+    height: 2em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    width: 33%;
+}
