@@ -11,6 +11,9 @@ bp = Blueprint('index', __name__, url_prefix="")
 @bp.route("/", methods=("GET", "POST"))
 @bp.route("/index", methods=("GET", "POST"))
 def index():
+
+    if flask_session.get("userID", default=None) is not None:
+        return redirect("/animals")
     # User is attempting to login
     if request.method == 'POST':
         username: str = request.form['username']
