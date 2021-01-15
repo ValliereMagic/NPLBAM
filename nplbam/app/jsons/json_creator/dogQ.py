@@ -1,5 +1,5 @@
 import json
-# This python file was just used to creat the json for the Dog Questions. Is not actively ran. 
+# This python file was just used to creat the json for the Dog Questions. Is not actively ran.
 # Its a one time used file to create the dog json.
 
 # Create an initial list
@@ -217,7 +217,7 @@ questions.append({
             "name": "Physical Contact With",
             "questions": [
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Paws",
                     "name": "paws",
                     "answers": [
@@ -254,7 +254,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Abdomen",
                     "name": "abdomen",
                     "answers": [
@@ -291,7 +291,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Face",
                     "name": "face",
                     "answers": [
@@ -328,7 +328,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Nose",
                     "name": "nose",
                     "answers": [
@@ -365,7 +365,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Ears",
                     "name": "ears",
                     "answers": [
@@ -402,7 +402,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Head",
                     "name": "head",
                     "answers": [
@@ -439,7 +439,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Neck",
                     "name": "neck",
                     "answers": [
@@ -476,7 +476,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Hind Quarters",
                     "name": "hind",
                     "answers": [
@@ -540,7 +540,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Greeting",
                     "name": "greeting",
                     "answers": [
@@ -577,7 +577,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "When Given Food",
                     "name": "food",
                     "answers": [
@@ -616,7 +616,7 @@ questions.append({
             "name": "Disposition",
             "questions": [
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Behaviour w/ dogs",
                     "name": "behaviourWithDogs",
                     "answers": [
@@ -665,7 +665,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Overall Dog Disposition",
                     "name": "dispositionOverall",
                     "answers": [
@@ -697,7 +697,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Disposition w/ strangers",
                     "name": "dispositionStranger",
                     "answers": [
@@ -729,7 +729,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "In presence of food (not crated)",
                     "name": "dispositionFood",
                     "answers": [
@@ -766,7 +766,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "In presence of toys",
                     "name": "dispositionToy",
                     "answers": [
@@ -803,7 +803,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "On leash",
                     "name": "dispositionLeash",
                     "answers": [
@@ -835,7 +835,7 @@ questions.append({
                     ],
                 },
                 {
-                    "type":"checkbox",
+                    "type": "checkbox",
                     "label": "Known Commands",
                     "name": "commands",
                     "answers": [
