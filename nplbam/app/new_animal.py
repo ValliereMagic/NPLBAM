@@ -6,6 +6,9 @@ bp = Blueprint('new_animal', __name__, url_prefix="")
 # Route for the new animal page.
 @bp.route("/new_animal")
 def new_animal():
+    """
+    Form page for adding a new animal to the system.
+    """
     # Check if they are logged in
     if flask_session.get("userID", default=None) is None:
         return redirect("/")
@@ -16,8 +19,10 @@ def new_animal():
     return render_template("add_animal.html", questions=questions,  title="Add Dog")
 
 
-""" Route for getting the data from the form to put in the database """
 @bp.route("/animal_added", methods=['GET', 'POST'])
 def animal_added():
+    """
+    Route for getting the data from the form to put in the database
+    """
     # Need to Add Data to database.
     return redirect("/animals")
