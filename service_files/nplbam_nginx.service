@@ -1,15 +1,16 @@
 [Unit]
 Description=NPLBAM Nginx
+After=docker.service
+Requires=docker.service
 After=nplbam_flask.service
 Requires=nplbam_flask.service
 
 [Service]
-ExecStart=docker run -d --rm -p 0.0.0.0:80:80 --name nplbam_rp \
+ExecStart=/usr/bin/docker run --rm -p 0.0.0.0:80:80 --name nplbam_rp \
     -v /usr/local/NPLBAM/nginx/nginx.conf:/etc/nginx/nginx.conf:ro \
     -v /usr/local/NPLBAM/nginx/root:/usr/share/nginx/html:ro \
     --network=nplbam-net \
     nginx
-ExecStop=docker stop nplbam_rp
 Restart=always
 
 [Install]

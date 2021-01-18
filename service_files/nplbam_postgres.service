@@ -4,12 +4,11 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-ExecStart=docker run -d --rm --name nplbam_db \
+ExecStart=/usr/bin/docker run --rm --name nplbam_db \
     --network=nplbam-net \
     -v /usr/local/NPLBAM/postgres:/var/lib/postgresql/data \
     -e POSTGRES_PASSWORD="$(cat /usr/local/NPLBAM/postgres_root_password.enc)" \
     nplbam_postgres
-ExecStop=docker stop nplbam_db
 Restart=always
 
 [Install]
