@@ -1,0 +1,19 @@
+[Unit]
+Description=NPLBAM Flask
+After=nplbam_postgres.service
+Requires=nplbam_postgres.service
+
+[Service]
+ExecStart=docker run --rm --name nplbam \
+    -v /usr/local/NPLBAM/nplbam:/nplbam \
+    --network=nplbam-net \
+    web_cont
+Restart=always
+RestartSec=10s
+Type=notify
+NotifyAccess=all
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+[Unit]
+Description=NPLBAM Nginx
+After=nplbam_flask.service
+Requires=nplbam_flask.service
+
+[Service]
+ExecStart=docker run --rm -p 0.0.0.0:80:80 --name nplbam_rp \
+    -v /usr/local/NPLBAM/nginx/nginx.conf:/etc/nginx/nginx.conf:ro \
+    -v /usr/local/NPLBAM/nginx/root:/usr/share/nginx/html:ro \
+    --network=nplbam-net \
+    nginx
+Restart=always
+RestartSec=10s
+Type=notify
+NotifyAccess=all
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
