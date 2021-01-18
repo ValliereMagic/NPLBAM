@@ -4,10 +4,11 @@ After=nplbam_postgres.service
 Requires=nplbam_postgres.service
 
 [Service]
-ExecStart=docker run --rm --name nplbam \
+ExecStart=docker run -d --rm --name nplbam \
     -v /usr/local/NPLBAM/nplbam:/nplbam \
     --network=nplbam-net \
     web_cont
+ExecStop=docker stop nplbam
 Restart=always
 RestartSec=10s
 Type=notify
