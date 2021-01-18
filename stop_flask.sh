@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo docker kill nplbam
+sudo docker stop nplbam
