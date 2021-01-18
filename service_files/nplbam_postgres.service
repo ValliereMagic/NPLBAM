@@ -11,11 +11,6 @@ ExecStart=docker run -d --rm --name nplbam_db \
     nplbam_postgres
 ExecStop=docker stop nplbam_db
 Restart=always
-RestartSec=10s
-Type=notify
-NotifyAccess=all
-TimeoutStartSec=120
-TimeoutStopSec=15
 
 [Install]
 WantedBy=multi-user.target

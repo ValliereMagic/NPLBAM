@@ -11,11 +11,6 @@ ExecStart=docker run -d --rm -p 0.0.0.0:80:80 --name nplbam_rp \
     nginx
 ExecStop=docker stop nplbam_rp
 Restart=always
-RestartSec=10s
-Type=notify
-NotifyAccess=all
-TimeoutStartSec=120
-TimeoutStopSec=15
 
 [Install]
 WantedBy=multi-user.target
