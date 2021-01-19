@@ -11,7 +11,10 @@ bp = Blueprint('index', __name__, url_prefix="")
 @bp.route("/", methods=("GET", "POST"))
 @bp.route("/index", methods=("GET", "POST"))
 def index():
-
+    """
+    Present login page to user, validate input, check login credentials,
+    and give user a valid session.
+    """
     if flask_session.get("userID", default=None) is not None:
         return redirect("/animals")
     # User is attempting to login
