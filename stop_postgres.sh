@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo docker kill nplbam_db
+sudo docker stop nplbam_db

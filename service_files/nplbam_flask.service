@@ -1,0 +1,16 @@
+[Unit]
+Description=NPLBAM Flask
+After=docker.service
+Requires=docker.service
+After=nplbam_postgres.service
+Requires=nplbam_postgres.service
+
+[Service]
+ExecStart=/usr/bin/docker run --rm --name nplbam \
+    -v /usr/local/NPLBAM/nplbam:/nplbam \
+    --network=nplbam-net \
+    web_cont
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
