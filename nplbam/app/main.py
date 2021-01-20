@@ -2,10 +2,9 @@ from datetime import datetime
 
 import nacl.exceptions
 import nacl.pwhash
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, current_app, redirect, render_template, request
 from flask import session as flask_session
 from flask import url_for
-from flask import current_app
 from sqlalchemy.orm import Query, Session, relationship, sessionmaker
 
 from .db import db
@@ -63,9 +62,11 @@ def index():
                 # Get the current time for the log entry:
                 time_string: str = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
                 # Append an entry to the log stating what happened
+                # access_route(0) is the ip address of the actual client
+                # (Forwarded through nginx to our flask application)
                 current_app.logger.warning("Failed login attempt from: {}"
                                            " using username: {} at: {}".format(
-                                               request.remote_addr, username,
+                                               request.access_route[0], username,
                                                time_string))
             except Exception as e:
                 current_app.logger.error("Exception: {} occurred while"
