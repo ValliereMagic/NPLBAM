@@ -1,3 +1,4 @@
+import logging
 import os
 
 from flask import Flask
@@ -11,6 +12,10 @@ def create_app():
     in factory style.
     """
     app = Flask(__name__, instance_relative_config=True)
+    # Set up logging
+    gunicorn_logger: Logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
     # Set debug mode to true CHANGE FOR PROD
     app.debug = True
     # Set testing mode to true CHANGE FOR PROD

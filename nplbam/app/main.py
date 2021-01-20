@@ -5,6 +5,7 @@ import nacl.pwhash
 from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
 from flask import url_for
+from flask import current_app
 from sqlalchemy.orm import Query, Session, relationship, sessionmaker
 
 from .db import db
@@ -62,11 +63,14 @@ def index():
                 # Get the current time for the log entry:
                 time_string: str = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
                 # Append an entry to the log stating what happened
-                print("Failed login attempt from: {} using username: {} at: {}".format(
-                    request.remote_addr, username, time_string))
+                current_app.logger.warning("Failed login attempt from: {}"
+                                           " using username: {} at: {}".format(
+                                               request.remote_addr, username,
+                                               time_string))
             except Exception as e:
-                print("Exception: {} occurred while attempting a login.".format(
-                    type(e).__name__))
+                current_app.logger.error("Exception: {} occurred while"
+                                         " attempting a login.".format(
+                                             type(e).__name__))
                 # Bail out to make sure the user is NOT logged in.
                 return redirect("/")
         # If there were no errors, log the user in
