@@ -1,8 +1,10 @@
-from flask import render_template, Blueprint, request, \
-    redirect, url_for, session as flask_session
-from sqlalchemy.orm import sessionmaker, relationship
-import nacl.pwhash
 import nacl.exceptions
+import nacl.pwhash
+from flask import Blueprint, redirect, render_template, request
+from flask import session as flask_session
+from flask import url_for
+from sqlalchemy.orm import Query, Session, relationship, sessionmaker
+
 from .db import db
 
 bp = Blueprint('index', __name__, url_prefix="")
@@ -37,8 +39,8 @@ def index():
             return render_template("index.html", errors=errors)
         # Get the User from the database
         engine = db.get_db_engine()
-        db_session = (sessionmaker(bind=engine))()
-        user_entries = db_session.query(db.Users)
+        db_session: Session = (sessionmaker(bind=engine))()
+        user_entries: Query = db_session.query(db.Users)
         user_entry: db.Users = user_entries.filter(
             db.Users.userID == username).first()
         db_session.close()

@@ -1,11 +1,15 @@
 import os
 
 from flask import Flask
+
 from . import config
 
 
 def create_app():
-    # create and configure the app
+    """
+    Create and configure the Flask application
+    in factory style.
+    """
     app = Flask(__name__, instance_relative_config=True)
     # Set debug mode to true CHANGE FOR PROD
     app.debug = True
@@ -13,7 +17,8 @@ def create_app():
     app.testing = True
     # Set the secret key from the config file
     app.secret_key = config.SECRET_KEY
-    from . import main, animals, new_animal
+    from . import animals, main, new_animal
+
     # Index Blueprint
     app.register_blueprint(main.bp)
     # Animals Blueprint
