@@ -1,7 +1,9 @@
+from datetime import date
+
 from flask import Blueprint, redirect, render_template
 from flask import session as flask_session
-from datetime import date
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import relationship, sessionmaker
+
 from .db import db
 
 bp = Blueprint('animals', __name__, url_prefix="")
@@ -22,5 +24,5 @@ def query():
     db_session.close()
     # Calculate the total amount of days each animal has been in that stage
     for animal in animals_list:
-        animal.days = (date.today() - animal.stageDate).days 
+        animal.days = (date.today() - animal.stageDate).days
     return render_template("animals.html", title="Animals", animals=animals_list)
