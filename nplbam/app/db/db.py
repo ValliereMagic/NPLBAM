@@ -1,9 +1,9 @@
-from .. import config
-
 from sqlalchemy import (Boolean, Column, Date, ForeignKey, Integer,
                         LargeBinary, Text, create_engine)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+
+from .. import config
 
 Base = declarative_base()
 
@@ -35,13 +35,15 @@ class Animals(Base):
     name = Column("name", Text)
     # The pound that the animal came from, if it came from
     notes = Column('notes', Text)
-    #Relationships
+    # Relationships
     stageInfo = relationship("StageInfo", cascade="all, delete")
     radioAnswers = relationship("IntakeRadioAnswers", cascade="all, delete")
-    checkBoxAnswers = relationship("IntakeCheckboxAnswers", cascade="all, delete")
-    textAnswers = relationship("IntakeTextAnswers", cascade="all, delete")    
+    checkBoxAnswers = relationship(
+        "IntakeCheckboxAnswers", cascade="all, delete")
+    textAnswers = relationship("IntakeTextAnswers", cascade="all, delete")
     files = relationship("Files", cascade="all, delete")
-    
+
+
 class StageInfo(Base):
     """
     This class is the stages table, which represents a date and note for each
@@ -52,7 +54,8 @@ class StageInfo(Base):
     animalID = Column('animalID', Integer, ForeignKey('Animals.animalID'),
                       nullable=False, primary_key=True)
     stageNum = Column("stageNum", Integer, primary_key=True, nullable=False)
-    substageNum = Column("substageNum", Integer, primary_key=True, nullable=False)
+    substageNum = Column("substageNum", Integer,
+                         primary_key=True, nullable=False)
     completionDate = Column("completionDate", Date, nullable=False)
     note = Column("note", Text)
 
@@ -67,7 +70,8 @@ class IntakeRadioAnswers(Base):
     __tablename__ = "IntakeRadioAnswers"
     animalID = Column('animalID', Integer, ForeignKey('Animals.animalID'),
                       nullable=False, primary_key=True)
-    questionName = Column("questionName", Text, primary_key=True, nullable=False)
+    questionName = Column("questionName", Text,
+                          primary_key=True, nullable=False)
     answer = Column("answer", Integer, nullable=False)
 
 
@@ -81,7 +85,8 @@ class IntakeTextAnswers(Base):
     __tablename__ = "IntakeTextAnswers"
     animalID = Column('animalID', Integer, ForeignKey('Animals.animalID'),
                       nullable=False, primary_key=True)
-    questionName = Column("questionName", Text, primary_key=True, nullable=False)
+    questionName = Column("questionName", Text,
+                          primary_key=True, nullable=False)
     answer = Column("answer", Text, nullable=False)
 
 
@@ -95,7 +100,8 @@ class IntakeCheckboxAnswers(Base):
     __tablename__ = "IntakeCheckboxAnswers"
     animalID = Column('animalID', Integer, ForeignKey('Animals.animalID'),
                       nullable=False, primary_key=True)
-    subQuesitonName = Column("subQuestionName", Text, primary_key=True, nullable=False)
+    subQuesitonName = Column("subQuestionName", Text,
+                             primary_key=True, nullable=False)
     answer = Column("answer", Boolean, nullable=False)
 
 
@@ -141,7 +147,7 @@ class Users(Base):
     """
     __tablename__ = "Users"
     userID = Column('userID', Integer, primary_key=True,
-                      autoincrement=True, unique=True, nullable=False)    
+                    autoincrement=True, unique=True, nullable=False)
     username = Column('username', Text, unique=True, nullable=False)
     password = Column('password', LargeBinary, nullable=False)
     # 0 = Admin, 1 = NPLB user, 2 = SudoPound, 3 = Pound, 4 = SudoRescue, 5 = Rescue
