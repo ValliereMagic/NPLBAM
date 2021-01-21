@@ -1,0 +1,27 @@
+A quick document to help recreate the database and add a new user. If database is already created you can add a new user by following step2 onwards
+
+Step 1 - Recreate Database
+./stop_whole_stack.sh
+sudo rm -rf ./postgres
+mkdir ./postgres
+cd ./docker/nplbam_postgres
+./build.sh
+cd ../..
+./start_whole_stack.sh
+
+
+Step 2 - Get Argo Encryption of Password (Change PASSWORD to your password)
+source nplbamNV/bin/activate
+python
+import nacl.pwhash
+print(nacl.pwhash.str(b'PASSWORD'))
+exit()
+
+
+Step 3 - Add user to database .. making sure to put the password from before in >>pass from before<<. Also make sure to put a proper username at USER
+./connect_psql.sh
+\c nplbam
+\dt
+INSERT INTO "Users" (username, password, "userLVL") VALUES ('USER', >>pass from before<< , 0); 
+exit
+
