@@ -44,7 +44,7 @@ def index():
         db_session: Session = (sessionmaker(bind=engine))()
         user_entries: Query = db_session.query(db.Users)
         user_entry: db.Users = user_entries.filter(
-            db.Users.userID == username).first()
+            db.Users.username == username).first()
         db_session.close()
         # Check that the user exists, if not, then
         # user login data is invalid.

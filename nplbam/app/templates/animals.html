@@ -37,12 +37,12 @@
             <th>Species</th>
             <th>Stage</th>
         </tr>
-        {% for x in range (0, 100) %}
+        {% for x in animals %}
         <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
+            <td>{{x.animalID}}</td>
+            <td>{{x.name}}</td>
+            <td>{{x.animalType}}</td>
+            <td>{{x.stage}}</td>
         </tr>
     {% endfor %}
     </table>
