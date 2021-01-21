@@ -123,7 +123,7 @@ form div>[type=radio] {
     align-self: flex-end;
 }
 
-form button {
+button {
     padding: 0.5em 2em;
     align-self: center;
     background-color: #b3cfd1;
@@ -133,7 +133,7 @@ form button {
     transition: background-color 0.4s;
 }
 
-form button:hover {
+button:hover {
     background-color: pink;
 }
 
