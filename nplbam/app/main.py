@@ -1,8 +1,12 @@
-from flask import render_template, Blueprint, request, \
-    redirect, url_for, session as flask_session
-from sqlalchemy.orm import sessionmaker, relationship
-import nacl.pwhash
+from datetime import datetime
+
 import nacl.exceptions
+import nacl.pwhash
+from flask import Blueprint, current_app, redirect, render_template, request
+from flask import session as flask_session
+from flask import url_for
+from sqlalchemy.orm import Query, Session, relationship, sessionmaker
+
 from .db import db
 
 bp = Blueprint('index', __name__, url_prefix="")
@@ -35,25 +39,41 @@ def index():
         # that occurred
         if not data_intact:
             return render_template("index.html", errors=errors)
-        # Get the User from the database
+        # Credentials are possibly good, get the User from the database
         engine = db.get_db_engine()
-        db_session = (sessionmaker(bind=engine))()
-        user_entries = db_session.query(db.Users)
+        db_session: Session = (sessionmaker(bind=engine))()
+        user_entries: Query = db_session.query(db.Users)
         user_entry: db.Users = user_entries.filter(
             db.Users.userID == username).first()
         db_session.close()
-        # Check that the user exists
+        # Check that the user exists, if not, then
+        # user login data is invalid.
         if user_entry is None:
-            errors.append("Incorrect Username.")
+            errors.append("Incorrect Credentials.")
         else:
-            # Verify the user password is correct
+            # Check if the password entered matches the username
+            # being authenticated against.
             try:
                 nacl.pwhash.verify(user_entry.password,
                                    bytes(password, 'utf-8'))
+            # Tried to login with an incorrect password
             except nacl.exceptions.InvalidkeyError:
-                errors.append("Incorrect Password.")
-            except:
-                print("Send it to the blog")
+                errors.append("Incorrect Credentials.")
+                # Get the current time for the log entry:
+                time_string: str = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+                # Append an entry to the log stating what happened
+                # access_route(0) is the ip address of the actual client
+                # (Forwarded through nginx to our flask application)
+                current_app.logger.warning("Failed login attempt from: {}"
+                                           " using username: {} at: {}".format(
+                                               request.access_route[0], username,
+                                               time_string))
+            except Exception as e:
+                current_app.logger.error("Exception: {} occurred while"
+                                         " attempting a login.".format(
+                                             type(e).__name__))
+                # Bail out to make sure the user is NOT logged in.
+                return redirect("/")
         # If there were no errors, log the user in
         if len(errors) == 0:
             flask_session.clear()

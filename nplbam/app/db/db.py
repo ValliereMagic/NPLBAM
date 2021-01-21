@@ -1,7 +1,8 @@
-from .. import config
-from sqlalchemy import create_engine, Column, Integer, Text, ForeignKey, \
-    Date, ARRAY, Boolean, LargeBinary
+from sqlalchemy import (ARRAY, Boolean, Column, Date, ForeignKey, Integer,
+                        LargeBinary, Text, create_engine)
 from sqlalchemy.ext.declarative import declarative_base
+
+from .. import config
 
 Base = declarative_base()
 
