@@ -4,6 +4,7 @@
 {% block css %}form{% endblock %}
 {# Add the main method #}
 {% block main %} 
+<div>
     <form method="post"  action="/animal_added">
         {# Go through the questions given to the template and put them to the screen. #}
         {#
@@ -66,4 +67,5 @@
             <button type="submit" name="submit">Submit</button>   
         </div>
     </form>    
+</div>
 {% endblock %}
