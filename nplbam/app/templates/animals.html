@@ -1,9 +1,7 @@
 {% extends "base_template.html" %}
 {% block css %}animals{% endblock %}
 {% block main %}
-    <div id="newAnimal">
-        <a href="new_animal">New Animal</a>
-    </div>
+<div>
     <form>
         <div>
             <label for="searchBy">Search By:</label>
@@ -14,7 +12,10 @@
                 <option value="stage">Stage</option>
             </select>
             <input type="search" id="searchText" name="searchText">
+            <button type="submit" name="search">Search</button>
         </div>
+    </form>
+    <form>
         <div>
             <label for="sortBy">Sort By:</label>
             <select id="sortBy" name="sortBy">
@@ -27,10 +28,11 @@
             <input type="radio" id="asc" name="order" value="asc">
             <label for="desc">Desc</label>
             <input type="radio" id="desc" name="order" value="desc">
-            <button type="submit" name="refresh">Filter</button>    
+            <button type="submit" name="refresh">Filter</button>
         </div>
     </form>
-    <table>
+    <button onclick="window.location.href='new_animal';">New Animal</button>
+    <table cellspacing="0" cellpadding="0">
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -46,6 +48,7 @@
             <td>{{x.stage}}</td>
             <td>{{x.days}}</td>
         </tr>
-    {% endfor %}
+        {% endfor %}
     </table>
+</div>
 {% endblock %}
