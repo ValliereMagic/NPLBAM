@@ -1,0 +1,51 @@
+{% extends "base_template.html" %}
+{% block css %}animals{% endblock %}
+{% block main %}
+    <div id="newAccount">
+        <a href="new_account">New Account</a>
+    </div>
+    <form>
+        <div>
+            <label for="searchBy">Search By:</label>
+            <select id="searchBy" name="searchBy">
+                <option value="ID" selected>ID</option>
+                <option value="Username">Name</option>
+                <option value="Access Level">Species</option>
+                <option value="Pound">Stage</option>
+            </select>
+            <input type="search" id="searchText" name="searchText">
+        </div>
+        <div>
+            <label for="sortBy">Sort By:</label>
+            <select id="sortBy" name="sortBy">
+                <option value="ID" selected>ID</option>
+                <option value="Username">Username</option>
+                <option value="Access">Access Level</option>
+                <option value="Pound">Pound</option>
+            </select>
+            <label for="asc">Asc</label>
+            <input type="radio" id="asc" name="order" value="asc">
+            <label for="desc">Desc</label>
+            <input type="radio" id="desc" name="order" value="desc">
+            <button type="submit" name="refresh">Filter</button>    
+        </div>
+    </form>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Access Level</th>
+            <th>Pound ID</th>
+            <th>Rescue ID</th>
+        </tr>
+        {% for x in accounts %}
+        <tr>
+            <td><a href="view_account?viewid={{x.userID}}">{{x.userID}}</a></td>
+            <td>{{x.username}}</td>
+            <td>{{x.userLVL}}</td>
+            <td>{{x.poundID}}</td>
+            <td>{{x.rescueID}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
