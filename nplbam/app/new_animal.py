@@ -1,5 +1,8 @@
-from flask import render_template, Blueprint, session as flask_session, redirect
 import json
+
+from flask import Blueprint, redirect, render_template
+from flask import session as flask_session
+
 bp = Blueprint('new_animal', __name__, url_prefix="")
 
 
