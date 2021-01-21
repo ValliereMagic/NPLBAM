@@ -40,7 +40,7 @@ def index():
         db_session = (sessionmaker(bind=engine))()
         user_entries = db_session.query(db.Users)
         user_entry: db.Users = user_entries.filter(
-            db.Users.userID == username).first()
+            db.Users.username == username).first()
         db_session.close()
         # Check that the user exists
         if user_entry is None:
