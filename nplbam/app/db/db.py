@@ -1,8 +1,9 @@
 from .. import config
-from sqlalchemy import create_engine, Column, Integer, Text, ForeignKey, \
-    Date, Boolean, LargeBinary
-from sqlalchemy.orm import relationship
+
+from sqlalchemy import (Boolean, Column, Date, ForeignKey, Integer,
+                        LargeBinary, Text, create_engine)
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 

@@ -1,4 +1,6 @@
-from flask import render_template, Blueprint, session as flask_session, redirect
+from flask import Blueprint, redirect, render_template
+from flask import session as flask_session
+
 from sqlalchemy.orm import sessionmaker, relationship
 from .db import db
 
