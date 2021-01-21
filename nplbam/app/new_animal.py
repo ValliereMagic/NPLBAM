@@ -1,9 +1,14 @@
+import json
+
 from flask import render_template, Blueprint, request, \
     redirect, session as flask_session
 from sqlalchemy.orm import sessionmaker
 from datetime import date
 from .db import db
-import json
+
+from flask import Blueprint, redirect, render_template
+from flask import session as flask_session
+
 bp = Blueprint('new_animal', __name__, url_prefix="")
 
 
