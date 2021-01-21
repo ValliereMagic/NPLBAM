@@ -1,17 +1,17 @@
 {% extends "base_template.html" %}
 {% block css %}animals{% endblock %}
 {% block main %}
-    <div id="newAnimal">
-        <a href="new_animal">New Animal</a>
+    <div id="newAccount">
+        <a href="new_account">New Account</a>
     </div>
     <form>
         <div>
             <label for="searchBy">Search By:</label>
             <select id="searchBy" name="searchBy">
                 <option value="ID" selected>ID</option>
-                <option value="name">Name</option>
-                <option value="species">Species</option>
-                <option value="stage">Stage</option>
+                <option value="Username">Name</option>
+                <option value="Access Level">Species</option>
+                <option value="Pound">Stage</option>
             </select>
             <input type="search" id="searchText" name="searchText">
         </div>
@@ -19,9 +19,9 @@
             <label for="sortBy">Sort By:</label>
             <select id="sortBy" name="sortBy">
                 <option value="ID" selected>ID</option>
-                <option value="name">Name</option>
-                <option value="species">Species</option>
-                <option value="stage">Stage</option>
+                <option value="Username">Username</option>
+                <option value="Access">Access Level</option>
+                <option value="Pound">Pound</option>
             </select>
             <label for="asc">Asc</label>
             <input type="radio" id="asc" name="order" value="asc">
@@ -33,18 +33,18 @@
     <table>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Species</th>
-            <th>Stage</th>
-            <th>Days in Stage</th>
+            <th>Username</th>
+            <th>Access Level</th>
+            <th>Pound ID</th>
+            <th>Rescue ID</th>
         </tr>
-        {% for x in animals %}
+        {% for x in accounts %}
         <tr>
-            <td><a href="view_animal?viewid={{x.animalID}}">{{x.animalID}}</a></td>
-            <td>{{x.name}}</td>
-            <td>{{x.animalType}}</td>
-            <td>{{x.stage}}</td>
-            <td>{{x.days}}</td>
+            <td><a href="view_account?viewid={{x.userID}}">{{x.userID}}</a></td>
+            <td>{{x.username}}</td>
+            <td>{{x.userLVL}}</td>
+            <td>{{x.poundID}}</td>
+            <td>{{x.rescueID}}</td>
         </tr>
     {% endfor %}
     </table>
