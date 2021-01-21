@@ -1,13 +1,11 @@
 import json
-
-from flask import render_template, Blueprint, request, \
-    redirect, session as flask_session
-from sqlalchemy.orm import sessionmaker
 from datetime import date
-from .db import db
 
-from flask import Blueprint, redirect, render_template
+from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
+from sqlalchemy.orm import sessionmaker
+
+from .db import db
 
 bp = Blueprint('new_animal', __name__, url_prefix="")
 
@@ -70,31 +68,31 @@ def animal_added():
                     if question["type"] == "text":
                         if q_name != "name":
                             db_session.add(db.IntakeTextAnswers(
-                                animalID=new.animalID, 
-                                questionName=q_name, 
+                                animalID=new.animalID,
+                                questionName=q_name,
                                 answer=request.form[q_name]))
                     elif question["type"] == "radio":
                         db_session.add(db.IntakeRadioAnswers(
-                            animalID=new.animalID, 
-                            questionName=q_name, 
+                            animalID=new.animalID,
+                            questionName=q_name,
                             answer=request.form[q_name]))
                     elif question["type"] == "checkbox":
                         for answer in question["answers"]:
                             q_name = answer["name"]
                             if q_name in request.form:
                                 db_session.add(db.IntakeCheckboxAnswers(
-                                    animalID=new.animalID, 
-                                    subQuesitonName=q_name, 
+                                    animalID=new.animalID,
+                                    subQuesitonName=q_name,
                                     answer=True))
                             else:
                                 db_session.add(db.IntakeCheckboxAnswers(
-                                    animalID=new.animalID, 
-                                    subQuesitonName=q_name, 
+                                    animalID=new.animalID,
+                                    subQuesitonName=q_name,
                                     answer=False))
                     elif question["type"] == "textarea":
                         db_session.add(db.IntakeTextAnswers(
-                            animalID=new.animalID, 
-                            questionName=q_name, 
+                            animalID=new.animalID,
+                            questionName=q_name,
                             answer=request.form[q_name]))
         # Commit changes to the database
         db_session.commit()
