@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template
 from flask import session as flask_session
+from sqlalchemy.orm import relationship, sessionmaker
 
-from sqlalchemy.orm import sessionmaker, relationship
 from .db import db
 
 bp = Blueprint('accounts', __name__, url_prefix="")
