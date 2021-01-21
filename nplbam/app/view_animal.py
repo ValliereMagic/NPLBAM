@@ -1,13 +1,11 @@
 import json
-
-from flask import render_template, Blueprint, request, \
-    redirect, session as flask_session
-from sqlalchemy.orm import sessionmaker
 from datetime import date
-from .db import db
 
-from flask import Blueprint, redirect, render_template
+from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
+from sqlalchemy.orm import sessionmaker
+
+from .db import db
 
 bp = Blueprint('view_animal', __name__, url_prefix="")
 
@@ -23,10 +21,10 @@ def new_animal():
         return redirect("/")
 
     # Check to see if proper Get Parameter
-    viewID = request.args.get('viewid', default=None, type = int)
+    viewID = request.args.get('viewid', default=None, type=int)
     if viewID is None:
         return redirect("/animals")
-    
+
     # Open the JSON with the questions for dog
     with open('nplbam/app/jsons/dog_questions.json') as json_file:
         questions = json.load(json_file)
@@ -36,7 +34,7 @@ def new_animal():
     db_session = (sessionmaker(bind=engine))()
 
     animal_entry = db_session.query(
-            db.Animals).filter_by(animalID=viewID).first()
+        db.Animals).filter_by(animalID=viewID).first()
     # Get a list of all the predetermined answers stored in the relationship
     predetermined = {}
     predetermined["name"] = animal_entry.name
@@ -49,9 +47,11 @@ def new_animal():
     # Close the database like a good boy
         db_session.close()
     # Create the form page dynamically using the add_animal template and the questions
-    return render_template("view_animal.html", questions=questions,  title="View " + animal_entry.name, predetermined=predetermined)
+    return render_template("view_animal.html", questions=questions, title="View {}".format(animal_entry.name), predetermined=predetermined)
 
 # Route to view animal page.
+
+
 @bp.route("/animal_viewed", methods=['POST', 'GET'])
 def animal_viewed():
     """
@@ -60,4 +60,3 @@ def animal_viewed():
     button was clicked.
     """
     return redirect("/animals")
-
