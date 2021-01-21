@@ -59,7 +59,7 @@ def animal_added():
                                     stageNum=1,
                                     substageNum=0,
                                     completionDate=date.today(),
-                                    note="Created by user#"+user_entry.userID))
+                                    note="Created by user # {}".format(user_entry.userID)))
         # Go through the Json to get out find out which questions we asked
         for group in questions:
             for subgroup in group["subgroups"]:
