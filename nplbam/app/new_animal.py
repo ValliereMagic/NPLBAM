@@ -55,6 +55,11 @@ def animal_added():
         db_session.add(new)
         # Flush the session so we can get the autoincremented ID in new.animalID
         db_session.flush()
+        db_session.add(db.StageInfo(animalID=new.animalID,
+                                    stageNum=1,
+                                    substageNum=0,
+                                    completionDate=date.today(),
+                                    note="Created by user#"+user_entry.userID))
         # Go through the Json to get out find out which questions we asked
         for group in questions:
             for subgroup in group["subgroups"]:
