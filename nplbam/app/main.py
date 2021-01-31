@@ -68,6 +68,8 @@ def index():
                                            " using username: {} at: {}".format(
                                                request.access_route[0], username,
                                                time_string))
+                # Bail out to make sure the user is NOT logged in.
+                return render_template("index.html", errors=errors)
             except Exception as e:
                 current_app.logger.error("Exception: {} occurred while"
                                          " attempting a login.".format(

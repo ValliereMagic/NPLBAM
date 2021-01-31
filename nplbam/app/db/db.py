@@ -20,6 +20,8 @@ class Animals(Base):
     # Primary key for an animal
     animalID = Column('animalID', Integer, primary_key=True,
                       autoincrement=True, unique=True, nullable=False)
+    # Creator of this animal object
+    creator = Column('creator', Integer, ForeignKey('Users.userID'))
     supervisor = Column('supervisor', Integer,  ForeignKey('Users.userID'))
     # a pound.
     poundID = Column('poundID', Integer, ForeignKey('Pounds.poundID'))
@@ -154,7 +156,7 @@ class Users(Base):
     # SudoPound + SudoRescue both have ability to create new pound/rescue users.
     userLVL = Column('userLVL', Integer, nullable=False)
     rescueID = Column('rescueID', Integer, ForeignKey('Rescues.rescueID'))
-    poundID = Column('poundID', ForeignKey('Pounds.poundID'))
+    poundID = Column('poundID', Integer, ForeignKey('Pounds.poundID'))
 
 
 # Missing the Meta Table which represents quick information about the database.
