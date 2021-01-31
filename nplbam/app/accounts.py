@@ -119,7 +119,7 @@ def new_account():
         return redirect("/")
     # User is requesting the form to make a user page:
     if request.method == "GET":
-        return render_template("add_account.html", title="New Account", errors=[])
+        return render_template("new_account.html", title="New Account", errors=[])
     # User is submitting the form to make a new user
     elif request.method == "POST":
         # Any errors that accumulate:
@@ -137,7 +137,7 @@ def new_account():
             rescue_id, pound_id, errors)
         # Check whether the user entered valid account data
         if not account.valid:
-            return render_template("add_account.html",
+            return render_template("new_account.html",
                                    title="New Account",
                                    errors=errors)
         # Create the new user object for the database:
