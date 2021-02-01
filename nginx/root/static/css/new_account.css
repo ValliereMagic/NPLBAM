@@ -1,0 +1,133 @@
+/* Fancy background image*/
+:root {
+    background-image: url("../img/NPLB-Background.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+/* Application logo styling */
+header>div>img {
+    margin: 0.5em;
+}
+
+header>#company {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    color: #8e2e0b;
+    font-size: 3em;
+}
+
+header>div>a {
+    font-size: 1.5em;
+    color: #000000;
+    margin-right: 2em;
+    padding: 0.25em;
+    text-decoration: none;
+    transition: color 0.4s;
+}
+
+header>div>a:hover {
+    color: gray;
+}
+
+/* Flexbox header and styling for logo image and buttons */
+body>header {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 80vh;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 1;
+    background-color: #ffffff;
+    /* Modified height for new_account (This is the only thing I changed here Devon) */
+    height: 40em;
+    width: 25em;
+    padding: 2em;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+form>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 33%;
+}
+
+form>div:last-child {
+    justify-content: end;
+}
+
+:first-child>div>label {
+    font-size: 2em;
+}
+
+form .item {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+form .item>label {
+    font-size: initial;
+    margin-bottom: 0.25em;
+}
+
+form .item>input {
+    color: black;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+button {
+    padding: 0.5em 2em;
+    align-self: center;
+    background-color: #b3cfd1;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: background-color 0.4s;
+}
+
+button:hover {
+    background-color: pink;
+}
+
+form p>a {
+    color: #c6c6c6;
+    font-size: small;
+    transition: color 0.4s;
+}
+
+form p>a:hover {
+    color: black;
+}
+
+form div>span {
+    color: red;
+    padding: 0.5em;
+}
