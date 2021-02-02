@@ -54,86 +54,55 @@ main {
     min-height: 80vh;
 }
 
-main>div {
-    margin: 5em 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #ffffff;
-    width: 50%;
-    padding: 2em;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
 form {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    margin: 0.25em;
-    width: 95%;
+    flex-grow: 1;
+    background-color: #ffffff;
+    /* Modified height for new_account (This is the only thing I changed here Devon) */
+    height: 40em;
+    width: 25em;
+    padding: 2em;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 form>div {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
     height: 33%;
-    width: 100%;
 }
 
-.item {
+form>div:last-child {
+    justify-content: end;
+}
+
+:first-child>div>label {
+    font-size: 2em;
+}
+
+form .item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    min-height: 1em;
+    flex-direction: column;
+    align-items: left;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
-.item:nth-child(even) {
-    background-color: #c5c5c5;
+form .item>label {
+    font-size: initial;
+    margin-bottom: 0.25em;
 }
 
-.item:nth-child(odd) {
-    background-color: #f0f1f2;
-}
-
-
-.item>label {
-    width: 25%;
-    margin-left: 1em;
-}
-
-.radioQ {
-    width: 70%;
-    display: flex;
-    justify-content: space-around;
-}
-
-.checkQ {
-    width: 70%;
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
-
-.checkQ>div {
-    padding: 0.2em;
-}
-
-textarea,
-input[type=text] {
-    width: 70%;
+form .item>input {
+    color: black;
     border: 1px solid #000000;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.buttons {
-    display: flex;
-    justify-content: space-around;
-    margin: 3em;
-}
 button {
     padding: 0.5em 2em;
     align-self: center;
@@ -146,4 +115,19 @@ button {
 
 button:hover {
     background-color: pink;
+}
+
+form p>a {
+    color: #c6c6c6;
+    font-size: small;
+    transition: color 0.4s;
+}
+
+form p>a:hover {
+    color: black;
+}
+
+form div>span {
+    color: red;
+    padding: 0.5em;
 }
