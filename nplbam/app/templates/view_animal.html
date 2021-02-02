@@ -4,65 +4,67 @@
 {% block css %}form{% endblock %}
 {# Add the main method #}
 {% block main %} 
-    <form method="post"  action="/animal_viewed">
-        {# Go through the questions given to the template and put them to the screen. #}
-        {#
-         Questions come in the form of a LIST of groups. The groups is a dictionary containing a name an a list of subgroups.
-         Subgroups is a dictionary containing a name and a list of questions. Each question is a dictionary has a question type 
-         which specifies the html architect (radio, checkbox, text, textarea), its name which specifies the short name of the 
-         question and the label which is its name but meant for users to see. It may also contain a list of answers if 
-         depending on the architect. Each answer is a dictionary that contains name, label and selected (whether to have it
-         preclicked for the user).
-        #}
-        {% for step in questions %}
-            <h2>Step {{loop.index0+1}} - {{step.name}}</h2> 
-            {% for subgroup in step.subgroups %}
-                <h3>{{subgroup.name}}</h3> 
-                {# Check each question to see what kind of html form architect it needs to be. #}
-                {% for question in subgroup.questions %}
-                    {% if question.type == "radio" %}
-                        <div class="item">
-                            <label>{{question.label}}</label>
-                            <div class = "radioQ">
-                                {% for item in question.answers %}
-                                <div>
-                                    <label for="{{item.name}}">{{item.label}}</label>
-                                    <input type="radio" id="{{item.name}}" name="{{question.name}}" value={{loop.index0}} {%
-                                        if (predetermined[question.name]==loop.index0) %}checked {% else %} disabled {% endif %}/>
+    <div>
+        <form method="post"  action="/animal_viewed">
+            {# Go through the questions given to the template and put them to the screen. #}
+            {#
+            Questions come in the form of a LIST of groups. The groups is a dictionary containing a name an a list of subgroups.
+            Subgroups is a dictionary containing a name and a list of questions. Each question is a dictionary has a question type 
+            which specifies the html architect (radio, checkbox, text, textarea), its name which specifies the short name of the 
+            question and the label which is its name but meant for users to see. It may also contain a list of answers if 
+            depending on the architect. Each answer is a dictionary that contains name, label and selected (whether to have it
+            preclicked for the user).
+            #}
+            {% for step in questions %}
+                <h2>Step {{loop.index0+1}} - {{step.name}}</h2> 
+                {% for subgroup in step.subgroups %}
+                    <h3>{{subgroup.name}}</h3> 
+                    {# Check each question to see what kind of html form architect it needs to be. #}
+                    {% for question in subgroup.questions %}
+                        {% if question.type == "radio" %}
+                            <div class="item">
+                                <label>{{question.label}}</label>
+                                <div class = "radioQ">
+                                    {% for item in question.answers %}
+                                    <div>
+                                        <label for="{{item.name}}">{{item.label}}</label>
+                                        <input type="radio" id="{{item.name}}" name="{{question.name}}" value={{loop.index0}} {%
+                                            if (predetermined[question.name]==loop.index0) %}checked {% else %} disabled {% endif %}/>
+                                    </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
                             </div>
-                        </div>
-                    {% elif question.type == "text" %}
-                        <div class="item">
-                            <label for="{{question.name}}">{{question.label}}</label>
-                            <input type="text" id="{{question.name}}" name="{{question.name}}" value="{{predetermined[question.name]}}" readonly/>
-                        </div>
-                    {% elif question.type == "checkbox" %}
-                        <div class="item">
-                            <label>{{question.label}}</label>
-                            <div class = "checkQ">     
-                                {% for item in question.answers %}                   
-                                <div>
-                                    <input type="checkbox" id="{{item.name}}" name="{{item.name}}" value=1 {%
-                                        if (predetermined[item.name]==True) %}checked {% else %} disabled {% endif %}/>
-                                    <label for="{{item.name}}"> {{item.label}}</label>
+                        {% elif question.type == "text" %}
+                            <div class="item">
+                                <label for="{{question.name}}">{{question.label}}</label>
+                                <input type="text" id="{{question.name}}" name="{{question.name}}" value="{{predetermined[question.name]}}" readonly/>
+                            </div>
+                        {% elif question.type == "checkbox" %}
+                            <div class="item">
+                                <label>{{question.label}}</label>
+                                <div class = "checkQ">     
+                                    {% for item in question.answers %}                   
+                                    <div>
+                                        <input type="checkbox" id="{{item.name}}" name="{{item.name}}" value=1 {%
+                                            if (predetermined[item.name]==True) %}checked {% else %} disabled {% endif %}/>
+                                        <label for="{{item.name}}"> {{item.label}}</label>
+                                    </div>
+                                    {% endfor %}   
                                 </div>
-                                {% endfor %}   
+                            </div>        
+                        {% elif question.type == "textarea" %}
+                            <div class="item">
+                                <label for="{{question.name}}">{{question.label}}:</label>
+                                <textarea id="{{question.name}}" name="{{question.name}}" rows="4" value readonly>
+                                    {{predetermined[question.name]}}</textarea>
                             </div>
-                        </div>        
-                    {% elif question.type == "textarea" %}
-                        <div class="item">
-                            <label for="{{question.name}}">{{question.label}}:</label>
-                            <textarea id="{{question.name}}" name="{{question.name}}" rows="4" value readonly>
-                                {{predetermined[question.name]}}</textarea>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
             {% endfor %}
-        {% endfor %}
-        <div class="buttons">
-            <button type="submit" name="return">Return</button>   
-        </div>
-    </form>    
+            <div class="buttons">
+                <button type="submit" name="return">Return</button>   
+            </div>
+        </form>    
+    </div>
 {% endblock %}
