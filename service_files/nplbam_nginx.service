@@ -6,7 +6,7 @@ After=nplbam_flask.service
 Requires=nplbam_flask.service
 
 [Service]
-ExecStart=/usr/bin/docker run --rm -p 0.0.0.0:80:80 --name nplbam_rp \
+ExecStart=/usr/bin/docker run --rm -p 0.0.0.0:80:80 -p 0.0.0.0:443:443 --name nplbam_rp \
     -v /usr/local/NPLBAM/nginx/nginx.conf:/etc/nginx/nginx.conf:ro \
     -v /usr/local/NPLBAM/nginx/root:/usr/share/nginx/html:ro \
     --network=nplbam-net \
