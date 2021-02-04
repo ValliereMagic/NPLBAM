@@ -37,16 +37,20 @@
             <th>ID</th>
             <th>Name</th>
             <th>Species</th>
+            <th>Breed</th>
             <th>Stage</th>
             <th>Days in Stage</th>
+            <th>Creator</th>
         </tr>
         {% for x in animals %}
         <tr>
             <td><a href="view_animal?viewid={{x.animalID}}">{{x.animalID}}</a></td>
             <td>{{x.name}}</td>
             <td>{{x.animalType}}</td>
+            <td>{{x.breed}}</td>
             <td>{{x.stage}}</td>
             <td>{{x.days}}</td>
+            <td>{{x.creatorName}}</td>
         </tr>
         {% endfor %}
     </table>
