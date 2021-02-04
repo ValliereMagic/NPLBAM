@@ -522,7 +522,7 @@
                       },
                       {
                          "name":"barking_no",
-                         "label":"no",
+                         "label":"No",
                          "selected":0
                       },
                       {
@@ -675,7 +675,7 @@
                       },
                       {
                          "name":"dispositionOverall_outgoing",
-                         "label":"outgoing",
+                         "label":"Outgoing",
                          "selected":0
                       },
                       {

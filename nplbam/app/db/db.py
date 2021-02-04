@@ -21,7 +21,7 @@ class Animals(Base):
     animalID = Column('animalID', Integer, primary_key=True,
                       autoincrement=True, unique=True, nullable=False)
     # Creator of this animal object
-    creator = Column('creator', Integer, ForeignKey('Users.userID'))
+    creator = Column('creator', Integer, ForeignKey('Users.userID'), nullable=False)
     supervisor = Column('supervisor', Integer,  ForeignKey('Users.userID'))
     # a pound.
     poundID = Column('poundID', Integer, ForeignKey('Pounds.poundID'))
