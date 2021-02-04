@@ -12,7 +12,7 @@ bp = Blueprint('view_animal', __name__, url_prefix="")
 
 # Route to view animal page.
 @bp.route("/view_animal")
-def new_animal():
+def view_animal():
     """
     Page to see all the information filled out
     """
@@ -47,7 +47,7 @@ def new_animal():
     # Close the database like a good boy
         db_session.close()
     # Create the form page dynamically using the add_animal template and the questions
-    return render_template("view_animal.html", questions=questions, title="View {}".format(animal_entry.name), predetermined=predetermined)
+    return render_template("view_animal.html", animalID=viewID, questions=questions, title="View {}".format(animal_entry.name), predetermined=predetermined)
 
 # Route to view animal page.
 
@@ -59,4 +59,15 @@ def animal_viewed():
     Can redirect back to the calling page or to the edit animal page depending on which
     button was clicked.
     """
+    # Make sure visitor is logged in
+    if flask_session.get("userID", default=None) is None:
+        return redirect("/")
+    # Make sure they got here with post
+    if request.method == 'POST':
+        if 'edit' in request.form:
+            id: str = request.form['animalId']
+            redir = "/edit_animal?editid={}".format(id)
+            return redirect(redir)
+        else:
+            redirect("/accounts")
     return redirect("/animals")
