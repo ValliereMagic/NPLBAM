@@ -22,7 +22,7 @@ def create_app():
     app.testing = True
     # Set the secret key from the config file
     app.secret_key = config.SECRET_KEY
-    from . import accounts, animals, main, new_animal, view_animal
+    from . import accounts, animals, main, new_animal, view_animal, edit_animal
 
     # Index Blueprint
     app.register_blueprint(main.bp)
@@ -30,6 +30,8 @@ def create_app():
     app.register_blueprint(animals.bp)
     # New Animal Blueprint
     app.register_blueprint(new_animal.bp)
+    # Edit Animal Blueprint
+    app.register_blueprint(edit_animal.bp)
     # View Animal Blueprint
     app.register_blueprint(view_animal.bp)
     # Accounts Blueprint
