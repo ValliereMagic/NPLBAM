@@ -48,7 +48,7 @@ def animal_added():
         # Add the Animal Entry
         # Make an object from our ORM
         name: str = request.form['name']
-        new = db.Animals(poundID=user_entry.poundID, stage=1,
+        new = db.Animals(poundID=user_entry.poundID, stage=1, creator=user_ID,
                          stageDate=date.today(), animalType="Dog", name=name)
         db_session.add(new)
         # Flush the session so we can get the autoincremented ID in new.animalID
