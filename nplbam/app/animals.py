@@ -21,8 +21,21 @@ def query():
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
     animals_list = db_session.query(db.Animals).all()
-    db_session.close()
+    # Fetch all the user and put them in an easily accessable list
+    user_UO_list = db_session.query(db.Users).all()
+    user_list = {}
+    for x in user_UO_list:
+        user_list[x.userID] = x.username
     # Calculate the total amount of days each animal has been in that stage
+    # Also grab the breed of the animal
     for animal in animals_list:
         animal.days = (date.today() - animal.stageDate).days
+        # Loop through each of our textAnswers for Breed
+        animal.creatorName = user_list[animal.creator]
+        for q in animal.textAnswers:    
+            if (q.questionName == "breed"):
+                animal.breed = q.answer
+                break;
+    # Close the session
+    db_session.close()
     return render_template("animals.html", title="Animals", animals=animals_list)

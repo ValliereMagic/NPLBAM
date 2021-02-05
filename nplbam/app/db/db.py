@@ -21,7 +21,7 @@ class Animals(Base):
     animalID = Column('animalID', Integer, primary_key=True,
                       autoincrement=True, unique=True, nullable=False)
     # Creator of this animal object
-    creator = Column('creator', Integer, ForeignKey('Users.userID'))
+    creator = Column('creator', Integer, ForeignKey('Users.userID'), nullable=False)
     supervisor = Column('supervisor', Integer,  ForeignKey('Users.userID'))
     # a pound.
     poundID = Column('poundID', Integer, ForeignKey('Pounds.poundID'))
@@ -116,7 +116,8 @@ class Files(Base):
                     autoincrement=True, unique=True, nullable=False)
     animalID = Column('animalID', Integer, ForeignKey(
         'Animals.animalID'), nullable=False)
-    fileName = Column('name', Text, nullable=False)
+    fileName = Column('fileName', Text, nullable=False)
+    fileType = Column('fileType', Text, nullable=False)
 
 
 class Pounds(Base):
@@ -176,5 +177,5 @@ def get_db_engine():
     create_database_if_not_exists()
     return engine
 
-
-create_database_if_not_exists()
+# Problems before were from race conditions. Until we figure out a way to do this only once. Do not touch 
+#create_database_if_not_exists()

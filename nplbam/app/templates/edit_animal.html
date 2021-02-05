@@ -5,7 +5,8 @@
 {# Add the main method #}
 {% block main %} 
     <div>
-        <form method="post"  action="/animal_viewed">
+        <form method="post"  action="/animal_edited">
+
             <input type="hidden" id="animalId" name="animalId" value={{animalID}}>
             {# Go through the questions given to the template and put them to the screen. #}
             {#
@@ -30,7 +31,7 @@
                                     <div>
                                         <label for="{{item.name}}">{{item.label}}</label>
                                         <input type="radio" id="{{item.name}}" name="{{question.name}}" value={{loop.index0}} {%
-                                            if (predetermined[question.name]==loop.index0) %}checked {% else %} disabled {% endif %}/>
+                                            if (predetermined[question.name]==loop.index0) %}checked {% endif %}/>
                                     </div>
                                     {% endfor %}
                                 </div>
@@ -38,7 +39,7 @@
                         {% elif question.type == "text" %}
                             <div class="item">
                                 <label for="{{question.name}}">{{question.label}}</label>
-                                <input type="text" id="{{question.name}}" name="{{question.name}}" value="{{predetermined[question.name]}}" readonly/>
+                                <input type="text" id="{{question.name}}" name="{{question.name}}" value="{{predetermined[question.name]}}" />
                             </div>
                         {% elif question.type == "checkbox" %}
                             <div class="item">
@@ -47,7 +48,7 @@
                                     {% for item in question.answers %}                   
                                     <div>
                                         <input type="checkbox" id="{{item.name}}" name="{{item.name}}" value=1 {%
-                                            if (predetermined[item.name]==True) %}checked {% else %} disabled {% endif %}/>
+                                            if (predetermined[item.name]==True) %}checked {% endif %}/>
                                         <label for="{{item.name}}"> {{item.label}}</label>
                                     </div>
                                     {% endfor %}   
@@ -56,7 +57,7 @@
                         {% elif question.type == "textarea" %}
                             <div class="item">
                                 <label for="{{question.name}}">{{question.label}}:</label>
-                                <textarea id="{{question.name}}" name="{{question.name}}" rows="4" value readonly>
+                                <textarea id="{{question.name}}" name="{{question.name}}" rows="4" value >
                                     {{predetermined[question.name]}}</textarea>
                             </div>
                         {% endif %}
@@ -64,8 +65,7 @@
                 {% endfor %}
             {% endfor %}
             <div class="buttons">
-                <button type="submit" name="return" value="return">Return</button> 
-                <button type="submit" name="edit" value="edit">Edit</button>   
+                <button type="submit" name="submit">Submit</button>   
             </div>
         </form>    
     </div>
