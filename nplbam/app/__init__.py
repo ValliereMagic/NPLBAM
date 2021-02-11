@@ -22,7 +22,9 @@ def create_app():
     app.testing = True
     # Set the secret key from the config file
     app.secret_key = config.SECRET_KEY
-    from . import accounts, animals, main, new_animal, view_animal, edit_animal, dashboard
+    from . import accounts, animals, main, new_animal, view_animal, \
+        edit_animal, dashboard, organizations, add_organization, \
+        edit_organization
 
     # Index Blueprint
     app.register_blueprint(main.bp)
@@ -38,7 +40,13 @@ def create_app():
     app.register_blueprint(accounts.bp)
     # Dashboard Blueprint
     app.register_blueprint(dashboard.bp)
-    
+    # Organizations Blueprint
+    app.register_blueprint(organizations.bp)
+    # Add Organizaiton
+    app.register_blueprint(add_organization.bp)
+    # Edit Organization
+    app.register_blueprint(edit_organization.bp)
+
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
