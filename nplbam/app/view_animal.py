@@ -41,7 +41,7 @@ def view_animal():
     for x in animal_entry.radioAnswers:
         predetermined[x.questionName] = x.answer
     for x in animal_entry.checkBoxAnswers:
-        predetermined[x.subQuesitonName] = x.answer
+        predetermined[x.subQuestionName] = x.answer
     for x in animal_entry.textAnswers:
         predetermined[x.questionName] = x.answer
     # Close the database like a good boy
