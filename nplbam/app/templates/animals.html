@@ -12,10 +12,7 @@
                 <option value="stage">Stage</option>
             </select>
             <input type="search" id="searchText" name="searchText">
-            <button type="submit" name="search">Search</button>
         </div>
-    </form>
-    <form>
         <div>
             <label for="sortBy">Sort By:</label>
             <select id="sortBy" name="sortBy">
@@ -25,13 +22,15 @@
                 <option value="stage">Stage</option>
             </select>
             <label for="asc">Asc</label>
-            <input type="radio" id="asc" name="order" value="asc">
+            <input checked="checked" type="radio" id="asc" name="order" value="asc">
             <label for="desc">Desc</label>
             <input type="radio" id="desc" name="order" value="desc">
-            <button type="submit" name="refresh">Filter</button>
+            <button type="submit" name="refresh">Go</button>
         </div>
     </form>
-    <button onclick="window.location.href='new_animal';">New Animal</button>
+    <div id="button">
+        <a href="new_animal">New Animal</a>
+    </div>
     <table cellspacing="0" cellpadding="0">
         <tr>
             <th>ID</th>
@@ -43,7 +42,7 @@
             <th>Creator</th>
         </tr>
         {% for x in animals %}
-        <tr>
+        <tr onclick="window.location='view_animal?viewid={{x.animalID}}';">
             <td><a href="view_animal?viewid={{x.animalID}}">{{x.animalID}}</a></td>
             <td>{{x.name}}</td>
             <td>{{x.animalType}}</td>
