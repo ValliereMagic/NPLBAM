@@ -102,7 +102,7 @@ class IntakeCheckboxAnswers(Base):
     __tablename__ = "IntakeCheckboxAnswers"
     animalID = Column('animalID', Integer, ForeignKey('Animals.animalID'),
                       nullable=False, primary_key=True)
-    subQuesitonName = Column("subQuestionName", Text,
+    subQuestionName = Column("subQuestionName", Text,
                              primary_key=True, nullable=False)
     answer = Column("answer", Boolean, nullable=False)
 
@@ -160,8 +160,51 @@ class Users(Base):
     poundID = Column('poundID', Integer, ForeignKey('Pounds.poundID'))
 
 
-# Missing the Meta Table which represents quick information about the database.
-
+class MetaInformation(Base):
+    """
+    This class is the MetaInformation table, which represents information about the application.
+    It is stored for monthly increments. Used to make visualizations that can show historical
+    sensitivity. Did average time in stage 2 go up? We can show that by storing information
+    about past months.
+    """
+    __tablename__ = "MetaInformation"
+    # Month of the data
+    month = Column('month', Integer, primary_key=True)
+    # Year of the Data
+    year = Column('year', Integer, primary_key=True)
+    # # of users for month
+    users = Column('users', Integer)
+    # # of Rescues for month
+    rescues = Column('rescues', Integer)
+    # # of Pounds for month
+    pounds = Column('pounds', Integer)
+    # Total Amount of animals in system this month
+    totalAnimalsInSystem = Column('totalAnimalsInSystem', Integer)
+    # Total time it takes to get from stage 0 to end stage. As total, not average
+    totalStagesLength = Column('totalStagesLength', Integer)
+    # Amount of animals for data above. To calculate average
+    totalStagesAmount = Column('totalStagesAmount', Integer)
+    # Total amount of animals completed each stage
+    animalsInStage1 = Column('animalsInStage1', Integer)
+    animalsInStage2 = Column('animalsInStage2', Integer)
+    animalsInStage3 = Column('animalsInStage3', Integer)
+    animalsInStage4 = Column('animalsInStage4', Integer)
+    animalsInStage5 = Column('animalsInStage5', Integer)
+    animalsInStage6 = Column('animalsInStage6', Integer)
+    animalsInStage7 = Column('animalsInStage7', Integer)
+    animalsInStage8 = Column('animalsInStage8', Integer)
+    animalsInStage9 = Column('animalsInStage9', Integer)
+    # Total amount of days to complete each stage. As total, not average.
+    totalDaysInStage1 = Column('totalDaysInStage1', Integer)
+    totalDaysInStage2 = Column('totalDaysInStage2', Integer)
+    totalDaysInStage3 = Column('totalDaysInStage3', Integer)
+    totalDaysInStage4 = Column('totalDaysInStage4', Integer)
+    totalDaysInStage5 = Column('totalDaysInStage5', Integer)
+    totalDaysInStage6 = Column('totalDaysInStage6', Integer)
+    totalDaysInStage7 = Column('totalDaysInStage7', Integer)
+    totalDaysInStage8 = Column('totalDaysInStage8', Integer)
+    totalDaysInStage9 = Column('totalDaysInStage9', Integer)
+    
 
 def create_database_if_not_exists():
     """

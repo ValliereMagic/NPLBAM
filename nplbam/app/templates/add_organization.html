@@ -1,0 +1,32 @@
+{# Uses the inheritance to get from the base template page the head, header and navigation. Along with any footer #}
+{% extends "base_template.html" %}
+{# Add the css name to the file. #}
+{% block css %}form{% endblock %}
+{# Add the main method #}
+{% block main %} 
+<div>
+    <form method="post"  action="/organization_added">
+        <div class="item">
+            <label for="org_name">Organization Name</label>
+            <input type="text" id="org_name" name="org_name" />
+        </div>
+        <div class="item">
+            <label>Type of Organization</label>
+            <div class = "radioQ">
+                <div>
+                    <label for="type_rescue">Rescue</label>
+                    <input type="radio" id="type_rescue" name="type" value=0 checked>
+                </div>
+                <div>
+                    <label for="type_pound">Pound</label>
+                    <input type="radio" id="type_pound" name="type" value=1>
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button type="submit" name="cancel">Cancel</button>   
+            <button type="submit" name="submit">Submit</button>   
+        </div>
+    </form>    
+</div>
+{% endblock %}

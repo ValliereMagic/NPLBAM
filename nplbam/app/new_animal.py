@@ -82,12 +82,12 @@ def animal_added():
                             if q_name in request.form:
                                 db_session.add(db.IntakeCheckboxAnswers(
                                     animalID=new.animalID,
-                                    subQuesitonName=q_name,
+                                    subQuestionName=q_name,
                                     answer=True))
                             else:
                                 db_session.add(db.IntakeCheckboxAnswers(
                                     animalID=new.animalID,
-                                    subQuesitonName=q_name,
+                                    subQuestionName=q_name,
                                     answer=False))
                     elif question["type"] == "textarea":
                         db_session.add(db.IntakeTextAnswers(
