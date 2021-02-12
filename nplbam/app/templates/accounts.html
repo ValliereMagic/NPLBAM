@@ -1,9 +1,7 @@
 {% extends "base_template.html" %}
-{% block css %}accounts{% endblock %}
+{% block css %}animals{% endblock %}
 {% block main %}
-    <div id="newAccount">
-        <a href="new_account">New Account</a>
-    </div>
+<div>
     <form>
         <div>
             <label for="searchBy">Search By:</label>
@@ -24,12 +22,15 @@
                 <option value="Pound">Pound</option>
             </select>
             <label for="asc">Asc</label>
-            <input type="radio" id="asc" name="order" value="asc">
+            <input checked="checked" type="radio" id="asc" name="order" value="asc">
             <label for="desc">Desc</label>
             <input type="radio" id="desc" name="order" value="desc">
             <button type="submit" name="refresh">Filter</button>    
         </div>
     </form>
+    <div id="button">
+        <a href="new_account">New Account</a>
+    </div>
     <table>
         <tr>
             <th>ID</th>
@@ -39,7 +40,7 @@
             <th>Rescue ID</th>
         </tr>
         {% for x in accounts %}
-        <tr>
+        <tr onclick="window.location='view_account?viewid={{x.userID}}'">
             <td><a href="view_account?viewid={{x.userID}}">{{x.userID}}</a></td>
             <td>{{x.username}}</td>
             <td>{{x.userLVL}}</td>
@@ -48,4 +49,5 @@
         </tr>
     {% endfor %}
     </table>
+</div>
 {% endblock %}
