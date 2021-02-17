@@ -1,7 +1,7 @@
 import nacl.pwhash
 from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
-from sqlalchemy.orm import relationship, sessionmaker, Query
+from sqlalchemy.orm import Query, relationship, sessionmaker
 
 from . import account_tools
 from .db import db
