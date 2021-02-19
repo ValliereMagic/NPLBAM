@@ -21,10 +21,10 @@
             </div>
             <div class="item">
                 <label for="userLVL">User Access Level: </label>
+                <input type="number" id="userLVL" value="{{ info.get("user_lvl") }}" name="userLVL" />
                 <label for="userLVL">0 = Admin, 1 = NPLB user, 2 = SudoPound, 3 = Pound, 4 = SudoRescue, 5 =
                     Rescue</label>
                 <label for="userLVL">SudoPound + SudoRescue both have ability to create new pound/rescue users.</label>
-                <input type="number" id="userLVL" value="{{ info.get("user_lvl") }}" name="userLVL" />
             </div>
             <div class="item">
                 <label for="rescueID">Rescue ID (Optional): </label>
