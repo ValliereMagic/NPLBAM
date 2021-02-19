@@ -1,12 +1,12 @@
 {% extends "base_template.html" %}
-{% block css %}new_account{% endblock %}
+{% block css %}animals{% endblock %}
 {% block main %}
 <div>
-    <div>
         {% for message in errors %}
         <div>{{ message }}</div>
         {% endfor %}
-        <a href="{{ redirect }}">Ok</a>
-    </div>
+        <div id="button">
+            <a href="{{ redirect }}">Ok</a>
+        </div>
 </div>
 {% endblock %}
