@@ -1,9 +1,7 @@
 {% extends "base_template.html" %}
-{% block css %}organizations{% endblock %}
+{% block css %}animals{% endblock %}
 {% block main %}
-    <div id="newOrg">
-        <a href="add_organization">New Organization</a>
-    </div>
+<div>
     <form>
         <div>
             <label for="searchBy">Search By:</label>
@@ -26,6 +24,9 @@
             <button type="submit" name="refresh">Refresh</button>    
         </div>
     </form>
+    <div id="button">
+        <a href="add_organization">New Organization</a>
+    </div>
     <table>
         <tr>
             <th>ID</th>
@@ -33,18 +34,19 @@
             <th>Type</th>
         </tr>
         {% for x in pounds%}
-        <tr>
+        <tr onclick="window.location='edit_organization?type=1&editid={{x.poundID}}';">
             <td><a href="edit_organization?type=1&editid={{x.poundID}}">{{x.poundID}}</a></td>
             <td>{{x.poundName}}</td>
             <td>Pound</td>
         </tr>
         {% endfor %}
         {% for x in rescues%}
-        <tr>
+        <tr onclick="window.location='edit_organization?type=0&editid={{x.rescueID}}';">
             <td><a href="edit_organization?type=0&editid={{x.rescueID}}">{{x.rescueID}}</a></td>
             <td>{{x.rescueName}}</td>
             <td>Rescue</td>
         </tr>
         {% endfor %}
     </table>
+</div>
 {% endblock %}
