@@ -1,29 +1,31 @@
 {% extends "base_template.html" %}
-{% block css %}dashboard{% endblock %}
+{% block css %}animals{% endblock %}
 {% block main %}
-{% for stageNum in range(1,9,1) %}
-    <h2>Stage {{stageNum}}</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Species</th>
-            <th>Breed</th>
-            <th>Stage</th>
-            <th>Days in Stage</th>
-            <th>Creator</th>
-        </tr>
-        {% for x in animals[stageNum] %}
-        <tr>
-            <td><a href="view_animal?viewid={{x.animalID}}">{{x.animalID}}</a></td>
-            <td>{{x.name}}</td>
-            <td>{{x.animalType}}</td>
-            <td>{{x.breed}}</td>
-            <td>{{x.stage}}</td>
-            <td>{{x.days}}</td>
-            <td>{{x.creatorName}}</td>
-        </tr>
-        {% endfor %}
-    </table>
-{% endfor %}
+<div>
+    {% for stageNum in range(1,9,1) %}
+        <h2>Stage {{stageNum}}</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Species</th>
+                <th>Breed</th>
+                <th>Stage</th>
+                <th>Days in Stage</th>
+                <th>Creator</th>
+            </tr>
+            {% for x in animals[stageNum] %}
+            <tr onclick="window.location='view_animal?viewid={{x.animalID}}';">
+                <td><a href="view_animal?viewid={{x.animalID}}">{{x.animalID}}</a></td>
+                <td>{{x.name}}</td>
+                <td>{{x.animalType}}</td>
+                <td>{{x.breed}}</td>
+                <td>{{x.stage}}</td>
+                <td>{{x.days}}</td>
+                <td>{{x.creatorName}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+</div>
 {% endblock %}
