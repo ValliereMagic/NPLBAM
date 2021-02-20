@@ -17,10 +17,12 @@ def edit_animal():
     """
     Page to see all the information filled out
     """
-    # Check if they are logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user's userLVL is in (0, 1, 2, 3)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level > 3:
+        # May need to change where we redirect them in the future
         return redirect("/")
-
     # Check to see if proper Get Parameter
     editID = request.args.get('editid', default=None, type=int)
     if editID is None:
@@ -60,8 +62,11 @@ def animal_edited():
     Can redirect back to the calling page or to the edit animal page depending on which
     button was clicked.
     """
-    # Make sure visitor is logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user's userLVL is in (0, 1, 2, 3)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level > 3:
+        # May need to change where we redirect them in the future
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
