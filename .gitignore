@@ -9,3 +9,4 @@ nplbam/app/config.py
 secrets/
 secrets.tar.gz
 postgres/
+nplbam/files

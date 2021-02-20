@@ -1,10 +1,11 @@
 import json
 from datetime import date
 
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, current_app, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import sessionmaker
 
+from . import handle_file_uploads
 from .db import db
 
 bp = Blueprint('new_animal', __name__, url_prefix="")
@@ -102,6 +103,13 @@ def animal_added():
                             answer=request.form[q_name]))
         # Commit changes to the database
         db_session.commit()
+        # Handle file uploads
+        errors: list = list()
+        # Pull the uploaded file list from the form data
+        uploaded_files_list: list = request.files.getlist("files[]")
+        # Save the uploaded file, and add its metadata to the database
+        handle_file_uploads.save_uploaded_files(
+            new.animalID, uploaded_files_list, errors)
         # Close the database like a good boy
         db_session.close()
     return redirect("/animals")

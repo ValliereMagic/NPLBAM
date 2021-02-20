@@ -12,6 +12,8 @@ def create_app():
     in factory style.
     """
     app = Flask(__name__, instance_relative_config=True)
+    # Set up folder for uploaded content
+    app.config['UPLOAD_FOLDER'] = "/nplbam/files"
     # Set up logging
     gunicorn_logger: Logger = logging.getLogger('gunicorn.error')
     app.logger.handlers = gunicorn_logger.handlers
@@ -22,9 +24,9 @@ def create_app():
     app.testing = True
     # Set the secret key from the config file
     app.secret_key = config.SECRET_KEY
-    from . import accounts, animals, main, new_animal, view_animal, \
-        edit_animal, dashboard, organizations, add_organization, \
-        edit_organization
+    from . import (accounts, add_organization, animals, dashboard, edit_animal,
+                   edit_organization, main, new_animal, organizations,
+                   view_animal)
 
     # Index Blueprint
     app.register_blueprint(main.bp)
