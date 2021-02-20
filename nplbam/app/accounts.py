@@ -129,7 +129,7 @@ def edit_account():
                                    redirect="/accounts",
                                    errors=errors)
         # Validate the rest of the data
-        account: account_tools.NewAccount = account_tools.validate_form_input(
+        account: account_tools.AccountInfo = account_tools.validate_form_input(
             request, errors, True)
         # Check whether the user entered valid account data
         if not account.valid:
