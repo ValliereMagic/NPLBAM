@@ -14,8 +14,11 @@ def dashboard():
     """
     Page with the list of top 5 of each stage
     """
-    # Make sure visitor is logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user is userLVL 0 or 1
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level > 1:
+        # May need to change where we redirect them in the future
         return redirect("/")
     # Get the list of animals from the database
     engine = db.get_db_engine()
