@@ -47,7 +47,7 @@ def new_account():
         # Any errors that accumulate:
         errors: list = []
         # Verify the entered form data
-        account: NewAccount = account_tools.validate_form_input(
+        account: account_tools.AccountInfo = account_tools.validate_form_input(
             request, errors)
         # Check whether the user entered valid account data
         if not account.valid:
