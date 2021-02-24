@@ -5,7 +5,7 @@
 {# Add the main method #}
 {% block main %} 
 <div>
-    <form method="post"  action="/animal_added">
+    <form method="post" enctype="multipart/form-data" action="/animal_added">
         {# Go through the questions given to the template and put them to the screen. #}
         {#
          Questions come in the form of a LIST of groups. The groups is a dictionary containing a name an a list of subgroups.
@@ -13,7 +13,7 @@
          which specifies the html architect (radio, checkbox, text, textarea), its name which specifies the short name of the 
          question and the label which is its name but meant for users to see. It may also contain a list of answers if 
          depending on the architect. Each answer is a dictionary that contains name, label and selected (whether to have it
-         preclicked for the user).
+         pre-clicked for the user).
         #}
         {% for step in questions %}
             <h2>Step {{loop.index0+1}} - {{step.name}}</h2> 
@@ -61,6 +61,10 @@
                 {% endfor %}
             {% endfor %}
         {% endfor %}
+        <div class="item">
+            <label for="files[]">Files to Upload (Images, Videos, Documents)</label>
+            <input type="file" name="files[]" multiple=""/>
+        </div>
         <div class="buttons">
             <button type="submit" name="cancel">Cancel</button>   
             <button type="submit" name="save">Save</button>   
