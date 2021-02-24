@@ -1,13 +1,12 @@
 import nacl.pwhash
 from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
-from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.orm import Query, relationship, sessionmaker
 
+from . import account_tools
 from .db import db
 
 bp = Blueprint('accounts', __name__, url_prefix="")
-
-USER_LEVEL_MAX: int = 5
 
 
 @bp.route("/accounts")
@@ -15,10 +14,13 @@ def query():
     """
     Page with the list of all accounts, which can be filtered.
     """
-    # Make sure visitor is logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user is userLVL 0 (FOR NOW)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level != 0:
+        # May need to change where we redirect them in the future
         return redirect("/")
-    # Get the list of animals from the database
+    # Get the list of user accounts from the database
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
     accounts_list = db_session.query(db.Users).all()
@@ -26,91 +28,11 @@ def query():
     return render_template("accounts.html", title="Accounts", accounts=accounts_list)
 
 
-class NewAccount:
-    # Whether this account creation is valid
-    valid: bool = True
-    username: str = ""
-    password: str = ""
-    user_lvl: int = 0
-    # The sets signal whether these optional
-    # values are present
-    rescue_set: bool = False
-    rescue_id: int = 0
-    pound_set: bool = False
-    pound_id: int = 0
-
-
-def validate_form_input(username: str, password: str,
-                        password_verify: str, user_lvl: str,
-                        rescue_id: str, pound_id: str,
-                        errors: list) -> NewAccount:
-    """
-    Validate the form input for the new_account page.
-    """
-    global USER_LEVEL_MAX
-    account: NewAccount = NewAccount()
-    # Validate username and password:
-    if username == "":
-        errors.append("A username is required.")
-        account.valid = False
-        return account
-    if password == "":
-        errors.append("A password is required.")
-        account.valid = False
-        return account
-    if (password_verify == "") or (password != password_verify):
-        errors.append("The passwords entered do not match.")
-        account.valid = False
-        return account
-    #
-    # Will need to verify password strength right here
-    # Probably a new function or external library for that
-    #
-    # They are good, add them to the structure.
-    account.username = username
-    account.password = password
-    # Validate against our user level:
-    try:
-        user_lvl: int = int(user_lvl)
-        if (user_lvl < 0) or (user_lvl > USER_LEVEL_MAX):
-            errors.append("User level is out of bounds")
-            account.valid = False
-            return account
-    except:
-        errors.append("user level wasn't entered or was not a number.")
-        account.valid = False
-        return account
-    account.user_lvl = user_lvl
-    # Validate our optional fields:
-    if rescue_id != "":
-        try:
-            rescue_id: int = int(rescue_id)
-        except:
-            errors.append("Rescue ID field filled out, and is not a number.")
-            account.valid = False
-            return account
-        account.rescue_id = rescue_id
-        account.rescue_set = True
-    if pound_id != "":
-        try:
-            pound_id: int = int(pound_id)
-        except:
-            errors.append("Pound ID field is filled out, and is not a number.")
-            account.valid = False
-            return account
-        account.pound_id = pound_id
-        account.pound_set = True
-    return account
-
-
 @bp.route("/new_account", methods=("GET", "POST"))
 def new_account():
     """
     Create a new account for the system.
     """
-    # Make sure that the user is logged in.
-    if flask_session.get("userID", default=None) is None:
-        return redirect("/")
     # Make sure the user is userLVL 0 (FOR NOW)
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
@@ -124,17 +46,9 @@ def new_account():
     elif request.method == "POST":
         # Any errors that accumulate:
         errors: list = []
-        # Pull and validate the fields:
-        username: str = request.form["username"]
-        password: str = request.form["password"]
-        password_verify: str = request.form["passwordVerify"]
-        user_lvl: str = request.form["userLVL"]
-        rescue_id: str = request.form["rescueID"]
-        pound_id: str = request.form["poundID"]
         # Verify the entered form data
-        account: NewAccount = validate_form_input(
-            username, password, password_verify, user_lvl,
-            rescue_id, pound_id, errors)
+        account: account_tools.AccountInfo = account_tools.validate_form_input(
+            request, errors)
         # Check whether the user entered valid account data
         if not account.valid:
             return render_template("new_account.html",
@@ -160,3 +74,91 @@ def new_account():
         return redirect("/accounts")
     else:
         return redirect("/")
+
+
+@bp.route("/edit_account", methods=("GET", "POST"))
+def edit_account():
+    """
+    Edit an existing account
+    """
+    # Make sure the user is userLVL 0
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level != 0:
+        # May need to change where we redirect them in the future
+        return redirect("/")
+    # User is requesting the form to edit their user account:
+    if request.method == "GET":
+        # Check to see if the account ID has been set properly
+        account_id: int = request.args.get(
+            'account_id', default=None, type=int)
+        # Otherwise redirect them to the accounts page. We have nothing to edit.
+        if account_id is None:
+            return redirect("/accounts")
+        # Set the actively_editing id in the session
+        flask_session["actively_editing"] = account_id
+        # Information to display on the page
+        info = dict()
+        # Get the existing account information from the database
+        engine = db.get_db_engine()
+        db_session = (sessionmaker(bind=engine))()
+        user_to_edit: db.Users = db_session.query(db.Users).filter(
+            db.Users.userID == account_id).first()
+        db_session.close()
+        # Populate the dictionary to display the current values to the user
+        info["user_id"] = user_to_edit.userID
+        info["username"] = user_to_edit.username
+        info["user_lvl"] = user_to_edit.userLVL
+        info["rescue_id"] = user_to_edit.rescueID
+        info["pound_id"] = user_to_edit.poundID
+        # Show the form, displaying all the editable fields
+        return render_template("edit_account.html", title="Edit Account", info=info, errors=[])
+    # User is submitting the updated account information
+    elif request.method == "POST":
+        # Any errors that accumulate:
+        errors: list = []
+        try:
+            account_id: int = int(flask_session["actively_editing"])
+        except:
+            # Cannot continue, account id is bogus
+            errors.append(
+                "Error. Account ID not passed correctly in hidden form field.")
+            flask_session["actively_editing"] = None
+            return render_template("error_page.html",
+                                   title="Account Error",
+                                   redirect="/accounts",
+                                   errors=errors)
+        # Validate the rest of the data
+        account: account_tools.AccountInfo = account_tools.validate_form_input(
+            request, errors, True)
+        # Check whether the user entered valid account data
+        if not account.valid:
+            flask_session["actively_editing"] = None
+            return render_template("error_page.html",
+                                   title="Account Error",
+                                   redirect="/accounts",
+                                   errors=errors)
+        # Modify the account object
+        engine = db.get_db_engine()
+        db_session = (sessionmaker(bind=engine))()
+        user_to_edit: Query = db_session.query(db.Users).filter(
+            db.Users.userID == account_id)
+        # Add what will always be added
+        user_to_edit.update({"username": account.username,
+                             "userLVL": account.user_lvl})
+        # Add the optional ones if set
+        if account.password_set:
+            user_to_edit.update(
+                {"password": nacl.pwhash.str(bytes(account.password, "utf-8"))})
+        if account.rescue_set:
+            user_to_edit.update({"rescueID": account.rescue_id})
+        if account.pound_set:
+            user_to_edit.update({"poundID": account.pound_id})
+        # Commit the changes and close
+        db_session.commit()
+        db_session.close()
+        flask_session["actively_editing"] = None
+        return redirect("/accounts")
+    else:
+        flask_session["actively_editing"] = None
+        return redirect("/accounts")

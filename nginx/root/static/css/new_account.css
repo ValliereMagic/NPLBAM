@@ -72,7 +72,7 @@ form>div {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    height: 33%;
+    /* height: 33%; */
 }
 
 form>div:last-child {
@@ -130,4 +130,18 @@ form p>a:hover {
 form div>span {
     color: red;
     padding: 0.5em;
+}
+
+label[for=userLVL]:not(:first-child){
+    font-style: italic;
+    color: darkgray;
+    font-size: 0.75em;
+}
+
+label[for=userLVL]:not(:first-child):hover{
+    color:rgb(59, 59, 59)
+}
+
+label[for=userLVL]:not(:first-child){
+    padding-top: 1em;
 }

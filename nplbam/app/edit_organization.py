@@ -16,10 +16,12 @@ def edit_organization():
     """
     Form page for adding a new organization to the system.
     """
-    # Check if they are logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user's userLVL is in (0, 1)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level > 1:
+        # May need to change where we redirect them in the future
         return redirect("/")
-    
     # Check to see if proper Get Parameter
     editID = request.args.get('editid', default=None, type=int)
     orgType = request.args.get('type', default=None, type=int)
@@ -35,15 +37,17 @@ def edit_organization():
     predetermined = {}
     if (orgType == 0):
         predetermined["type"] = "rescue"
-        organization = db_session.query(db.Rescues).filter(db.Rescues.rescueID == editID).one()
+        organization = db_session.query(db.Rescues).filter(
+            db.Rescues.rescueID == editID).one()
         predetermined["name"] = organization.rescueName
     else:
         predetermined["type"] = "pound"
-        organization = db_session.query(db.Pounds).filter(db.Pounds.poundID == editID).one()
+        organization = db_session.query(db.Pounds).filter(
+            db.Pounds.poundID == editID).one()
         predetermined["name"] = organization.poundName
 
     # Close the database like a good boy
-    db_session.close()    
+    db_session.close()
 
     # Make the page using said information
     return render_template("edit_organization.html", title="Edit Org", orgID=editID, predetermined=predetermined)
@@ -54,8 +58,11 @@ def organization_edited():
     """
     Route for getting the data from the form to put in the database
     """
-    # Make sure visitor is logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user's userLVL is in (0, 1)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level > 1:
+        # May need to change where we redirect them in the future
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
@@ -63,8 +70,8 @@ def organization_edited():
             return redirect("/organizations")
         elif 'delete' in request.form:
             # Still need to do
-            return redirect("/organizations")    
-        
+            return redirect("/organizations")
+
         # Need open the database.
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
@@ -73,10 +80,12 @@ def organization_edited():
         name: str = request.form['org_name']
         # check if they entered a rescue or a pound
         if (request.form["orgType"] == "rescue"):
-            organization = db_session.query(db.Rescues).filter(db.Rescues.rescueID == request.form['orgID']).one()
+            organization = db_session.query(db.Rescues).filter(
+                db.Rescues.rescueID == request.form['orgID']).one()
             organization.rescueName = name
         else:
-            organization = db_session.query(db.Pounds).filter(db.Pounds.poundID == request.form['orgID']).one()
+            organization = db_session.query(db.Pounds).filter(
+                db.Pounds.poundID == request.form['orgID']).one()
             organization.poundName = name
         # Commit changes to the database
         db_session.commit()

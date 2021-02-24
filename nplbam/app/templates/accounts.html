@@ -40,8 +40,8 @@
             <th>Rescue ID</th>
         </tr>
         {% for x in accounts %}
-        <tr onclick="window.location='view_account?viewid={{x.userID}}'">
-            <td><a href="view_account?viewid={{x.userID}}">{{x.userID}}</a></td>
+        <tr onclick="window.location='edit_account?account_id={{x.userID}}'">
+            <td><a href="edit_account?account_id={{x.userID}}">{{x.userID}}</a></td>
             <td>{{x.username}}</td>
             <td>{{x.userLVL}}</td>
             <td>{{x.poundID}}</td>
