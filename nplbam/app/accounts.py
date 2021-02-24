@@ -14,8 +14,11 @@ def query():
     """
     Page with the list of all accounts, which can be filtered.
     """
-    # Make sure visitor is logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user is userLVL 0 (FOR NOW)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level != 0:
+        # May need to change where we redirect them in the future
         return redirect("/")
     # Get the list of user accounts from the database
     engine = db.get_db_engine()
@@ -30,9 +33,6 @@ def new_account():
     """
     Create a new account for the system.
     """
-    # Make sure that the user is logged in.
-    if flask_session.get("userID", default=None) is None:
-        return redirect("/")
     # Make sure the user is userLVL 0 (FOR NOW)
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
@@ -47,7 +47,7 @@ def new_account():
         # Any errors that accumulate:
         errors: list = []
         # Verify the entered form data
-        account: NewAccount = account_tools.validate_form_input(
+        account: account_tools.AccountInfo = account_tools.validate_form_input(
             request, errors)
         # Check whether the user entered valid account data
         if not account.valid:
@@ -81,9 +81,6 @@ def edit_account():
     """
     Edit an existing account
     """
-    # Make sure that the user is logged in.
-    if flask_session.get("userID", default=None) is None:
-        return redirect("/")
     # Make sure the user is userLVL 0
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
@@ -132,7 +129,7 @@ def edit_account():
                                    redirect="/accounts",
                                    errors=errors)
         # Validate the rest of the data
-        account: account_tools.NewAccount = account_tools.validate_form_input(
+        account: account_tools.AccountInfo = account_tools.validate_form_input(
             request, errors, True)
         # Check whether the user entered valid account data
         if not account.valid:
