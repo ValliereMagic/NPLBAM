@@ -1,10 +1,11 @@
 import json
 from datetime import date
 
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, current_app, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import sessionmaker
 
+from . import handle_file_operations
 from .db import db
 
 bp = Blueprint('new_animal', __name__, url_prefix="")
@@ -16,8 +17,11 @@ def new_animal():
     """
     Form page for adding a new animal to the system.
     """
-    # Check if they are logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user's userLVL is in (0, 1, 2, 3)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level > 3:
+        # May need to change where we redirect them in the future
         return redirect("/")
     # Open the JSON with the questions for dog
     with open('nplbam/app/jsons/dog_questions.json') as json_file:
@@ -31,8 +35,11 @@ def animal_added():
     """
     Route for getting the data from the form to put in the database
     """
-    # Make sure visitor is logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user's userLVL is in (0, 1, 2, 3)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level > 3:
+        # May need to change where we redirect them in the future
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
@@ -96,6 +103,13 @@ def animal_added():
                             answer=request.form[q_name]))
         # Commit changes to the database
         db_session.commit()
+        # Handle file uploads
+        errors: list = list()
+        # Pull the uploaded file list from the form data
+        uploaded_files_list: list = request.files.getlist("files[]")
+        # Save the uploaded file, and add its metadata to the database
+        handle_file_operations.save_uploaded_files(
+            new.animalID, uploaded_files_list, errors)
         # Close the database like a good boy
         db_session.close()
     return redirect("/animals")

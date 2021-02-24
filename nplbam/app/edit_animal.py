@@ -5,6 +5,7 @@ from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import sessionmaker
 
+from . import handle_file_operations
 from .db import db
 
 bp = Blueprint('edit_animal', __name__, url_prefix="")
@@ -16,10 +17,12 @@ def edit_animal():
     """
     Page to see all the information filled out
     """
-    # Check if they are logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user's userLVL is in (0, 1, 2, 3)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level > 3:
+        # May need to change where we redirect them in the future
         return redirect("/")
-
     # Check to see if proper Get Parameter
     editID = request.args.get('editid', default=None, type=int)
     if editID is None:
@@ -59,8 +62,11 @@ def animal_edited():
     Can redirect back to the calling page or to the edit animal page depending on which
     button was clicked.
     """
-        # Make sure visitor is logged in
-    if flask_session.get("userID", default=None) is None:
+    # Make sure the user's userLVL is in (0, 1, 2, 3)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level > 3:
+        # May need to change where we redirect them in the future
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
@@ -71,9 +77,11 @@ def animal_edited():
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
         user_ID = flask_session.get("userID", default=None)
-        user_entry = db_session.query(db.Users).filter_by(userID=user_ID).first()   
-        # Update the Animal Entry 
-        animal = db_session.query(db.Animals).filter(db.Animals.animalID == request.form['animalId']).one()
+        user_entry = db_session.query(
+            db.Users).filter_by(userID=user_ID).first()
+        # Update the Animal Entry
+        animal = db_session.query(db.Animals).filter(
+            db.Animals.animalID == request.form['animalId']).one()
         animal.name = request.form['name']
         # Go through the Json to get out find out which questions we asked
         for group in questions:
@@ -83,36 +91,43 @@ def animal_edited():
                     q_name = question["name"]
                     # Check to see what type of question it was since they go into different tables
                     if question["type"] == "text":
-                      if q_name != "name":
+                        if q_name != "name":
                             db_session.query(db.IntakeTextAnswers).\
-                                filter(db.IntakeTextAnswers.animalID ==  animal.animalID).\
+                                filter(db.IntakeTextAnswers.animalID == animal.animalID).\
                                 filter(db.IntakeTextAnswers.questionName == q_name).\
-                               update({"answer": request.form[q_name]})                                    
+                                update({"answer": request.form[q_name]})
                     elif question["type"] == "radio":
                         db_session.query(db.IntakeRadioAnswers).\
-                            filter(db.IntakeRadioAnswers.animalID ==  animal.animalID).\
+                            filter(db.IntakeRadioAnswers.animalID == animal.animalID).\
                             filter(db.IntakeRadioAnswers.questionName == q_name).\
-                            update({"answer": request.form[q_name]})                                    
+                            update({"answer": request.form[q_name]})
                     elif question["type"] == "checkbox":
                         for answer in question["answers"]:
                             q_name = answer["name"]
                             if q_name in request.form:
                                 db_session.query(db.IntakeCheckboxAnswers).\
-                                    filter(db.IntakeCheckboxAnswers.animalID ==  animal.animalID).\
+                                    filter(db.IntakeCheckboxAnswers.animalID == animal.animalID).\
                                     filter(db.IntakeCheckboxAnswers.subQuestionName == q_name).\
-                                    update({"answer": True})                                    
+                                    update({"answer": True})
                             else:
                                 db_session.query(db.IntakeCheckboxAnswers).\
-                                    filter(db.IntakeCheckboxAnswers.animalID ==  animal.animalID).\
+                                    filter(db.IntakeCheckboxAnswers.animalID == animal.animalID).\
                                     filter(db.IntakeCheckboxAnswers.subQuestionName == q_name).\
-                                    update({"answer": False})                                    
+                                    update({"answer": False})
                     elif question["type"] == "textarea":
                         db_session.query(db.IntakeTextAnswers).\
-                            filter(db.IntakeTextAnswers.animalID ==  animal.animalID).\
+                            filter(db.IntakeTextAnswers.animalID == animal.animalID).\
                             filter(db.IntakeTextAnswers.questionName == q_name).\
-                            update({"answer": request.form[q_name]})        
+                            update({"answer": request.form[q_name]})
         # Commit changes to the database
         db_session.commit()
+        # Handle file uploads
+        errors: list = list()
+        # Pull the uploaded file list from the form data
+        uploaded_files_list: list = request.files.getlist("files[]")
+        # Save the uploaded file, and add its metadata to the database
+        handle_file_operations.save_uploaded_files(
+            animal.animalID, uploaded_files_list, errors)
         # Close the database like a good boy
         db_session.close()
     return redirect("/animals")
