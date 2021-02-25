@@ -5,7 +5,7 @@ import nacl.exceptions
 import nacl.pwhash
 from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
-from sqlalchemy.orm import relationship, sessionmaker, Query
+from sqlalchemy.orm import Query, relationship, sessionmaker
 
 from .db import db
 
@@ -64,12 +64,13 @@ def change_password():
         if (new_password1 != new_password2):
             errors.append("Passwords Do not Match")
 
-        from .account_tools import verify_password_strength, MIN_PASSWORD_ENTROPY_BITS
+        from .account_tools import (MIN_PASSWORD_ENTROPY_BITS,
+                                    verify_password_strength)
 
         # Check if new Password is strong enough
         if (new_password1 == ""):
             errors.append("Password is not set")
-        else: 
+        else:
             entropy_bits, valid = verify_password_strength(new_password1)
             if not valid:
                 errors.append(
@@ -79,17 +80,17 @@ def change_password():
                     "Please either increase its length, " +
                     "or add characters from different character sets. " +
                     "(For example: Add some numbers, or a maybe a symbol.)")
-            
+
         if (len(errors) > 0):
             # Close the session like a good boy
             db_session.close()
             return render_template("options.html", title="Options", errors=errors)
-        else: 
+        else:
             # Add to Database
-            user_entry.password = nacl.pwhash.str(bytes(new_password1, "utf-8"))
+            user_entry.password = nacl.pwhash.str(
+                bytes(new_password1, "utf-8"))
             # Commit the changes
             db_session.commit()
             # Close the session like a good boy
             db_session.close()
             return redirect("/")
-
