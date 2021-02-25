@@ -1,0 +1,32 @@
+{% extends "base_template.html" %}
+{% block css %}new_account{% endblock %}
+{% block main %}
+<div>
+    <form method="post"  action="/change_password">
+        <div>
+            <label>Change Password</label>
+        </div>
+        <div>
+            <div class="item">
+                <label for="oldpassword">Old Password: </label>
+                <input type="password" id="oldpassword" name="oldpassword" />
+            </div>
+
+            <div class="item">
+                <label for="password">Password: </label>
+                <input type="password" id="password" name="password" />
+            </div>
+            <div class="item">
+                <label for="passwordVerify">Verify Password: </label>
+                <input type="password" id="passwordVerify" name="passwordVerify" />
+            </div>
+        </div>
+        <div>
+            {% for message in errors %}
+            <span>{{ message }}</span>
+            {% endfor %}
+            <button type="submit" name="change">Change</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
