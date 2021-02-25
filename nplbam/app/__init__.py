@@ -26,7 +26,7 @@ def create_app():
     app.secret_key = config.SECRET_KEY
     from . import (accounts, add_organization, animals, dashboard, edit_animal,
                    edit_organization, file_downloads, main, new_animal,
-                   organizations, view_animal, options)
+                   options, organizations, view_animal)
 
     # Index Blueprint
     app.register_blueprint(main.bp)
