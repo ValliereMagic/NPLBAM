@@ -74,10 +74,6 @@ form>div {
     height: 33%;
 }
 
-form>div:last-child {
-    justify-content: end;
-}
-
 :first-child>div>label {
     font-size: 2em;
 }
