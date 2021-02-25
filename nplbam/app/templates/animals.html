@@ -2,29 +2,31 @@
 {% block css %}animals{% endblock %}
 {% block main %}
 <div>
-    <form>
+    <form method="post" action="/animals">
         <div>
             <label for="searchBy">Search By:</label>
             <select id="searchBy" name="searchBy">
-                <option value="ID" selected>ID</option>
-                <option value="name">Name</option>
-                <option value="species">Species</option>
-                <option value="stage">Stage</option>
+                <option value="animalID" {% if (predetermined.search_by == "animalID") %} selected {% endif %}>ID</option>
+                <option value="name" {% if (predetermined.search_by == "name") %} selected {% endif %}>Name</option>
+                <option value="animalType" {% if (predetermined.search_by == "animalType") %} selected {% endif %}>Species</option>
+                <option value="stage" {% if (predetermined.search_by == "stage") %} selected {% endif %}>Stage</option>
             </select>
-            <input type="search" id="searchText" name="searchText">
+            <input type="search" id="searchText" name="searchText" value="{{predetermined.search}}">
         </div>
         <div>
             <label for="sortBy">Sort By:</label>
             <select id="sortBy" name="sortBy">
-                <option value="ID" selected>ID</option>
-                <option value="name">Name</option>
-                <option value="species">Species</option>
-                <option value="stage">Stage</option>
+                <option value="animalID" {% if (predetermined.sort_by == "animalID") %} selected {% endif %}>ID</option>
+                <option value="name" {% if (predetermined.sort_by == "name") %} selected {% endif %}>Name</option>
+                <option value="animalType" {% if (predetermined.sort_by == "animalType") %} selected {% endif %} >Species</option>
+                <option value="stage" {% if (predetermined.sort_by == "stage") %} selected {% endif %} >Stage</option>
             </select>
             <label for="asc">Asc</label>
-            <input checked="checked" type="radio" id="asc" name="order" value="asc">
+            <input {% if (predetermined.order == "asc") %} checked="checked" {% endif %}  type="radio" id="asc" name="order" value="asc">
             <label for="desc">Desc</label>
-            <input type="radio" id="desc" name="order" value="desc">
+            <input {% if (predetermined.order == "desc") %} checked="checked" {% endif %} type="radio" id="desc" name="order" value="desc">
+            <input type="checkbox" id="hide_stuff" name="hide_stuff" value="hide_stuff" {% if (predetermined.hide_stuff == True) %} checked {% endif %}>
+            <label for="hide_stuff">Hide Stage 0&8</label>
             <button type="submit" name="refresh">Go</button>
         </div>
     </form>
@@ -53,5 +55,16 @@
         </tr>
         {% endfor %}
     </table>
+    <div>
+        {% if prev_url %}
+        <a href="{{ prev_url }}">Back</a>
+        {% endif %}
+        <p>Page {{ page }}</p>
+        {% if next_url %}
+        <a href="{{ next_url }}">Forward</a>
+        {% endif %}
+    </div>
+    <p>Total Pages - {{total_pages}}</p>
+    <p>Total Animals - {{count}}</p>
 </div>
 {% endblock %}
