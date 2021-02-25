@@ -1,0 +1,235 @@
+/* Fancy background image*/
+:root {
+    background-image: url("../img/NPLB-Background.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+/* Application logo styling */
+header>div>img {
+    margin: 0.5em;
+}
+
+header>#company {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    color: #8e2e0b;
+    font-size: 3em;
+}
+
+header>div>a {
+    font-size: 1.5em;
+    color: #000000;
+    margin-right: 2em;
+    padding: 0.25em;
+    text-decoration: none;
+    transition: color 0.4s;
+}
+
+header>div>a:hover {
+    color: gray;
+}
+
+/* Flexbox header and styling for logo image and buttons */
+body>header {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* min-height: 80vh; */
+}
+
+main>div {
+    margin: 5em 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ffffff;
+    min-width: 25%;
+    padding: 2em;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0.25em;
+    width: 95%;
+}
+
+form>div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: 33%;
+    width: 100%;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    min-height: 1em;
+}
+
+.item:nth-child(even) {
+    background-color: #c5c5c5;
+}
+
+.item:nth-child(odd) {
+    background-color: #f0f1f2;
+}
+
+
+.item>label {
+    width: 25%;
+    margin-left: 1em;
+}
+
+.radioQ {
+    width: 70%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.checkQ {
+    width: 70%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.checkQ>div {
+    padding: 0.2em;
+}
+
+textarea,
+input[type=text] {
+    width: 70%;
+    border: 1px solid #000000;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 3em;
+}
+
+#button {
+    margin: 2em 0em;
+}
+
+button, #button>a {
+    padding: 0.5em 2em;
+    align-self: center;
+    color: black;
+    font-weight: normal;
+    text-decoration: none;
+    background-color: #b3cfd1;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: background-color 0.4s;
+}
+
+button:hover, #button>a:hover{
+    background-color: pink;
+}
+
+/* Gallery Stuff */
+
+.infoline {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    align-self: center;
+    padding-left: 1em;
+    width: 500px;
+}
+
+.infoline > * {
+    padding-right: 1em;
+    margin-bottom: 0;
+}
+
+.infoline:first-of-type{
+    justify-content: space-between;
+}
+
+.images {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    flex-wrap: wrap;
+    border: solid 1px black;
+    margin-top: 2em;
+}
+
+.image {
+    padding: 1em;
+}
+
+.buttons {
+    margin: 2em;
+}
+
+.buttons>.button {
+    margin: 0.25em;
+}
+
+.invisible {
+    display: none;
+}
+
+.pressed {
+    background-color: #7b9697;
+}
+
+.textareas {
+    display: flex;
+    flex-direction: row;
+    padding: 0.25em;
+}
+
+.areaContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    margin: 0.5em;
+    border: solid 1px black;
+}
+
+.areaContainer >label {
+    font-size: large;
+    text-decoration: underline;
+    font-weight:500;
+    margin-bottom: 0.5em;
+}
+
+textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+}

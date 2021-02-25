@@ -26,7 +26,7 @@ def create_app():
     app.secret_key = config.SECRET_KEY
     from . import (accounts, add_organization, animals, dashboard, edit_animal,
                    edit_organization, file_downloads, main, new_animal,
-                   organizations, view_animal)
+                   organizations, view_animal, gallery)
 
     # Index Blueprint
     app.register_blueprint(main.bp)
@@ -50,6 +50,8 @@ def create_app():
     app.register_blueprint(edit_organization.bp)
     # File Downloads
     app.register_blueprint(file_downloads.bp)
+    # Gallery
+    app.register_blueprint(gallery.bp)
 
     # ensure the instance folder exists
     try:
