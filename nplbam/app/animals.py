@@ -1,9 +1,11 @@
+import math
 from datetime import date
 
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
+from flask import url_for
 from sqlalchemy.orm import relationship, sessionmaker
-import math
+
 from .db import db
 
 bp = Blueprint('animals', __name__, url_prefix="")
@@ -36,7 +38,7 @@ def animals():
             predetermined["hide_stuff"] = False
         # If its an ID we're searching for make sure its an int
         if ((predetermined["search_by"] == "animalID") or (predetermined["search_by"] == "stage")) and \
-          (predetermined["search"] != ""): 
+                (predetermined["search"] != ""):
             try:
                 predetermined["search"] = int(predetermined["search"])
             except ValueError:
@@ -63,7 +65,8 @@ def animals():
         if predetermined["hide_stuff"]:
             animals_list = db_session.query(db.Animals).\
                 filter(_search == predetermined["search"]).\
-                filter(db.Animals.stage != 0).filter(db.Animals.stage != 8).order_by(_sort())
+                filter(db.Animals.stage != 0).filter(
+                    db.Animals.stage != 8).order_by(_sort())
         else:
             animals_list = db_session.query(db.Animals).\
                 filter(_search == predetermined["search"]).\
@@ -113,4 +116,4 @@ def animals():
 
     return render_template("animals.html", title="Animals", animals=animals_list,
                            next_url=next_url, prev_url=prev_url, page=page, total_pages=total_pages,
-                            count=count, predetermined=predetermined)
+                           count=count, predetermined=predetermined)
