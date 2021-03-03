@@ -45,7 +45,7 @@ def view_animal():
     for x in animal_entry.textAnswers:
         predetermined[x.questionName] = x.answer
     # Close the database like a good boy
-        db_session.close()
+    db_session.close()
     # Create the form page dynamically using the add_animal template and the questions
     return render_template("view_animal.html", animalID=viewID, questions=questions, title="View {}".format(animal_entry.name), predetermined=predetermined)
 
