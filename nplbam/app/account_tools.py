@@ -41,6 +41,9 @@ def verify_password_strength(password: str) -> (int, bool):
     # Source: https://en.wikipedia.org/wiki/Password_strength
     global MIN_PASSWORD_ENTROPY_BITS
     password_length = len(password)
+    # If the password is length 0, then it has no entropy.
+    if password_length == 0:
+        return (0, False)
     symbol_set_count: int = 0
     # Check whether the password contains a number
     num_match: re.Match = re.search("[0-9]+", password)
