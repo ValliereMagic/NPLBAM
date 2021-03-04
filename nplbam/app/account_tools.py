@@ -71,7 +71,7 @@ def verify_password_strength(password: str) -> (int, bool):
     entropy_bits: int = math.floor(
         ((math.log(symbol_set_count)) / (math.log(2))) * password_length
     )
-    return (entropy_bits, (entropy_bits > MIN_PASSWORD_ENTROPY_BITS))
+    return (entropy_bits, (entropy_bits >= MIN_PASSWORD_ENTROPY_BITS))
 
 
 def validate_form_input(request: Request,
