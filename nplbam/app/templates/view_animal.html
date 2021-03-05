@@ -56,17 +56,17 @@
                         {% elif question.type == "textarea" %}
                             <div class="item">
                                 <label for="{{question.name}}">{{question.label}}:</label>
-                                <textarea id="{{question.name}}" name="{{question.name}}" rows="4" value readonly>
-                                    {{predetermined[question.name]}}</textarea>
+                                <textarea id="{{question.name}}" name="{{question.name}}" rows="4" value readonly>{{predetermined[question.name]}}</textarea>
                             </div>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
             {% endfor %}
+            <textarea readonly>{{view_string}}</textarea>        
             <div class="buttons">
                 <button type="submit" name="return" value="return">Return</button> 
                 <button type="submit" name="edit" value="edit">Edit</button>   
             </div>
-        </form>    
+        </form>
     </div>
 {% endblock %}
