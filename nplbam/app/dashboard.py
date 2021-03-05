@@ -49,3 +49,10 @@ def dashboard():
         # Close the session
     db_session.close()
     return render_template("dashboard.html", title="Dashboard", animals=animals_list)
+
+@bp.route("/add_test")
+def add_test():
+    """ Temporary function please delete in production """
+    from .db_test_data import create_test_data
+    create_test_data()
+    return redirect("/")

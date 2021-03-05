@@ -10,6 +10,7 @@ from datetime import date, timedelta
 from .db import db
 from sqlalchemy.orm import relationship, sessionmaker
 
+
 # Can be deleted in production
 def create_test_data(): 
 
