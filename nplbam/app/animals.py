@@ -11,7 +11,7 @@ from .db import db
 
 bp = Blueprint('animals', __name__, url_prefix="")
 
-PER_PAGE = 5.0
+PER_PAGE = 20.0
 
 
 @bp.route("/animals", methods=['POST', 'GET'])
@@ -34,9 +34,9 @@ def animals():
         predetermined["sort_by"] = request.form['sortBy']
         predetermined["order"] = request.form['order']
         if 'hide_stuff' in request.form:
-            predetermined["hide_stuff"] = True
+            predetermined["hide_stuff"] = 1
         else:
-            predetermined["hide_stuff"] = False
+            predetermined["hide_stuff"] = 0
         # If its an ID we're searching for make sure its an int
         if ((predetermined["search_by"] == "animalID") or (predetermined["search_by"] == "stage")) and \
                 (predetermined["search"] != ""):
@@ -51,7 +51,7 @@ def animals():
         predetermined["search"] = str(request.args.get('search', ""))
         predetermined["sort_by"] = str(request.args.get('sort_by', "animalID"))
         predetermined["order"] = str(request.args.get('order', "asc"))
-        predetermined["hide_stuff"] = request.args.get('hide_stuff', True)
+        predetermined["hide_stuff"] = request.args.get('hide_stuff', 1, type=int)
 
     # Get the list of animals from the database
     engine = db.get_db_engine()
@@ -64,7 +64,7 @@ def animals():
     # If search is blank don't filter
     if (predetermined["search"] != ""):
         # check if we should hide stage 0 and 8
-        if predetermined["hide_stuff"]:
+        if predetermined["hide_stuff"] == 1:
             animals_list = db_session.query(db.Animals).\
                 filter(_search == predetermined["search"]).\
                 filter(db.Animals.stage != 0).filter(
@@ -75,7 +75,7 @@ def animals():
                 order_by(_sort())
     else:
         # check if we should hide stage 0 and 8
-        if predetermined["hide_stuff"]:
+        if predetermined["hide_stuff"] == 1:
             animals_list = db_session.query(db.Animals).\
                 filter(db.Animals.stage != 0).filter(db.Animals.stage != 8).\
                 order_by(_sort())

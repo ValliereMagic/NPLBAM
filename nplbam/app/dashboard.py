@@ -26,9 +26,9 @@ def dashboard():
     animals_list = {}
     for n in range(1, 9, 1):
         animals_list[n] = db_session.query(db.Animals).\
-          filter(db.Animals.stage==n).\
-          order_by(db.Animals.stageDate.asc()).limit(5).all()
-    
+            filter(db.Animals.stage == n).\
+            order_by(db.Animals.stageDate.asc()).limit(5).all()
+
     # Fetch all the user and put them in an easily accessable list
     user_UO_list = db_session.query(db.Users).all()
     user_list = {}
@@ -37,22 +37,15 @@ def dashboard():
 
     # Calculate the total amount of days each animal has been in that stage
     # Also grab the breed of the animal
-    for x in range(1,9,1):
+    for x in range(1, 9, 1):
         for animal in animals_list[x]:
             animal.days = (date.today() - animal.stageDate).days
             # Loop through each of our textAnswers for Breed
             animal.creatorName = user_list[animal.creator]
-            for q in animal.textAnswers:    
+            for q in animal.textAnswers:
                 if (q.questionName == "breed"):
                     animal.breed = q.answer
-                    break;
+                    break
         # Close the session
     db_session.close()
     return render_template("dashboard.html", title="Dashboard", animals=animals_list)
-
-@bp.route("/add_test")
-def add_test():
-    """ Temporary function please delete in production """
-    from .db_test_data import create_test_data
-    create_test_data()
-    return redirect("/")

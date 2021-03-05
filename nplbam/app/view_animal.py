@@ -46,8 +46,71 @@ def view_animal():
         predetermined[x.questionName] = x.answer
     # Close the database like a good boy
     db_session.close()
+    # Create a view string of the animal for easy copying and pasting.
+    # Create a list of strings and add to the back of the list
+    string_list = []
+    string_list.append('Name: "{}", Species: "{}"'.format(
+        animal_entry.name, animal_entry.animalType))
+    # Go through each of the steps of the questions
+    for step in questions:
+        # Go through each of the subgroups of each step
+        for subgroup in step["subgroups"]:
+            # Display the subgroup
+            string_list.append("  {} [".format(subgroup["name"]))
+            check = True
+            # Go through each question
+            for question in subgroup["questions"]:
+                # If its first in the list, don't put a ,
+                if (check == True):
+                    check = False
+                else:
+                    string_list.append(",")
+                # Check each type of question
+                if question["type"] == "radio":
+                    i = 0
+                    # Go through each of the answers
+                    for answer in question["answers"]:
+                        # Check if this is what they answered
+                        if (predetermined[question["name"]] == i):
+                            string_list.append(' {}: "{}"'.format(
+                                question["label"], answer["label"]))
+                        i += 1
+                # Go through text types
+                elif question["type"] == "text":
+                    # Name was already displayed
+                    if (question["label"] != "Name"):
+                        # Don't display empty areas.
+                        if (predetermined[question["name"]] != ""):
+                            string_list.append(' {}: "{}"'.format(
+                                question["label"], predetermined[question["name"]]))
+                        else:
+                            string_list.pop(-1)
+                    # Since name was taken out, we don't need next comma
+                    else:
+                        check = True
+                # Go through each textarea
+                elif question["type"] == "textarea":
+                    string_list.append(' {}: "{}"'.format(
+                        question["label"], predetermined[question["name"]]))
+                # Type if checkbox
+                elif question["type"] == "checkbox":
+                    string_list.append(' {}:"'.format(question["label"]))
+                    check = True
+                    # Only display the boxes that were checked
+                    for answer in question["answers"]:
+                        if (predetermined[answer["name"]] == True):
+                            if check == True:
+                                check = False
+                            else:
+                                string_list.append[" "]
+                            string_list.append('{}'.format(answer["label"]))
+                    string_list.append('"')
+            # Add a ] to end the subgroup
+            string_list.append("]")
+    # Compile into single string.
+    view_string = ''.join(string_list)
     # Create the form page dynamically using the add_animal template and the questions
-    return render_template("view_animal.html", animalID=viewID, questions=questions, title="View {}".format(animal_entry.name), predetermined=predetermined)
+    return render_template("view_animal.html", animalID=viewID, questions=questions, title="View {}".format(animal_entry.name), predetermined=predetermined, view_string=view_string)
 
 # Route to view animal page.
 
@@ -69,5 +132,5 @@ def animal_viewed():
             redir = "/edit_animal?editid={}".format(id)
             return redirect(redir)
         else:
-            redirect("/accounts")
+            redirect("/animals")
     return redirect("/animals")
