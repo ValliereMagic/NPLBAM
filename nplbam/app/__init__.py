@@ -24,9 +24,10 @@ def create_app():
     app.testing = True
     # Set the secret key from the config file
     app.secret_key = config.SECRET_KEY
-    from . import (accounts, add_organization, animals, dashboard, edit_animal,
-                   edit_organization, file_downloads, gallery, main,
-                   new_animal, options, organizations, db_test_data, view_animal)
+    from . import (accounts, add_organization, animals, dashboard,
+                   db_test_data, edit_animal, edit_organization,
+                   file_downloads, gallery, main, new_animal, options,
+                   organizations, view_animal)
 
     # Index Blueprint
     app.register_blueprint(main.bp)
