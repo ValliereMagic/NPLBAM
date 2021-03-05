@@ -211,7 +211,7 @@
              "questions":[
                 {
                    "type":"checkbox",
-                   "label":"Paws",
+                   "label":"Paws Vicinity",
                    "name":"paws",
                    "answers":[
                       {
@@ -248,7 +248,7 @@
                 },
                 {
                    "type":"checkbox",
-                   "label":"Abdomen",
+                   "label":"Abdomen Vicinity",
                    "name":"abdomen",
                    "answers":[
                       {
@@ -285,7 +285,7 @@
                 },
                 {
                    "type":"checkbox",
-                   "label":"Face",
+                   "label":"Face Vicinity",
                    "name":"face",
                    "answers":[
                       {
@@ -322,7 +322,7 @@
                 },
                 {
                    "type":"checkbox",
-                   "label":"Nose",
+                   "label":"Nose Vicinity",
                    "name":"nose",
                    "answers":[
                       {
@@ -359,7 +359,7 @@
                 },
                 {
                    "type":"checkbox",
-                   "label":"Ears",
+                   "label":"Ears Vicinity",
                    "name":"ears",
                    "answers":[
                       {
@@ -396,7 +396,7 @@
                 },
                 {
                    "type":"checkbox",
-                   "label":"Head",
+                   "label":"Head Vicinity",
                    "name":"head",
                    "answers":[
                       {
@@ -433,7 +433,7 @@
                 },
                 {
                    "type":"checkbox",
-                   "label":"Neck",
+                   "label":"Neck Vicinity",
                    "name":"neck",
                    "answers":[
                       {
@@ -470,7 +470,7 @@
                 },
                 {
                    "type":"checkbox",
-                   "label":"Hind Quarters",
+                   "label":"Hind Quarters Vicinity",
                    "name":"hind",
                    "answers":[
                       {

@@ -57,8 +57,7 @@
                     {% elif question.type == "textarea" %}
                         <div class="item">
                             <label for="{{question.name}}">{{question.label}}:</label>
-                            <textarea id="{{question.name}}" name="{{question.name}}" rows="4" value >
-                                {{predetermined[question.name]}}</textarea>
+                            <textarea id="{{question.name}}" name="{{question.name}}" rows="4" value >{{predetermined[question.name]}}</textarea>
                         </div>
                     {% endif %}
                 {% endfor %}

@@ -43,73 +43,80 @@ def animal_added():
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
-        # Open the JSON with the questions for dog
-        with open('nplbam/app/jsons/dog_questions.json') as json_file:
-            questions = json.load(json_file)
-        # Need to Add Data to database.
-        engine = db.get_db_engine()
-        db_session = (sessionmaker(bind=engine))()
-        user_ID = flask_session.get("userID", default=None)
-        user_entry = db_session.query(
-            db.Users).filter_by(userID=user_ID).first()
-        # Add the Animal Entry
-        # Make an object from our ORM
-        name: str = request.form['name']
-        new = db.Animals(poundID=user_entry.poundID, stage=1, creator=user_ID,
-                         stageDate=date.today(), animalType="Dog", name=name)
-        db_session.add(new)
-        # Flush the session so we can get the autoincremented ID in new.animalID
-        db_session.flush()
-        db_session.add(db.StageInfo(animalID=new.animalID,
-                                    stageNum=1,
-                                    substageNum=0,
-                                    completionDate=date.today(),
-                                    note="Created by user # {}".format(user_entry.userID)))
-        # Go through the Json to get out find out which questions we asked
-        for group in questions:
-            for subgroup in group["subgroups"]:
-                for question in subgroup["questions"]:
-                    # Save the Question Name here
-                    q_name = question["name"]
-                    # Check to see what type of question it was since they go into different tables
-                    if question["type"] == "text":
-                        if q_name != "name":
+        if 'cancel' in request.form:
+            redirect("/animals")
+        else:
+            if ('save' in request.form):
+                animal_stage = 0
+            else:
+                animal_stage = 1
+            # Open the JSON with the questions for dog
+            with open('nplbam/app/jsons/dog_questions.json') as json_file:
+                questions = json.load(json_file)
+            # Need to Add Data to database.
+            engine = db.get_db_engine()
+            db_session = (sessionmaker(bind=engine))()
+            user_ID = flask_session.get("userID", default=None)
+            user_entry = db_session.query(
+                db.Users).filter_by(userID=user_ID).first()
+            # Add the Animal Entry
+            # Make an object from our ORM
+            name: str = request.form['name']
+            new = db.Animals(poundID=user_entry.poundID, stage=animal_stage, creator=user_ID,
+                             stageDate=date.today(), animalType="Dog", name=name)
+            db_session.add(new)
+            # Flush the session so we can get the autoincremented ID in new.animalID
+            db_session.flush()
+            db_session.add(db.StageInfo(animalID=new.animalID,
+                                        stageNum=1,
+                                        substageNum=0,
+                                        completionDate=date.today(),
+                                        note="Created by user # {}".format(user_entry.userID)))
+            # Go through the Json to get out find out which questions we asked
+            for group in questions:
+                for subgroup in group["subgroups"]:
+                    for question in subgroup["questions"]:
+                        # Save the Question Name here
+                        q_name = question["name"]
+                        # Check to see what type of question it was since they go into different tables
+                        if question["type"] == "text":
+                            if q_name != "name":
+                                db_session.add(db.IntakeTextAnswers(
+                                    animalID=new.animalID,
+                                    questionName=q_name,
+                                    answer=request.form[q_name]))
+                        elif question["type"] == "radio":
+                            db_session.add(db.IntakeRadioAnswers(
+                                animalID=new.animalID,
+                                questionName=q_name,
+                                answer=request.form[q_name]))
+                        elif question["type"] == "checkbox":
+                            for answer in question["answers"]:
+                                q_name = answer["name"]
+                                if q_name in request.form:
+                                    db_session.add(db.IntakeCheckboxAnswers(
+                                        animalID=new.animalID,
+                                        subQuestionName=q_name,
+                                        answer=True))
+                                else:
+                                    db_session.add(db.IntakeCheckboxAnswers(
+                                        animalID=new.animalID,
+                                        subQuestionName=q_name,
+                                        answer=False))
+                        elif question["type"] == "textarea":
                             db_session.add(db.IntakeTextAnswers(
                                 animalID=new.animalID,
                                 questionName=q_name,
                                 answer=request.form[q_name]))
-                    elif question["type"] == "radio":
-                        db_session.add(db.IntakeRadioAnswers(
-                            animalID=new.animalID,
-                            questionName=q_name,
-                            answer=request.form[q_name]))
-                    elif question["type"] == "checkbox":
-                        for answer in question["answers"]:
-                            q_name = answer["name"]
-                            if q_name in request.form:
-                                db_session.add(db.IntakeCheckboxAnswers(
-                                    animalID=new.animalID,
-                                    subQuestionName=q_name,
-                                    answer=True))
-                            else:
-                                db_session.add(db.IntakeCheckboxAnswers(
-                                    animalID=new.animalID,
-                                    subQuestionName=q_name,
-                                    answer=False))
-                    elif question["type"] == "textarea":
-                        db_session.add(db.IntakeTextAnswers(
-                            animalID=new.animalID,
-                            questionName=q_name,
-                            answer=request.form[q_name]))
-        # Commit changes to the database
-        db_session.commit()
-        # Handle file uploads
-        errors: list = list()
-        # Pull the uploaded file list from the form data
-        uploaded_files_list: list = request.files.getlist("files[]")
-        # Save the uploaded file, and add its metadata to the database
-        handle_file_operations.save_uploaded_files(
-            new.animalID, uploaded_files_list, errors)
-        # Close the database like a good boy
-        db_session.close()
+            # Commit changes to the database
+            db_session.commit()
+            # Handle file uploads
+            errors: list = list()
+            # Pull the uploaded file list from the form data
+            uploaded_files_list: list = request.files.getlist("files[]")
+            # Save the uploaded file, and add its metadata to the database
+            handle_file_operations.save_uploaded_files(
+                new.animalID, uploaded_files_list, errors)
+            # Close the database like a good boy
+            db_session.close()
     return redirect("/animals")
