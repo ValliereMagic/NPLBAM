@@ -1,0 +1,43 @@
+{# Uses the inheritance to get from the base template page the head, header and navigation. Along with any footer #}
+{% extends "base_template.html" %}
+{# Add the css name to the file. #}
+{% block css %}gallery{% endblock %}
+{# Add the javascript name to the file. #}
+{% block js %}gallery{% endblock %}
+{# Add the main method #}
+{% block main %}
+<div>
+    <div class="infoline">
+        <h1>{{ info["name"] }}</h1>
+        <div id="button"><a href="view_animal?viewid={{animalID}}">View Animal</a></div>
+    </div>
+    <div class="infoline">
+        <h2>&emsp; ID: {{ animalID }}</h2>
+        <h2>Stage: {{ info["stage"] }}</h2>
+        <h2>Days in Stage: {{info["days"]}} </h2>
+    </div>
+    <div class="images">
+        {% for x in images %}
+            <div class="image"> <img src = "/downloads/{{ x }}" width="500px"> </div>
+
+        {% endfor%}
+    </div>
+    <div class="buttons">
+    </div>
+    <div class="textareas">
+        <div class="areaContainer">
+            <label for="vet"> Vet Notes: </label>
+            <textarea name="vet" rows="4" value readonly>
+                {{ info["vet"] }}
+            </textarea>
+        </div>
+        <div class="areaContainer">
+            <label for="notes"> Additional Notes: </label>
+            <textarea name="notes" rows="4" value readonly>
+                {{ info["notes"] }}
+            </textarea>
+        </div>
+    </div>
+    <div id="button"><a href="/animal_viewed">Return</a></div>
+</div>
+{% endblock %}

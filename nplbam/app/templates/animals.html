@@ -44,8 +44,8 @@
             <th>Creator</th>
         </tr>
         {% for x in animals %}
-        <tr onclick="window.location='view_animal?viewid={{x.animalID}}';">
-            <td><a href="view_animal?viewid={{x.animalID}}">{{x.animalID}}</a></td>
+        <tr onclick="window.location='gallery?viewid={{x.animalID}}';">
+            <td><a href="gallery?viewid={{x.animalID}}">{{x.animalID}}</a></td>
             <td>{{x.name}}</td>
             <td>{{x.animalType}}</td>
             <td>{{x.breed}}</td>
