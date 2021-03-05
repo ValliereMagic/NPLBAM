@@ -4,4 +4,4 @@
 # This requires python3-pip and python3-venv on debian.
 python3 -m venv nplbamNV
 source nplbamNV/bin/activate
-pip install flask pynacl bleach SQLAlchemy
+pip install flask pynacl SQLAlchemy plotnine
