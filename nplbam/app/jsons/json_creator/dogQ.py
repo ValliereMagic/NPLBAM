@@ -686,7 +686,7 @@ questions.append({
                         },
                         {
                             "name": "dispositionOverall_outgoing",
-                            "label": "outgoing",
+                            "label": "Outgoing",
                             "selected": 0,
                         },
                         {
