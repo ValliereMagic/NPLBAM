@@ -1,3 +1,8 @@
+"""
+This module deals with the main page of the application that is
+presented to the user right after login.
+"""
+
 import math
 from datetime import date
 
@@ -11,14 +16,19 @@ from .db import db
 
 bp = Blueprint('animals', __name__, url_prefix="")
 
+# Pagination constant, signifying how many animals are to be shown on
+# each page.
 PER_PAGE = 20.0
 
 
 @bp.route("/animals", methods=['POST', 'GET'])
 def animals():
     """
-    Page with the list of all animals, which can be filtered.
+    Page URL: /animals
+    Page with the filterable table of all animals that have
+    been entered into the system.
     """
+    global PER_PAGE
     # Make sure visitor is logged in
     if flask_session.get("userID", default=None) is None:
         return redirect("/")
@@ -51,7 +61,8 @@ def animals():
         predetermined["search"] = str(request.args.get('search', ""))
         predetermined["sort_by"] = str(request.args.get('sort_by', "animalID"))
         predetermined["order"] = str(request.args.get('order', "asc"))
-        predetermined["hide_stuff"] = request.args.get('hide_stuff', 1, type=int)
+        predetermined["hide_stuff"] = request.args.get(
+            'hide_stuff', 1, type=int)
 
     # Get the list of animals from the database
     engine = db.get_db_engine()

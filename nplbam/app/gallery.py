@@ -1,3 +1,8 @@
+"""
+This module deals with the display of uploaded files for
+stored animals, as well as advancing animals through the stages.
+"""
+
 import json
 from datetime import date
 
@@ -14,6 +19,7 @@ bp = Blueprint('gallery', __name__, url_prefix="")
 @bp.route("/gallery")
 def gallery():
     """
+    Page URL: /gallery
     Page to view images and and limited information associated with animal
     """
     # Check if they are logged in

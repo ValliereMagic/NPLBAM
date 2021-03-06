@@ -1,3 +1,9 @@
+"""
+This module deals with a user's self-serve options for their
+account, such as the ability for them to change their own
+password.
+"""
+
 from datetime import date
 from logging import error
 
@@ -15,7 +21,8 @@ bp = Blueprint('options', __name__, url_prefix="")
 @bp.route("/options")
 def options():
     """
-    Page with options for the users. Such as changing password
+    Page URL: /options
+    Page with options for the users. Such as changing their password
     """
     # Make sure the user exists
     user_level: int = flask_session.get("userLVL", default=None)
@@ -28,7 +35,9 @@ def options():
 @bp.route("/change_password", methods=("GET", "POST"))
 def change_password():
     """
-    This will change the password of the user
+    Page URL: /change_password
+    This will change the password of the user with the information
+    entered from the /options page.
     """
     # Make sure the user exists
     user_level: int = flask_session.get("userLVL", default=None)

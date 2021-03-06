@@ -1,3 +1,9 @@
+"""
+This module deals with displaying all of the animals in the system
+to the user in a highly detailed way, and in a form that the user
+cannot edit.
+"""
+
 import json
 from datetime import date
 
@@ -14,6 +20,7 @@ bp = Blueprint('view_animal', __name__, url_prefix="")
 @bp.route("/view_animal")
 def view_animal():
     """
+    Page URL: /view_animal
     Page to see all the information filled out
     """
     # Check if they are logged in
@@ -110,7 +117,11 @@ def view_animal():
     # Compile into single string.
     view_string = ''.join(string_list)
     # Create the form page dynamically using the add_animal template and the questions
-    return render_template("view_animal.html", animalID=viewID, questions=questions, title="View {}".format(animal_entry.name), predetermined=predetermined, view_string=view_string)
+    return render_template("view_animal.html", animalID=viewID,
+                           questions=questions,
+                           title="View {}".format(animal_entry.name),
+                           predetermined=predetermined,
+                           view_string=view_string)
 
 # Route to view animal page.
 
@@ -118,6 +129,7 @@ def view_animal():
 @bp.route("/animal_viewed", methods=['POST', 'GET'])
 def animal_viewed():
     """
+    Page URL: /animal_viewed
     This is a subpage that is used to get the button click from the animal view page.
     Can redirect back to the calling page or to the edit animal page depending on which
     button was clicked.
