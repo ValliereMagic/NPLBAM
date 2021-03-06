@@ -5,12 +5,13 @@ from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
 from flask import url_for
 from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.sql.sqltypes import Boolean, String
 
 from .db import db
 
 bp = Blueprint('animals', __name__, url_prefix="")
 
-PER_PAGE = 5.0
+PER_PAGE = 20.0
 
 
 @bp.route("/animals", methods=['POST', 'GET'])
@@ -33,9 +34,9 @@ def animals():
         predetermined["sort_by"] = request.form['sortBy']
         predetermined["order"] = request.form['order']
         if 'hide_stuff' in request.form:
-            predetermined["hide_stuff"] = True
+            predetermined["hide_stuff"] = 1
         else:
-            predetermined["hide_stuff"] = False
+            predetermined["hide_stuff"] = 0
         # If its an ID we're searching for make sure its an int
         if ((predetermined["search_by"] == "animalID") or (predetermined["search_by"] == "stage")) and \
                 (predetermined["search"] != ""):
@@ -45,24 +46,25 @@ def animals():
                 predetermined["search"] = ""
     # Otherwise make defaults
     else:
-        predetermined["search_by"] = "animalID"
-        predetermined["search"] = ""
-        predetermined["sort_by"] = "animalID"
-        predetermined["order"] = "asc"
-        predetermined["hide_stuff"] = True
+        predetermined["search_by"] = str(
+            request.args.get('search_by', "animalID"))
+        predetermined["search"] = str(request.args.get('search', ""))
+        predetermined["sort_by"] = str(request.args.get('sort_by', "animalID"))
+        predetermined["order"] = str(request.args.get('order', "asc"))
+        predetermined["hide_stuff"] = request.args.get('hide_stuff', 1, type=int)
 
     # Get the list of animals from the database
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
 
-    # Query animal list based on dynmaic variables
+    # Query animal list based on dynamaic variables
     _search = getattr(db.Animals, predetermined["search_by"])
     _sort = getattr(db.Animals, predetermined["sort_by"])
     _sort = getattr(_sort, predetermined["order"])
     # If search is blank don't filter
     if (predetermined["search"] != ""):
         # check if we should hide stage 0 and 8
-        if predetermined["hide_stuff"]:
+        if predetermined["hide_stuff"] == 1:
             animals_list = db_session.query(db.Animals).\
                 filter(_search == predetermined["search"]).\
                 filter(db.Animals.stage != 0).filter(
@@ -73,7 +75,7 @@ def animals():
                 order_by(_sort())
     else:
         # check if we should hide stage 0 and 8
-        if predetermined["hide_stuff"]:
+        if predetermined["hide_stuff"] == 1:
             animals_list = db_session.query(db.Animals).\
                 filter(db.Animals.stage != 0).filter(db.Animals.stage != 8).\
                 order_by(_sort())
@@ -110,9 +112,13 @@ def animals():
     prev_url = None
     if (total_pages > page):
         next_page = page + 1
-        next_url = url_for('animals.animals', page=next_page)
+        next_url = url_for('animals.animals', page=next_page, search_by=predetermined["search_by"],
+                           search=predetermined["search"], sort_by=predetermined["sort_by"], order=predetermined["order"],
+                           hide_stuff=predetermined["hide_stuff"])
     if (page > 1):
-        prev_url = url_for('animals.animals', page=page-1)
+        prev_url = url_for('animals.animals', page=page-1, search_by=predetermined["search_by"],
+                           search=predetermined["search"], sort_by=predetermined["sort_by"], order=predetermined["order"],
+                           hide_stuff=predetermined["hide_stuff"])
 
     return render_template("animals.html", title="Animals", animals=animals_list,
                            next_url=next_url, prev_url=prev_url, page=page, total_pages=total_pages,
