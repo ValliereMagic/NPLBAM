@@ -28,6 +28,26 @@ def query():
     return render_template("accounts.html", title="Accounts", accounts=accounts_list)
 
 
+def pull_pounds_and_rescue_info() -> dict:
+    """
+    Simple helper function to pull the pounds and rescue information
+    from the database, then format it into a format good for iterating
+    on the Jinja2 template.
+    """
+    # db session
+    engine = db.get_db_engine()
+    db_session = (sessionmaker(bind=engine))()
+    # Pull the Rescues and Pounds Tables
+    rescues_list = db_session.query(db.Rescues).all()
+    pounds_list = db_session.query(db.Pounds).all()
+    db_session.close()
+    # Populate the dict and return
+    rescue_pound_info = dict()
+    rescue_pound_info["rescues"] = rescues_list
+    rescue_pound_info["pounds"] = pounds_list
+    return rescue_pound_info
+
+
 @bp.route("/new_account", methods=("GET", "POST"))
 def new_account():
     """
@@ -39,9 +59,14 @@ def new_account():
     if (user_level is None) or user_level != 0:
         # May need to change where we redirect them in the future
         return redirect("/")
+    # Pull the rescue and pound info to populate the form with
+    rescue_pound_info: dict = pull_pounds_and_rescue_info()
     # User is requesting the form to make a user page:
     if request.method == "GET":
-        return render_template("new_account.html", title="New Account", errors=[])
+        return render_template("new_account.html",
+                               title="New Account",
+                               rescue_pound_info=rescue_pound_info,
+                               errors=[])
     # User is submitting the form to make a new user
     elif request.method == "POST":
         # Any errors that accumulate:
@@ -53,6 +78,7 @@ def new_account():
         if not account.valid:
             return render_template("new_account.html",
                                    title="New Account",
+                                   rescue_pound_info=rescue_pound_info,
                                    errors=errors)
         # Create the new user object for the database:
         new_db_account: db.Users = db.Users(username=account.username,
@@ -112,7 +138,11 @@ def edit_account():
         info["rescue_id"] = user_to_edit.rescueID
         info["pound_id"] = user_to_edit.poundID
         # Show the form, displaying all the editable fields
-        return render_template("edit_account.html", title="Edit Account", info=info, errors=[])
+        return render_template("edit_account.html",
+                               title="Edit Account",
+                               rescue_pound_info=pull_pounds_and_rescue_info(),
+                               info=info,
+                               errors=[])
     # User is submitting the updated account information
     elif request.method == "POST":
         # Any errors that accumulate:

@@ -25,7 +25,7 @@
             <input {% if (predetermined.order == "asc") %} checked="checked" {% endif %}  type="radio" id="asc" name="order" value="asc">
             <label for="desc">Desc</label>
             <input {% if (predetermined.order == "desc") %} checked="checked" {% endif %} type="radio" id="desc" name="order" value="desc">
-            <input type="checkbox" id="hide_stuff" name="hide_stuff" value="hide_stuff" {% if (predetermined.hide_stuff == True) %} checked {% endif %}>
+            <input type="checkbox" id="hide_stuff" name="hide_stuff" value="hide_stuff" {% if (predetermined.hide_stuff == 1) %} checked {% endif %}>
             <label for="hide_stuff">Hide Stage 0&8</label>
             <button type="submit" name="refresh">Go</button>
         </div>
@@ -57,11 +57,15 @@
     </table>
     <div>
         {% if prev_url %}
-        <a href="{{ prev_url }}">Back</a>
+        <div id="button">
+            <a href="{{ prev_url }}">Back</a>
+        </div>
         {% endif %}
         <p>Page {{ page }}</p>
         {% if next_url %}
-        <a href="{{ next_url }}">Forward</a>
+        <div id="button">
+            <a href="{{ next_url }}">Forward</a>
+        </div>
         {% endif %}
     </div>
     <p>Total Pages - {{total_pages}}</p>

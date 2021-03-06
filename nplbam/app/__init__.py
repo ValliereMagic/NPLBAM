@@ -24,9 +24,10 @@ def create_app():
     app.testing = True
     # Set the secret key from the config file
     app.secret_key = config.SECRET_KEY
-    from . import (accounts, add_organization, animals, dashboard, edit_animal,
-                   edit_organization, file_downloads, gallery, main, new_animal,
-                   options, organizations, view_animal)
+    from . import (accounts, add_organization, animals, dashboard,
+                   db_test_data, edit_animal, edit_organization,
+                   file_downloads, gallery, main, new_animal, options,
+                   organizations, view_animal)
 
     # Index Blueprint
     app.register_blueprint(main.bp)
@@ -54,7 +55,8 @@ def create_app():
     app.register_blueprint(gallery.bp)
     # Options
     app.register_blueprint(options.bp)
-
+    # Test Data Page. Please Delete
+    app.register_blueprint(db_test_data.bp)
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
