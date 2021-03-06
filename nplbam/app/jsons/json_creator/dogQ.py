@@ -1,5 +1,5 @@
 import json
-# This python file was just used to creat the json for the Dog Questions. Is not actively ran.
+# This python file was just used to create the json for the Dog Questions. Is not actively ran.
 # Its a one time used file to create the dog json.
 
 # Create an initial list
