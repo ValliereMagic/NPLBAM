@@ -2,6 +2,9 @@
 {% block css %}animals{% endblock %}
 {% block main %}
 <div>
+    <div id="button">
+        <a href="/visualize">Visualize</a>
+    </div>
     {% for stageNum in range(1,9,1) %}
         <h2>Stage {{stageNum}}</h2>
         <table>
