@@ -1,3 +1,8 @@
+"""
+This module Contains functionality to verify the strength of passwords,
+and check the validity of form data with regards to user accounts.
+"""
+
 import math
 import re
 
@@ -32,8 +37,10 @@ class AccountInfo:
 def verify_password_strength(password: str) -> (int, bool):
     """
     Calculate the number of bits of entropy of the entered password,
-    return that value as well as whether it meets the minimum requirements
-    in a tuple (<entropy bits of password>, <whether it meets minimum requirements>)
+    return that value as well as whether it meets the minimum requirements.
+
+    :param password: The password to measure the strength of
+    :return: A tuple (int, bool)[Password Entropy Bits, Whether the password meets the requirements]
     """
     # Strength formula: log(C) / log(2) * L
     # Where C is the size of the character set,
@@ -79,6 +86,19 @@ def validate_form_input(request: Request,
                         editing_account: bool = False) -> AccountInfo:
     """
     Validate the form input for the new_account page, as well as the edit_account page.
+
+    :param request: Passed flask Request object, to pull the form data out of.
+    :param errors: an out parameter, to be populated with any errors encountered in the
+        form data.
+    :param editing_account: Signifies whether this is a new account being created, or
+        whether we are validating an update to an existing account.
+
+        The reason for this differentiation is that an updated account is valid if the password
+        field is empty since it signifies that the password is not to be updated, 
+        while an empty password field for a new account is not allowed.
+    :return: A new instance of AccountInfo, containing the validated information pulled from
+        the request parameter. As well as whether the AccountInfo represents a valid update or new
+        account. (AccountInfo.valid)
     """
     global USER_LEVEL_MAX
     global MIN_PASSWORD_ENTROPY_BITS
