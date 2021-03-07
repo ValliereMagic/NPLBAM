@@ -1,3 +1,8 @@
+"""
+This module deals with overview information about animals
+within the system.
+"""
+
 from datetime import date
 
 from flask import Blueprint, redirect, render_template
@@ -12,7 +17,8 @@ bp = Blueprint('dashboard', __name__, url_prefix="")
 @bp.route("/dashboard")
 def dashboard():
     """
-    Page with the list of top 5 of each stage
+    Page URL: /dashboard
+    Page with the list of the top 5 animals in each stage
     """
     # Make sure the user is userLVL 0 or 1
     user_level: int = flask_session.get("userLVL", default=None)

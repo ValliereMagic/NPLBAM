@@ -1,3 +1,9 @@
+"""
+This module deals with the page presented to every unauthenticated
+user connecting to this application, and presents them the opportunity
+to login.
+"""
+
 from datetime import datetime
 
 import nacl.exceptions
@@ -16,6 +22,7 @@ bp = Blueprint('index', __name__, url_prefix="")
 @bp.route("/index", methods=("GET", "POST"))
 def index():
     """
+    Page URL: /index and /
     Present login page to user, validate input, check login credentials,
     and give user a valid session.
     """
@@ -89,5 +96,10 @@ def index():
 
 @bp.route('/logout')
 def logout():
+    """
+    Page URL: /logout
+    Clear the user's session, and send them back to the login
+    page.
+    """
     flask_session.clear()
     return redirect("/")

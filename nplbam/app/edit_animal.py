@@ -1,3 +1,8 @@
+"""
+This page deals with editing the entries of animals
+previously entered into the system.
+"""
+
 import json
 from datetime import date
 
@@ -15,7 +20,9 @@ bp = Blueprint('edit_animal', __name__, url_prefix="")
 @bp.route("/edit_animal")
 def edit_animal():
     """
-    Page to see all the information filled out
+    Page URL: /edit_animal
+    Displays the current information about the animal, and allows
+    the user to change it, and submit those changes.
     """
     # Make sure the user's userLVL is in (0, 1, 2, 3)
     user_level: int = flask_session.get("userLVL", default=None)
@@ -58,8 +65,10 @@ def edit_animal():
 @bp.route("/animal_edited", methods=['POST', 'GET'])
 def animal_edited():
     """
-    This is a subpage that is used to get the button click from the animal view page.
-    Can redirect back to the calling page or to the edit animal page depending on which
+    Page URL: /animal_edited
+    This is a subpage that receives the updated information from the animal edit page,
+    and applies the user's changes to the database.
+    It can redirect back to the calling page or to the edit animal page depending on which
     button was clicked.
     """
     # Make sure the user's userLVL is in (0, 1, 2, 3)
