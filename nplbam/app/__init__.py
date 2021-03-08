@@ -57,8 +57,9 @@ def create_app():
     app.register_blueprint(options.bp)
     # Test Data Page. Please Delete
     app.register_blueprint(db_test_data.bp)
-    # ensure the instance folder exists
+    # Visualization Page
     app.register_blueprint(visualize.bp)
+    # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
