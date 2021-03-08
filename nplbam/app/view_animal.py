@@ -109,7 +109,7 @@ def view_animal():
                             if check == True:
                                 check = False
                             else:
-                                string_list.append[" "]
+                                string_list.append(" ")
                             string_list.append('{}'.format(answer["label"]))
                     string_list.append('"')
             # Add a ] to end the subgroup
