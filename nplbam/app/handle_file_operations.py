@@ -1,3 +1,8 @@
+"""
+This module deals with saving files to the filesystem
+that have been uploaded through HTML forms.
+"""
+
 import os
 import re
 import uuid
@@ -17,10 +22,15 @@ def save_uploaded_files(animal_id: int,
                         uploaded_files_list: List[FileStorage],
                         errors: list) -> bool:
     """
-    Take the uploaded files list extracted from the form data entered by the user
+    Take the list of uploaded files extracted from the form data entered by the user
     and save the file in the nplbam/files folder on the server prefixed with _<animal_id>_
-    This function returns False whenever a single file in the list is unable to be uploaded
+    This function returns False whenever a single file in the list is unable to be saved
     successfully.
+
+    :param animal_id: The primary key of the animal these files are stored for
+    :param uploaded_files_list: The list of form elements that contain files that need to be saved
+    :param errors: out parameter which is a list to be populated with any errors encountered
+        while trying to save these files to the disk.
     """
     success: bool = True
     engine = db.get_db_engine()

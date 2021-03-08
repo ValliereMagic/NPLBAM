@@ -1,3 +1,8 @@
+"""
+This module deals with the creation of Pound and Rescue
+Organizations in the system.
+"""
+
 import json
 from datetime import date
 
@@ -14,6 +19,7 @@ bp = Blueprint('add_organization', __name__, url_prefix="")
 @bp.route("/add_organization")
 def add_organization():
     """
+    Page URL: /add_organization
     Form page for adding a new organization to the system.
     """
     # Make sure the user's userLVL is in (0, 1)
@@ -29,6 +35,7 @@ def add_organization():
 @bp.route("/organization_added", methods=['GET', 'POST'])
 def organization_added():
     """
+    Page URL: /organization_added
     Route for getting the data from the form to put in the database
     """
     # Make sure the user's userLVL is in (0, 1)

@@ -1,3 +1,7 @@
+"""
+This module Deals with he pages that create, and edit accounts.
+"""
+
 import nacl.pwhash
 from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
@@ -12,9 +16,11 @@ bp = Blueprint('accounts', __name__, url_prefix="")
 @bp.route("/accounts")
 def query():
     """
-    Page with the list of all accounts, which can be filtered.
+    Page URL: /accounts
+    This page shows the Admin user a list of all the accounts
+    that currently exist in the system.
     """
-    # Make sure the user is userLVL 0 (FOR NOW)
+    # Make sure the user is userLVL 0
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level != 0:
@@ -32,7 +38,12 @@ def pull_pounds_and_rescue_info() -> dict:
     """
     Simple helper function to pull the pounds and rescue information
     from the database, then format it into a format good for iterating
-    on the Jinja2 template.
+    on the Jinja2 template. 
+
+    This function creates the information used to populate the drop down boxes
+    for Rescues and Pounds on the Create and Edit account pages.
+
+    :return: dictionary containing 2 lists. keys: ["rescues"], ["pounds"]
     """
     # db session
     engine = db.get_db_engine()
@@ -51,7 +62,8 @@ def pull_pounds_and_rescue_info() -> dict:
 @bp.route("/new_account", methods=("GET", "POST"))
 def new_account():
     """
-    Create a new account for the system.
+    Page URL: /new_account
+    Form for creating new accounts for the NPLBAM system.
     """
     # Make sure the user is userLVL 0 (FOR NOW)
     user_level: int = flask_session.get("userLVL", default=None)
@@ -105,7 +117,8 @@ def new_account():
 @bp.route("/edit_account", methods=("GET", "POST"))
 def edit_account():
     """
-    Edit an existing account
+    Page URL: /edit_account
+    Form for editing an existing account.
     """
     # Make sure the user is userLVL 0
     user_level: int = flask_session.get("userLVL", default=None)

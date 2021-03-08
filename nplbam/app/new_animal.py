@@ -1,3 +1,7 @@
+"""
+This module deals with adding a new animal to the system.
+"""
+
 import json
 from datetime import date
 
@@ -15,6 +19,7 @@ bp = Blueprint('new_animal', __name__, url_prefix="")
 @bp.route("/new_animal")
 def new_animal():
     """
+    Page URL: /new_animal
     Form page for adding a new animal to the system.
     """
     # Make sure the user's userLVL is in (0, 1, 2, 3)
@@ -33,7 +38,8 @@ def new_animal():
 @bp.route("/animal_added", methods=['GET', 'POST'])
 def animal_added():
     """
-    Route for getting the data from the form to put in the database
+    Page URL: /animal_added
+    Receives the data from the new_animal page and adds it to the database.
     """
     # Make sure the user's userLVL is in (0, 1, 2, 3)
     user_level: int = flask_session.get("userLVL", default=None)

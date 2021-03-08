@@ -1,3 +1,7 @@
+"""
+Initializes and sets up the flask application.
+"""
+
 import logging
 import os
 
@@ -5,15 +9,26 @@ from flask import Flask
 
 from . import config
 
+UPLOAD_FOLDER = "/nplbam/files"
+
 
 def create_app():
     """
     Create and configure the Flask application
     in factory style.
+
+    Things that are configured here:
+     - The location for uploaded files (UPLOAD_FOLDER constant)
+     - The logger for gunicorn
+     - Whether the application is in debug mode or in production mode
+     - The blueprints for all the pages
+
+    :return: The Flask app configured in this function.
     """
+    global UPLOAD_FOLDER
     app = Flask(__name__, instance_relative_config=True)
     # Set up folder for uploaded content
-    app.config['UPLOAD_FOLDER'] = "/nplbam/files"
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     # Set up logging
     gunicorn_logger: Logger = logging.getLogger('gunicorn.error')
     app.logger.handlers = gunicorn_logger.handlers
@@ -45,7 +60,7 @@ def create_app():
     app.register_blueprint(dashboard.bp)
     # Organizations Blueprint
     app.register_blueprint(organizations.bp)
-    # Add Organizaiton
+    # Add Organization
     app.register_blueprint(add_organization.bp)
     # Edit Organization
     app.register_blueprint(edit_organization.bp)

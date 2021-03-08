@@ -1,3 +1,8 @@
+"""
+This module deals with editing organizations (Pounds and Rescues)
+that were previously entered into the system.
+"""
+
 import json
 from datetime import date
 
@@ -14,7 +19,9 @@ bp = Blueprint('edit_organization', __name__, url_prefix="")
 @bp.route("/edit_organization")
 def edit_organization():
     """
-    Form page for adding a new organization to the system.
+    Page URL: /edit_organization
+    Displays the current information about the organization, and allows
+    the user to change it, and submit those changes.
     """
     # Make sure the user's userLVL is in (0, 1)
     user_level: int = flask_session.get("userLVL", default=None)
@@ -56,7 +63,9 @@ def edit_organization():
 @bp.route("/organization_edited", methods=['GET', 'POST'])
 def organization_edited():
     """
-    Route for getting the data from the form to put in the database
+    Page URL: /organization_edited
+    This is a subpage that receives the updated information from the organization edit page,
+    and applies the user's changes to the database.
     """
     # Make sure the user's userLVL is in (0, 1)
     user_level: int = flask_session.get("userLVL", default=None)

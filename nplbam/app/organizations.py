@@ -1,3 +1,8 @@
+"""
+This module deals with the display of all the organizations
+that currently exist within the system.
+"""
+
 import nacl.pwhash
 from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
@@ -13,9 +18,10 @@ USER_LEVEL_MAX: int = 5
 @bp.route("/organizations")
 def organizations():
     """
+    Page URL: /organizations
     Page with the list of all organizations, which can be filtered.
     """
-     # Make sure the user's userLVL is in (0, 1)
+    # Make sure the user's userLVL is in (0, 1)
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
