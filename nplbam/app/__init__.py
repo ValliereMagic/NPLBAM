@@ -42,7 +42,7 @@ def create_app():
     from . import (accounts, add_organization, animals, dashboard,
                    db_test_data, edit_animal, edit_organization,
                    file_downloads, gallery, main, new_animal, options,
-                   organizations, view_animal)
+                   organizations, view_animal, visualize)
 
     # Index Blueprint
     app.register_blueprint(main.bp)
@@ -72,6 +72,8 @@ def create_app():
     app.register_blueprint(options.bp)
     # Test Data Page. Please Delete
     app.register_blueprint(db_test_data.bp)
+    # Visualization Page
+    app.register_blueprint(visualize.bp)
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
