@@ -1,0 +1,10 @@
+{# Uses the inheritance to get from the base template page the head, header and navigation. Along with any footer #}
+{% extends "base_template.html" %}
+{# Add the css name to the file. #}
+{% block css %}form{% endblock %}
+{# Add the main method #}
+{% block main %} 
+    <div>
+        <div class="image"> <img src = "/visual_image.png" width="500px"> </div>
+    </div>
+{% endblock %}

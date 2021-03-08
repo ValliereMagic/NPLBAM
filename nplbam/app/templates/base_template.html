@@ -18,17 +18,16 @@
                 {% if title != "Dashboard" %}
                     <a href="/dashboard">Dashboard</a>
                 {% endif %}
+                <!--Every User Can see and Use-->
+                {% if title != "Animals" %}
+                    <a href="/animals">Animals</a>
+                {% endif %}
                 <!--Needs to be Hidden from non-Admin -->
                 {% if title != "Accounts" %}
                     <a href="/accounts">Accounts</a>
                 {% endif %}
                 {% if title != "Organizations" %}
                     <a href="/organizations">Orgs</a>
-                {% endif %}
-                
-                <!--Every User Can see and Use-->
-                {% if title != "Animals" %}
-                    <a href="/animals">Animals</a>
                 {% endif %}
                 {% if title != "Options" %}
                     <a href="/options">Options</a>
