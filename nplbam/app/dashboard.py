@@ -29,7 +29,12 @@ def dashboard():
     # Get the list of animals from the database
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
+    # Create a new list
     animals_list = {}
+    # Find the newest entries and put it in part 0
+    animals_list[0] = db_session.query(db.Animals).\
+            order_by(db.Animals.stageDate.desc()).limit(5).all()
+    # For parts 1-8 add the oldest of each Stage(1-8) 
     for n in range(1, 9, 1):
         animals_list[n] = db_session.query(db.Animals).\
             filter(db.Animals.stage == n).\
@@ -43,7 +48,7 @@ def dashboard():
 
     # Calculate the total amount of days each animal has been in that stage
     # Also grab the breed of the animal
-    for x in range(1, 9, 1):
+    for x in range(0, 9, 1):
         for animal in animals_list[x]:
             animal.days = (date.today() - animal.stageDate).days
             # Loop through each of our textAnswers for Breed
