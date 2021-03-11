@@ -844,6 +844,11 @@
                          "selected":0
                       },
                       {
+                        "name":"commands_liedown",
+                        "label":"Lie Down",
+                        "selected":0
+                      },
+                      {
                          "name":"commands_unknown",
                          "label":"Unknown",
                          "selected":1
