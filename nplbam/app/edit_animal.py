@@ -35,16 +35,35 @@ def edit_animal():
     if editID is None:
         return redirect("/animals")
 
-    # Open the JSON with the questions for dog
-    with open('nplbam/app/jsons/dog_questions.json') as json_file:
-        questions = json.load(json_file)
 
     # Open the database.
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
 
+    # Find the animal we are editting
     animal_entry = db_session.query(
         db.Animals).filter_by(animalID=editID).first()
+   
+ 
+    # Open Json with the different species
+    with open('nplbam/app/jsons/animal_species.json') as json_file:
+        species = json.load(json_file)
+
+    # Get the location of the json for the given type of given type from the species json
+    json_location = ""
+    for entry in species:
+        if (entry["name"] == animal_entry.animalType):
+            json_location = "nplbam/app/jsons/" + entry["questions"]
+
+    # If location is empty, then it must not be a correct type of species.
+    if json_location == "":
+        return redirect("/")
+
+    # Open the JSON with the questions for dog
+    with open(json_location) as json_file:
+        questions = json.load(json_file)
+  
+      
     # Get a list of all the predetermined answers stored in the relationship
     predetermined = {}
     predetermined["name"] = animal_entry.name
@@ -57,7 +76,8 @@ def edit_animal():
     # Close the database like a good boy
         db_session.close()
     # Create the form page dynamically using the add_animal template and the questions
-    return render_template("edit_animal.html", animalID=editID, questions=questions, title="Edit {}".format(animal_entry.name), predetermined=predetermined)
+    return render_template("edit_animal.html", animalID=editID, questions=questions, 
+        title="Edit {}".format(animal_entry.name), predetermined=predetermined, species=animal_entry.animalType)
 
 # Route to view animal page.
 
@@ -79,9 +99,27 @@ def animal_edited():
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
+        # Get the species
+        given_type = request.form['species']
+
+        # Open Json with the different species
+        with open('nplbam/app/jsons/animal_species.json') as json_file:
+            species = json.load(json_file)
+
+        # Get the location of the json for the given type of given type from the species json
+        json_location = ""
+        for entry in species:
+            if (entry["name"] == given_type):
+                json_location = "nplbam/app/jsons/" + entry["questions"]
+
+        # If location is empty, then it must not be a correct type of species.
+        if json_location == "":
+            return redirect("/")
+
         # Open the JSON with the questions for dog
-        with open('nplbam/app/jsons/dog_questions.json') as json_file:
+        with open(json_location) as json_file:
             questions = json.load(json_file)
+
         # Need to Add Data to database.
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
