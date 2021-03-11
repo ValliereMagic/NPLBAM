@@ -6,6 +6,7 @@
 {% block main %} 
 <div>
     <form method="post" enctype="multipart/form-data" action="/animal_added">
+        <input type="hidden" id="species" name="species" value="{{species}}">
         {# Go through the questions given to the template and put them to the screen. #}
         {#
          Questions come in the form of a LIST of groups. The groups is a dictionary containing a name an a list of subgroups.

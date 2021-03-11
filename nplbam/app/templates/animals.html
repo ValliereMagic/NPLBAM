@@ -30,9 +30,14 @@
             <button type="submit" name="refresh">Go</button>
         </div>
     </form>
-    <div id="button">
-        <a href="new_animal">New Animal</a>
-    </div>
+    <form method="post" action="/new_animal">
+        <select id="type" name="type">
+            {% for y in animal_types %}
+            <option value="{{y.name}}">{{y.name}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" name="new_animal">New Animal</button>
+     </form>
     <table cellspacing="0" cellpadding="0">
         <tr>
             <th>ID</th>
