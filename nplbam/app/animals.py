@@ -4,6 +4,7 @@ presented to the user right after login.
 """
 
 import math
+import json
 from datetime import date
 
 from flask import Blueprint, redirect, render_template, request
@@ -131,6 +132,10 @@ def animals():
                            search=predetermined["search"], sort_by=predetermined["sort_by"], order=predetermined["order"],
                            hide_stuff=predetermined["hide_stuff"])
 
+    # Get list of animal types from json
+    with open('nplbam/app/jsons/animal_species.json') as json_file:
+        animal_types = json.load(json_file)
+    
     return render_template("animals.html", title="Animals", animals=animals_list,
                            next_url=next_url, prev_url=prev_url, page=page, total_pages=total_pages,
-                           count=count, predetermined=predetermined)
+                           count=count, predetermined=predetermined, animal_types=animal_types)

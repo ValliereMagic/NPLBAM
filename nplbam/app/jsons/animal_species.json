@@ -1,0 +1,10 @@
+[
+    {
+       "name":"Dog",
+       "questions":"dog_questions.json"
+    },
+    {
+      "name":"Chien",
+      "questions":"chien_questions.json"      
+    }
+]

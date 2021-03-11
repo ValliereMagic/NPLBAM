@@ -6,6 +6,7 @@
 {% block main %} 
     <div>
         <form method="post"  action="/animal_viewed">
+            <input type="hidden" id="species" name="species" value="{{species}}">
             <input type="hidden" id="animalId" name="animalId" value={{animalID}}>
             {# Go through the questions given to the template and put them to the screen. #}
             {#

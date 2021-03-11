@@ -32,9 +32,6 @@ def view_animal():
     if viewID is None:
         return redirect("/animals")
 
-    # Open the JSON with the questions for dog
-    with open('nplbam/app/jsons/dog_questions.json') as json_file:
-        questions = json.load(json_file)
 
     # Open the database.
     engine = db.get_db_engine()
@@ -42,6 +39,25 @@ def view_animal():
 
     animal_entry = db_session.query(
         db.Animals).filter_by(animalID=viewID).first()
+
+    # Open Json with the different species
+    with open('nplbam/app/jsons/animal_species.json') as json_file:
+        species = json.load(json_file)
+
+    # Get the location of the json for the given type of given type from the species json
+    json_location = ""
+    for entry in species:
+        if (entry["name"] == animal_entry.animalType):
+            json_location = "nplbam/app/jsons/" + entry["questions"]
+
+    # If location is empty, then it must not be a correct type of species.
+    if json_location == "":
+        return redirect("/")
+
+    # Open the JSON with the questions for dog
+    with open(json_location) as json_file:
+        questions = json.load(json_file)
+
     # Get a list of all the predetermined answers stored in the relationship
     predetermined = {}
     predetermined["name"] = animal_entry.name
@@ -121,7 +137,8 @@ def view_animal():
                            questions=questions,
                            title="View {}".format(animal_entry.name),
                            predetermined=predetermined,
-                           view_string=view_string)
+                           view_string=view_string,
+                           species=animal_entry.animalType)
 
 # Route to view animal page.
 
