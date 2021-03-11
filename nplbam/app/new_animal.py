@@ -16,7 +16,7 @@ bp = Blueprint('new_animal', __name__, url_prefix="")
 
 
 # Route for the new animal page.
-@bp.route("/new_animal")
+@bp.route("/new_animal", methods=['GET', 'POST'])
 def new_animal():
     """
     Page URL: /new_animal
@@ -28,11 +28,31 @@ def new_animal():
     if (user_level is None) or user_level > 3:
         # May need to change where we redirect them in the future
         return redirect("/")
+    # Make sure they got here through post
+    if request.method != 'POST':
+        return redirect("/")
+    # Get post Param
+    given_type = request.form['type']
+
+    # Open Json with the different species
+    with open('nplbam/app/jsons/animal_species.json') as json_file:
+        species = json.load(json_file)
+
+    # Get the location of the json for the given type of given type from the species json
+    json_location = ""
+    for entry in species:
+        if (entry["name"] == given_type):
+            json_location = "nplbam/app/jsons/" + entry["questions"]
+    
+    # If location is empty, then it must not be a correct type of species.
+    if json_location == "":
+        return redirect("/")
+
     # Open the JSON with the questions for dog
-    with open('nplbam/app/jsons/dog_questions.json') as json_file:
+    with open(json_location) as json_file:
         questions = json.load(json_file)
     # Create the form page dynamically using the add_animal template and the questions
-    return render_template("add_animal.html", questions=questions,  title="Add Dog")
+    return render_template("add_animal.html", questions=questions,  title="Add Animal", species=given_type)
 
 
 @bp.route("/animal_added", methods=['GET', 'POST'])
@@ -56,9 +76,28 @@ def animal_added():
                 animal_stage = 0
             else:
                 animal_stage = 1
+
+            # Get the species
+            given_type = request.form['species']
+
+            # Open Json with the different species
+            with open('nplbam/app/jsons/animal_species.json') as json_file:
+                species = json.load(json_file)
+
+            # Get the location of the json for the given type of given type from the species json
+            json_location = ""
+            for entry in species:
+                if (entry["name"] == given_type):
+                    json_location = "nplbam/app/jsons/" + entry["questions"]
+
+            # If location is empty, then it must not be a correct type of species.
+            if json_location == "":
+                return redirect("/")
+
             # Open the JSON with the questions for dog
-            with open('nplbam/app/jsons/dog_questions.json') as json_file:
+            with open(json_location) as json_file:
                 questions = json.load(json_file)
+
             # Need to Add Data to database.
             engine = db.get_db_engine()
             db_session = (sessionmaker(bind=engine))()
@@ -69,7 +108,7 @@ def animal_added():
             # Make an object from our ORM
             name: str = request.form['name']
             new = db.Animals(poundID=user_entry.poundID, stage=animal_stage, creator=user_ID,
-                             stageDate=date.today(), animalType="Dog", name=name)
+                             stageDate=date.today(), animalType=given_type, name=name)
             db_session.add(new)
             # Flush the session so we can get the autoincremented ID in new.animalID
             db_session.flush()

@@ -1,0 +1,994 @@
+[
+    {
+       "name":"Informations sur le chien",
+       "subgroups":[
+          {
+             "name":"Bases sur les animaux",
+             "questions":[
+                {
+                   "type":"text",
+                   "label":"Nom",
+                   "name":"name"
+                },
+                {
+                   "type":"radio",
+                   "label":"Statut",
+                   "name":"status",
+                   "answers":[
+                      {
+                         "name":"status_stray",
+                         "label":"Errant(e)",
+                         "selected":1
+                      },
+                      {
+                         "name":"status_surrender",
+                         "label":"Abandon",
+                         "selected":0
+                      },
+                      {
+                         "name":"status_other",
+                         "label":"Autre",
+                         "selected":0
+                      }
+                   ]
+                },
+                {
+                   "type":"radio",
+                   "label":"Sexe",
+                   "name":"sex",
+                   "answers":[
+                      {
+                         "name":"sex_male",
+                         "label":"Mâle",
+                         "selected":0
+                      },
+                      {
+                         "name":"sex_female",
+                         "label":"Femelle",
+                         "selected":0
+                      },
+                      {
+                         "name":"sex_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"text",
+                   "label":"Âge",
+                   "name":"age"
+                },
+                {
+                   "type":"text",
+                   "label":"Poid",
+                   "name":"weight"
+                },
+                {
+                   "type":"text",
+                   "label":"Race",
+                   "name":"breed"
+                },
+                {
+                   "type":"text",
+                   "label":"Couleur",
+                   "name":"colour"
+                },
+                {
+                   "type":"text",
+                   "label":"Marques",
+                   "name":"markings"
+                }
+             ]
+          },
+          {
+             "name":"Médical(e)",
+             "questions":[
+                {
+                   "type":"radio",
+                   "label":"Stérilisé(e)",
+                   "name":"sterilized",
+                   "answers":[
+                      {
+                         "name":"sterilized_yes",
+                         "label": "Oui",
+                         "selected":0
+                      },
+                      {
+                         "name":"sterilized_no",
+                         "label": "Non",
+                         "selected":0
+                      },
+                      {
+                         "name":"sterilized_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"radio",
+                   "label":"Micropuce",
+                   "name":"microchip",
+                   "answers":[
+                      {
+                         "name":"microchip_yes",
+                         "label": "Oui",
+                         "selected":0
+                      },
+                      {
+                         "name":"microchip_no",
+                         "label": "Non",
+                         "selected":0
+                      },
+                      {
+                         "name":"microchip_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"radio",
+                   "label":"En chaleur",
+                   "name":"inheat",
+                   "answers":[
+                      {
+                         "name":"inheat_yes",
+                         "label": "Oui",
+                         "selected":0
+                      },
+                      {
+                         "name":"inheat_no",
+                         "label": "Non",
+                         "selected":0
+                      },
+                      {
+                         "name":"inheat_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"radio",
+                   "label":"Parasites visibles",
+                   "name":"parasites",
+                   "answers":[
+                      {
+                         "name":"parasites_yes",
+                         "label": "Oui",
+                         "selected":0
+                      },
+                      {
+                         "name":"parasites_no",
+                         "label": "Non",
+                         "selected":0
+                      },
+                      {
+                         "name":"parasites_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"radio",
+                   "label":"Selle",
+                   "name":"stool",
+                   "answers":[
+                      {
+                         "name":"stool_normal",
+                         "label":"Normal",
+                         "selected":0
+                      },
+                      {
+                         "name":"stool_soft",
+                         "label":"Molle",
+                         "selected":0
+                      },
+                      {
+                         "name":"stool_diarrhea",
+                         "label":"Diarrhée",
+                         "selected":0
+                      },
+                      {
+                         "name":"stool_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                }
+             ]
+          }
+       ]
+    },
+    {
+       "name":"Évaluation primaire du tempérament",
+       "subgroups":[
+          {
+             "name":"Contact physique avec",
+             "questions":[
+                {
+                   "type":"checkbox",
+                   "label":"Aux alentours des pattes",
+                   "name":"paws",
+                   "answers":[
+                      {
+                         "name":"paws_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"paws_uneasy",
+                         "label": "Inquiet",
+                         "selected":0
+                      },
+                      {
+                         "name":"paws_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"paws_tolerant",
+                         "label": "Tolérant",
+                         "selected":0
+                      },
+                      {
+                         "name":"paws_relaxed",
+                         "label": "Détendu",
+                         "selected":0
+                      },
+                      {
+                         "name":"paws_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Aux alentours des Abdomen",
+                   "name":"abdomen",
+                   "answers":[
+                      {
+                         "name":"abdomen_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"abdomen_uneasy",
+                         "label": "Inquiet",
+                         "selected":0
+                      },
+                      {
+                         "name":"abdomen_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"abdomen_tolerant",
+                         "label": "Tolérant",
+                         "selected":0
+                      },
+                      {
+                         "name":"abdomen_relaxed",
+                         "label": "Détendu",
+                         "selected":0
+                      },
+                      {
+                         "name":"abdomen_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Aux alentours des Visage",
+                   "name":"face",
+                   "answers":[
+                      {
+                         "name":"face_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"face_uneasy",
+                         "label": "Inquiet",
+                         "selected":0
+                      },
+                      {
+                         "name":"face_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"face_tolerant",
+                         "label": "Tolérant",
+                         "selected":0
+                      },
+                      {
+                         "name":"face_relaxed",
+                         "label": "Détendu",
+                         "selected":0
+                      },
+                      {
+                         "name":"face_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Aux alentours des Museau",
+                   "name":"nose",
+                   "answers":[
+                      {
+                         "name":"nose_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"nose_uneasy",
+                         "label": "Inquiet",
+                         "selected":0
+                      },
+                      {
+                         "name":"nose_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"nose_tolerant",
+                         "label": "Tolérant",
+                         "selected":0
+                      },
+                      {
+                         "name":"nose_relaxed",
+                         "label": "Détendu",
+                         "selected":0
+                      },
+                      {
+                         "name":"nose_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Aux alentours des Oreilles",
+                   "name":"ears",
+                   "answers":[
+                      {
+                         "name":"ears_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"ears_uneasy",
+                         "label": "Inquiet",
+                         "selected":0
+                      },
+                      {
+                         "name":"ears_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"ears_tolerant",
+                         "label": "Tolérant",
+                         "selected":0
+                      },
+                      {
+                         "name":"ears_relaxed",
+                         "label": "Détendu",
+                         "selected":0
+                      },
+                      {
+                         "name":"ears_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Aux alentours des Tête",
+                   "name":"head",
+                   "answers":[
+                      {
+                         "name":"head_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"head_uneasy",
+                         "label": "Inquiet",
+                         "selected":0
+                      },
+                      {
+                         "name":"head_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"head_tolerant",
+                         "label": "Tolérant",
+                         "selected":0
+                      },
+                      {
+                         "name":"head_relaxed",
+                         "label": "Détendu",
+                         "selected":0
+                      },
+                      {
+                         "name":"head_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Aux alentours des Cou",
+                   "name":"neck",
+                   "answers":[
+                      {
+                         "name":"neck_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"neck_uneasy",
+                         "label": "Inquiet",
+                         "selected":0
+                      },
+                      {
+                         "name":"neck_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"neck_tolerant",
+                         "label": "Tolérant",
+                         "selected":0
+                      },
+                      {
+                         "name":"neck_relaxed",
+                         "label": "Détendu",
+                         "selected":0
+                      },
+                      {
+                         "name":"neck_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Aux alentours des Quarts arrière",
+                   "name":"hind",
+                   "answers":[
+                      {
+                         "name":"hind_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"hind_uneasy",
+                         "label": "Inquiet",
+                         "selected":0
+                      },
+                      {
+                         "name":"hind_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"hind_tolerant",
+                         "label": "Tolérant",
+                         "selected":0
+                      },
+                      {
+                         "name":"hind_relaxed",
+                         "label": "Détendu",
+                         "selected":0
+                      },
+                      {
+                         "name":"hind_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                }
+             ]
+          },
+          {
+             "name":"Comportement en cage",
+             "questions":[
+                {
+                   "type":"radio",
+                   "label":"Jappement",
+                   "name":"barking",
+                   "answers":[
+                      {
+                         "name":"barking_yes",
+                         "label": "Oui",
+                         "selected":0
+                      },
+                      {
+                         "name":"barking_no",
+                         "label": "Non",
+                         "selected":0
+                      },
+                      {
+                         "name":"barking_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Lorsque approché",
+                   "name":"greeting",
+                   "answers":[
+                      {
+                         "name":"greeting_growl",
+                         "label":"Grogne",
+                         "selected":0
+                      },
+                      {
+                         "name":"greeting_bark",
+                         "label":"Jappe",
+                         "selected":0
+                      },
+                      {
+                         "name":"greeting_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"greeting_calm",
+                         "label":"Calme",
+                         "selected":0
+                      },
+                      {
+                         "name":"greeting_excited",
+                         "label":"Excité",
+                         "selected":0
+                      },
+                      {
+                         "name":"greeting_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Nourriture",
+                   "name":"food",
+                   "answers":[
+                      {
+                         "name":"food_immediately",
+                         "label":"Mange immédiatement",
+                         "selected":0
+                      },
+                      {
+                         "name":"food_floor",
+                         "label":"Mange par terre",
+                         "selected":0
+                      },
+                      {
+                         "name":"food_noeat",
+                         "label":"Ne mange pas",
+                         "selected":0
+                      },
+                      {
+                         "name":"food_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                }
+             ]
+          }
+       ]
+    },
+    {
+       "name":"Informations diverses",
+       "subgroups":[
+          {
+             "name":"Tempérament",
+             "questions":[
+                {
+                   "type":"checkbox",
+                   "label":"Comportement face à d'autre(s) chien(s)",
+                   "name":"behaviourWithDogs",
+                   "answers":[
+                      {
+                         "name":"behaviourWithDogs_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"behaviourWithDogs_dominant",
+                         "label": "Dominant",
+                         "selected":0
+                      },
+                      {
+                         "name":"behaviourWithDogs_excited",
+                         "label": "Excité",
+                         "selected":0
+                      },
+                      {
+                         "name":"behaviourWithDogs_calm",
+                         "label": "Calme",
+                         "selected":0
+                      },
+                      {
+                         "name":"behaviourWithDogs_submissive",
+                         "label": "Soumis",
+                         "selected":0
+                      },
+                      {
+                         "name":"behaviourWithDogs_polite",
+                         "label": "Poli",
+                         "selected":0
+                      },
+                      {
+                         "name":"behaviourWithDogs_playful",
+                         "label": "Enjoué",
+                         "selected":0
+                      },
+                      {
+                         "name":"behaviourWithDogs_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Disposition générale du chien",
+                   "name":"dispositionOverall",
+                   "answers":[
+                      {
+                         "name":"dispositionOverall_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionOverall_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionOverall_shy",
+                         "label": "Timide",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionOverall_outgoing",
+                         "label": "Extraverti",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionOverall_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Disposition avec étranger(s)",
+                   "name":"dispositionStranger",
+                   "answers":[
+                      {
+                         "name":"dispositionStranger_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionStranger_fearful",
+                         "label": "Craintif",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionStranger_shy",
+                         "label": "Timide",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionStranger_outgoing",
+                         "label": "Extraverti",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionStranger_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"En présence de nourriture (hors cage)",
+                   "name":"dispositionFood",
+                   "answers":[
+                      {
+                         "name":"dispositionFood_aggressive",
+                         "label": "Agressif",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionFood_glutton",
+                         "label": "Glouton",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionFood_fussy",
+                         "label": "Difficile",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionFood_nibbler",
+                         "label": "Grignotte",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionFood_protective",
+                         "label": "Protecteur",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionFood_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"En présence de jouets",
+                   "name":"dispositionToy",
+                   "answers":[
+                      {
+                         "name":"dispositionToy_selective",
+                         "label":"Sélectif",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionToy_playful",
+                         "label": "Enjoué",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionToy_destructive",
+                         "label":"Briseur",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionToy_possessive",
+                         "label":"Possessif",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionToy_uninterested",
+                         "label":"Passif",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionToy_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"En laisse",
+                   "name":"dispositionLeash",
+                   "answers":[
+                      {
+                         "name":"dispositionLeash_pulls",
+                         "label":"Tire",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionLeash_unfamiliar",
+                         "label":"Inconnu",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionLeash_polite",
+                         "label": "Poli",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionLeash_chews",
+                         "label":"Machouille",
+                         "selected":0
+                      },
+                      {
+                         "name":"dispositionLeash_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"checkbox",
+                   "label":"Connait les commandes",
+                   "name":"commands",
+                   "answers":[
+                      {
+                         "name":"commands_sit",
+                         "label":"Assis",
+                         "selected":0
+                      },
+                      {
+                         "name":"commands_paw",
+                         "label":"Donne la patte",
+                         "selected":0
+                      },
+                      {
+                         "name":"commands_stay",
+                         "label":"Reste",
+                         "selected":0
+                      },
+                      {
+                        "name":"commands_liedown",
+                        "label":"Coucher",
+                        "selected":0
+                     },
+                      {
+                         "name":"commands_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                },
+                {
+                   "type":"radio",
+                   "label":"Est‐ce que le chien aboie",
+                   "name":"vocal",
+                   "answers":[
+                      {
+                         "name":"vocal_never",
+                         "label":"Jamais",
+                         "selected":0
+                      },
+                      {
+                         "name":"vocal_hardly",
+                         "label":"Parfois",
+                         "selected":0
+                      },
+                      {
+                         "name":"vocal_often",
+                         "label":"Souvent",
+                         "selected":0
+                      },
+                      {
+                         "name":"vocal_constantly",
+                         "label":"En continu",
+                         "selected":0
+                      },
+                      {
+                         "name":"vocal_unknown",
+                         "label": "Ignoré",
+                         "selected":1
+                      }
+                   ]
+                }
+             ]
+          }
+       ]
+    },
+    {
+       "name":"Santé visuelle",
+       "subgroups":[
+          {
+             "name":"Évaluation santé visuelle primaire",
+             "questions":[
+                {
+                   "type":"text",
+                   "label":"Visage",
+                   "name":"visual_face"
+                },
+                {
+                   "type":"text",
+                   "label":"Museau",
+                   "name":"visual_nose"
+                },
+                {
+                   "type":"text",
+                   "label":"Dents",
+                   "name":"visual_teeth"
+                },
+                {
+                   "type":"text",
+                   "label":"Oreilles",
+                   "name":"visual_ears"
+                },
+                {
+                   "type":"text",
+                   "label":"Yeux",
+                   "name":"visual_eyes"
+                },
+                {
+                   "type":"text",
+                   "label":"Cou",
+                   "name":"visual_neck"
+                },
+                {
+                   "type":"text",
+                   "label":"Abdomen",
+                   "name":"visual_abdomen"
+                },
+                {
+                   "type":"text",
+                   "label":"Queue",
+                   "name":"visual_tail"
+                },
+                {
+                   "type":"text",
+                   "label":"Jambes",
+                   "name":"visual_legs"
+                },
+                {
+                   "type":"text",
+                   "label":"Pattes",
+                   "name":"visual_paws"
+                },
+                {
+                   "type":"text",
+                   "label":"Ogles",
+                   "name":"visual_nails"
+                },
+                {
+                   "type":"text",
+                   "label":"Peau",
+                   "name":"visual_skin"
+                },
+                {
+                   "type":"text",
+                   "label":"Fourrure",
+                   "name":"visual_coat"
+                },
+                {
+                   "type":"text",
+                   "label":"Autre",
+                   "name":"visual_other"
+                }
+             ]
+          }
+       ]
+    },
+    {
+       "name":"Information additionnelle",
+       "subgroups":[
+          {
+             "name":"Remarques",
+             "questions":[
+                {
+                   "type":"textarea",
+                   "label":"Soins vétérinaires",
+                   "name":"vet"
+                },
+                {
+                   "type":"textarea",
+                   "label":"Commentaires additionnels",
+                   "name":"notes"
+                }
+             ]
+          }
+       ]
+    }
+ ]
