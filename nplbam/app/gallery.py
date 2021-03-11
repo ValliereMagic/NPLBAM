@@ -82,7 +82,6 @@ def stage_updated():
         if 'cancel' in request.form:
             redirect("/animals")
         else:
-            print("good to go")
             engine = db.get_db_engine()
             db_session = (sessionmaker(bind=engine))()
             # Get animalID
