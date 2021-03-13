@@ -29,7 +29,7 @@ def animals():
     Page with the filterable table of all animals that have
     been entered into the system.
     """
-    global PER_PAGE
+    global PER_PAGE 
     # Make sure visitor is logged in
     if flask_session.get("userID", default=None) is None:
         return redirect("/")
@@ -75,15 +75,16 @@ def animals():
     _sort = getattr(_sort, predetermined["order"])
     # If search is blank don't filter
     if (predetermined["search"] != ""):
+        search_text = "%{}%".format(predetermined["search"])
         # check if we should hide stage 0 and 8
         if predetermined["hide_stuff"] == 1:
             animals_list = db_session.query(db.Animals).\
-                filter(_search == predetermined["search"]).\
+                filter(_search.ilike(search_text)).\
                 filter(db.Animals.stage != 0).filter(
                     db.Animals.stage != 8).order_by(_sort())
         else:
             animals_list = db_session.query(db.Animals).\
-                filter(_search == predetermined["search"]).\
+                filter(_search.ilike(search_text)).\
                 order_by(_sort())
     else:
         # check if we should hide stage 0 and 8
