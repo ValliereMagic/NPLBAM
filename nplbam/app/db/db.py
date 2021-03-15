@@ -165,6 +165,7 @@ class Users(Base):
                     autoincrement=True, unique=True, nullable=False)
     username = Column('username', Text, unique=True, nullable=False)
     password = Column('password', LargeBinary, nullable=False)
+    suspended = Column('suspended', Boolean, default=False)
     # 0 = Admin, 1 = NPLB user, 2 = SudoPound, 3 = Pound, 4 = SudoRescue, 5 = Rescue
     # SudoPound + SudoRescue both have ability to create new pound/rescue users.
     userLVL = Column('userLVL', Integer, nullable=False)
@@ -186,42 +187,44 @@ class MetaInformation(Base):
     # Year of the Data
     year = Column('year', Integer, primary_key=True)
     # # of users for month
-    users = Column('users', Integer)
+    users = Column('users', Integer, default=0)
     # # of Rescues for month
-    rescues = Column('rescues', Integer)
+    rescues = Column('rescues', Integer, default=0)
     # # of Pounds for month
-    pounds = Column('pounds', Integer)
+    pounds = Column('pounds', Integer, default=0)
     # Total Amount of animals in system this month
-    totalAnimalsInSystem = Column('totalAnimalsInSystem', Integer)
+    totalAnimalsInSystem = Column('totalAnimalsInSystem', Integer, default=0)
     # Total time it takes to get from stage 0 to end stage. As total, not average
-    totalStagesLength = Column('totalStagesLength', Integer)
+    totalStagesLength = Column('totalStagesLength', Integer, default=0)
     # Amount of animals for data above. To calculate average
-    totalStagesAmount = Column('totalStagesAmount', Integer)
+    totalStagesAmount = Column('totalStagesAmount', Integer, default=0)
     # Total amount of animals completed each stage
-    animalsInStage1 = Column('animalsInStage1', Integer)
-    animalsInStage2 = Column('animalsInStage2', Integer)
-    animalsInStage3 = Column('animalsInStage3', Integer)
-    animalsInStage4 = Column('animalsInStage4', Integer)
-    animalsInStage5 = Column('animalsInStage5', Integer)
-    animalsInStage6 = Column('animalsInStage6', Integer)
-    animalsInStage7 = Column('animalsInStage7', Integer)
-    animalsInStage8 = Column('animalsInStage8', Integer)
-    animalsInStage9 = Column('animalsInStage9', Integer)
+    animalsCompStage1 = Column('animalsCompStage1', Integer, default=0)
+    animalsCompStage2 = Column('animalsCompStage2', Integer, default=0)
+    animalsCompStage3 = Column('animalsCompStage3', Integer, default=0)
+    animalsCompStage4 = Column('animalsCompStage4', Integer, default=0)
+    animalsCompStage5 = Column('animalsCompStage5', Integer, default=0)
+    animalsCompStage6 = Column('animalsCompStage6', Integer, default=0)
+    animalsCompStage7 = Column('animalsCompStage7', Integer, default=0)
     # Total amount of days to complete each stage. As total, not average.
-    totalDaysInStage1 = Column('totalDaysInStage1', Integer)
-    totalDaysInStage2 = Column('totalDaysInStage2', Integer)
-    totalDaysInStage3 = Column('totalDaysInStage3', Integer)
-    totalDaysInStage4 = Column('totalDaysInStage4', Integer)
-    totalDaysInStage5 = Column('totalDaysInStage5', Integer)
-    totalDaysInStage6 = Column('totalDaysInStage6', Integer)
-    totalDaysInStage7 = Column('totalDaysInStage7', Integer)
-    totalDaysInStage8 = Column('totalDaysInStage8', Integer)
-    totalDaysInStage9 = Column('totalDaysInStage9', Integer)
+    totalDaysCompStage1 = Column('totalDaysCompStage1', Integer, default=0)
+    totalDaysCompStage2 = Column('totalDaysCompStage2', Integer, default=0)
+    totalDaysCompStage3 = Column('totalDaysCompStage3', Integer, default=0)
+    totalDaysCompStage4 = Column('totalDaysCompStage4', Integer, default=0)
+    totalDaysCompStage5 = Column('totalDaysCompStage5', Integer, default=0)
+    totalDaysCompStage6 = Column('totalDaysCompStage6', Integer, default=0)
+    totalDaysCompStage7 = Column('totalDaysCompStage7', Integer, default=0)
+    # Outcomes
+    totalOutcome1 = Column('totalOutcome1', Integer, default=0)
+    totalOutcome2 = Column('totalOutcome2', Integer, default=0)
+    totalOutcome3 = Column('totalOutcome3', Integer, default=0)
+    totalOutcome4 = Column('totalOutcome4', Integer, default=0)
+    totalOutcome5 = Column('totalOutcome5', Integer, default=0)
 
 
 def create_database_if_not_exists():
     """
-    This function Initializes the tables described  using the ORM 
+    This function Initializes the tables described using the ORM 
     in this module as tables in the database
     """
     Base.metadata.create_all(bind=engine)
@@ -235,6 +238,3 @@ def get_db_engine():
     """
     create_database_if_not_exists()
     return engine
-
-# Problems before were from race conditions. Until we figure out a way to do this only once. Do not touch
-# create_database_if_not_exists()

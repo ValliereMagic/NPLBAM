@@ -3,8 +3,8 @@ This module deals with the main page of the application that is
 presented to the user right after login.
 """
 
-import math
 import json
+import math
 from datetime import date
 
 from flask import Blueprint, redirect, render_template, request
@@ -75,15 +75,16 @@ def animals():
     _sort = getattr(_sort, predetermined["order"])
     # If search is blank don't filter
     if (predetermined["search"] != ""):
+        search_text = "%{}%".format(predetermined["search"])
         # check if we should hide stage 0 and 8
         if predetermined["hide_stuff"] == 1:
             animals_list = db_session.query(db.Animals).\
-                filter(_search == predetermined["search"]).\
+                filter(_search.ilike(search_text)).\
                 filter(db.Animals.stage != 0).filter(
                     db.Animals.stage != 8).order_by(_sort())
         else:
             animals_list = db_session.query(db.Animals).\
-                filter(_search == predetermined["search"]).\
+                filter(_search.ilike(search_text)).\
                 order_by(_sort())
     else:
         # check if we should hide stage 0 and 8
@@ -114,7 +115,6 @@ def animals():
             animal.creatorName = user_list[animal.creator]
             for q in animal.textAnswers:
                 if (q.questionName == "breed"):
-                    animal.breed = q.answer
                     break
         # Close the session
         db_session.close()
@@ -135,7 +135,7 @@ def animals():
     # Get list of animal types from json
     with open('nplbam/app/jsons/animal_species.json') as json_file:
         animal_types = json.load(json_file)
-    
+
     return render_template("animals.html", title="Animals", animals=animals_list,
                            next_url=next_url, prev_url=prev_url, page=page, total_pages=total_pages,
                            count=count, predetermined=predetermined, animal_types=animal_types)

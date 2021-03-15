@@ -17,7 +17,7 @@
          pre-clicked for the user).
         #}
         {% for step in questions %}
-            <h2>Step {{loop.index0+1}} - {{step.name}}</h2> 
+            <h2>Section {{loop.index0+1}} - {{step.name}}</h2> 
             {% for subgroup in step.subgroups %}
                 <h3>{{subgroup.name}}</h3> 
                 {# Check each question to see what kind of html form architect it needs to be. #}

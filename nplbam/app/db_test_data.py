@@ -26,6 +26,8 @@ def test_data():
     # new = db.Users(username="thors",
     #    password=nacl.pwhash.str(bytes("hammer", "utf-8")),
     #    userLVL=0)
+    # db_session.add(new)
+    # db_session.flush()
     # db_session.commit()
     # Create some pounds
     names = ["Peterborough Pound", "Oshawa Pound", "Toronto Pound", "Pounds r Us", "One Pound Two Pounds",
@@ -224,5 +226,61 @@ def test_data():
                 ))
             db_session.commit()
     # Close the database like a good boy
+    db_session.close()
+    return redirect("/")
+
+
+@bp.route("/test_data2")
+def test_data2():
+    random.seed(int(round(time.time()*10000)))
+    engine = db.get_db_engine()
+    db_session = (sessionmaker(bind=engine))()
+
+    month = 3
+    year = 2021
+    for x in range(0, 10, 1):
+        new = db.MetaInformation()
+        new.month = month
+        new.year = year
+        month -= 1
+        if month == 0:
+            month = 12
+            year -= 1
+        new.users = random.randint(1, 50)
+        new.rescues = random.randint(1, 50)
+        new.pounds = random.randint(1, 50)
+
+        new.totalAnimalsInSystem = random.randint(15, 130)
+        c = random.randint(1, 20)
+        new.animalsCompStage1 = c
+        new.totalDaysCompStage1 = c * random.randint(1, 20)
+        c = random.randint(1, 20)
+        new.animalsCompStage2 = c
+        new.totalDaysCompStage2 = c * random.randint(1, 21)
+        c = random.randint(1, 20)
+        new.animalsCompStage3 = c
+        new.totalDaysCompStage3 = c * random.randint(1, 10)
+        c = random.randint(1, 20)
+        new.animalsCompStage4 = c
+        new.totalDaysCompStage4 = c * random.randint(1, 25)
+        c = random.randint(1, 20)
+        new.animalsCompStage5 = c
+        new.totalDaysCompStage5 = c * random.randint(1, 30)
+        c = random.randint(1, 20)
+        new.animalsCompStage6 = c
+        new.totalDaysCompStage6 = c * random.randint(1, 29)
+        c = random.randint(1, 20)
+        new.animalsCompStage7 = c
+        new.totalDaysCompStage7 = c * random.randint(1, 30)
+        new.totalStagesLength = c * random.randint(100, 170)
+        new.totalStagesAmount = c
+        new.totalOutcome1 = random.randint(1, c)
+        new.totalOutcome2 = random.randint(1, c)
+        new.totalOutcome3 = random.randint(1, c)
+        new.totalOutcome4 = random.randint(1, c)
+        new.totalOutcome5 = random.randint(1, c)
+        db_session.add(new)
+        db_session.commit()
+
     db_session.close()
     return redirect("/")
