@@ -1,18 +1,15 @@
-from flask import Blueprint, redirect, render_template, request, Response
-from flask import session as flask_session
-from sqlalchemy.orm import Query, relationship, sessionmaker
-
-from .db import db
-
 import io
-import numpy as np
-
 from datetime import date
 
 import matplotlib.pyplot as plt
+import numpy as np
+from flask import Blueprint, Response, redirect, render_template, request
+from flask import session as flask_session
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
+from sqlalchemy.orm import Query, relationship, sessionmaker
 
+from .db import db
 
 bp = Blueprint('visualize', __name__, url_prefix="")
 
