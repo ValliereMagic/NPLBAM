@@ -72,15 +72,15 @@ form {
     justify-content: space-around;
     align-items: center;
     margin: 0.25em;
-    width: 95%;
 }
 
 form>div {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
     height: 33%;
     width: 100%;
+    padding: 1em;
 }
 
 .item {
@@ -139,7 +139,8 @@ input[type=text] {
     margin: 2em 0em;
 }
 
-button, #button>a {
+button,
+#button>a {
     padding: 0.5em 2em;
     align-self: center;
     color: black;
@@ -152,7 +153,8 @@ button, #button>a {
     transition: background-color 0.4s;
 }
 
-button:hover, #button>a:hover{
+button:hover,
+#button>a:hover {
     background-color: pink;
 }
 
@@ -168,12 +170,12 @@ button:hover, #button>a:hover{
     width: 500px;
 }
 
-.infoline > * {
+.infoline>* {
     padding-right: 1em;
     margin-bottom: 0;
 }
 
-.infoline:first-of-type{
+.infoline:first-of-type {
     justify-content: space-between;
 }
 
@@ -207,10 +209,35 @@ button:hover, #button>a:hover{
     background-color: #7b9697;
 }
 
-.textareas {
+.bottom {
     display: flex;
     flex-direction: row;
     padding: 0.25em;
+    width: 800px;
+    justify-content: space-between;
+}
+
+.stageInformation {
+    width: 400px;
+}
+
+.stageButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1em;
+}
+
+.stageButtons>button {
+    padding: 0.25em 1em 0.25em 1em;
+}
+
+.textareas {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25em;
+    width: 400px;
+    margin-top: 1.5em;
 }
 
 .areaContainer {
@@ -221,10 +248,10 @@ button:hover, #button>a:hover{
     border: solid 1px black;
 }
 
-.areaContainer >label {
+.areaContainer>label {
     font-size: large;
     text-decoration: underline;
-    font-weight:500;
+    font-weight: 500;
     margin-bottom: 0.5em;
 }
 
@@ -232,4 +259,39 @@ textarea {
     width: 100%;
     border: none;
     resize: none;
+}
+
+div>select {
+    flex: none;
+}
+
+.stage {
+    border: black solid 1px;
+    padding: 1em;
+    margin: 0.5em;
+}
+
+form>button {
+    margin: 0.75em;
+}
+
+form>div {
+    display: flex;
+    flex-direction: column;
+}
+
+form>div>div {
+    margin-top: 1em;
+    margin-bottom: 0.25em;
+    display: flex;
+    align-items: center;
+}
+
+form>div>div>label {
+    margin-left: 0.25em;
+}
+
+form>div>input {
+    margin-top: 0.25em;
+    margin-bottom: 1em;
 }
