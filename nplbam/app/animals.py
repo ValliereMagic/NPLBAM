@@ -3,8 +3,8 @@ This module deals with the main page of the application that is
 presented to the user right after login.
 """
 
-import math
 import json
+import math
 from datetime import date
 
 from flask import Blueprint, redirect, render_template, request
@@ -29,7 +29,7 @@ def animals():
     Page with the filterable table of all animals that have
     been entered into the system.
     """
-    global PER_PAGE 
+    global PER_PAGE
     # Make sure visitor is logged in
     if flask_session.get("userID", default=None) is None:
         return redirect("/")
@@ -115,7 +115,6 @@ def animals():
             animal.creatorName = user_list[animal.creator]
             for q in animal.textAnswers:
                 if (q.questionName == "breed"):
-                    animal.breed = q.answer
                     break
         # Close the session
         db_session.close()
@@ -136,7 +135,7 @@ def animals():
     # Get list of animal types from json
     with open('nplbam/app/jsons/animal_species.json') as json_file:
         animal_types = json.load(json_file)
-    
+
     return render_template("animals.html", title="Animals", animals=animals_list,
                            next_url=next_url, prev_url=prev_url, page=page, total_pages=total_pages,
                            count=count, predetermined=predetermined, animal_types=animal_types)
