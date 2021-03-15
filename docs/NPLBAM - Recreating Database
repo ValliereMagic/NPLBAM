@@ -11,7 +11,7 @@ cd ../..
 
 Step 2 - Go to the website and try logging in with any username/password. This will start the creation process of the database.
 
-Step 3 - Get Argo Encryption of Password (Change PASSWORD to your password)
+Step 3 - Get Argon2 hash of Password (Change PASSWORD to your password)
 source nplbamNV/bin/activate
 python
 import nacl.pwhash
