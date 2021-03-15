@@ -49,7 +49,7 @@
                       },
                       {
                          "name":"sex_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -101,7 +101,7 @@
                       },
                       {
                          "name":"sterilized_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -123,7 +123,7 @@
                       },
                       {
                          "name":"microchip_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -145,7 +145,7 @@
                       },
                       {
                          "name":"inheat_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -167,7 +167,7 @@
                       },
                       {
                          "name":"parasites_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -194,7 +194,7 @@
                       },
                       {
                          "name":"stool_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -241,7 +241,7 @@
                       },
                       {
                          "name":"paws_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -278,7 +278,7 @@
                       },
                       {
                          "name":"abdomen_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -315,7 +315,7 @@
                       },
                       {
                          "name":"face_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -352,7 +352,7 @@
                       },
                       {
                          "name":"nose_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -389,7 +389,7 @@
                       },
                       {
                          "name":"ears_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -426,7 +426,7 @@
                       },
                       {
                          "name":"head_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -463,7 +463,7 @@
                       },
                       {
                          "name":"neck_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -500,7 +500,7 @@
                       },
                       {
                          "name":"hind_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -527,7 +527,7 @@
                       },
                       {
                          "name":"barking_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -564,7 +564,7 @@
                       },
                       {
                          "name":"greeting_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -591,7 +591,7 @@
                       },
                       {
                          "name":"food_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -648,7 +648,7 @@
                       },
                       {
                          "name":"behaviourWithDogs_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -680,7 +680,7 @@
                       },
                       {
                          "name":"dispositionOverall_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -712,7 +712,7 @@
                       },
                       {
                          "name":"dispositionStranger_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -749,7 +749,7 @@
                       },
                       {
                          "name":"dispositionFood_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -786,7 +786,7 @@
                       },
                       {
                          "name":"dispositionToy_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -818,7 +818,7 @@
                       },
                       {
                          "name":"dispositionLeash_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -850,7 +850,7 @@
                      },
                       {
                          "name":"commands_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
@@ -882,7 +882,7 @@
                       },
                       {
                          "name":"vocal_unknown",
-                         "label": "Ignoré",
+                         "label": "Inconnu",
                          "selected":1
                       }
                    ]
