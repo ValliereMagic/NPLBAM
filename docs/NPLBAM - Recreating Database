@@ -9,8 +9,9 @@ cd ./docker/nplbam_postgres
 cd ../..
 ./start_whole_stack.sh
 
+Step 2 - Go to the website and try logging in with any username/password. This will start the creation process of the database.
 
-Step 2 - Get Argo Encryption of Password (Change PASSWORD to your password)
+Step 3 - Get Argo Encryption of Password (Change PASSWORD to your password)
 source nplbamNV/bin/activate
 python
 import nacl.pwhash
@@ -18,7 +19,7 @@ print(nacl.pwhash.str(b'PASSWORD'))
 exit()
 
 
-Step 3 - Add user to database .. making sure to put the password from before in >>pass from before<<. Also make sure to put a proper username at USER
+Step 4 - Add user to database .. making sure to put the password from before in >>pass from before<<. Also make sure to put a proper username at USER
 ./connect_psql.sh
 \c nplbam
 \dt
