@@ -14,7 +14,7 @@ from .. import config
 Base = declarative_base()
 
 engine = create_engine(
-    'postgres://nplbam:{}@nplbam_db/nplbam'.format(config.DATABASE_KEY))
+    'postgresql+psycopg2://nplbam:{}@nplbam_db/nplbam'.format(config.DATABASE_KEY))
 
 
 class Animals(Base):
