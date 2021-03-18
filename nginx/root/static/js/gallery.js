@@ -2,6 +2,54 @@
 
 window.addEventListener('DOMContentLoaded', () => {
 
+  // make files in to proper types (images or download link)
+
+  // relevant selectors for this section
+  const files = document.querySelectorAll('.file');
+  const frame = document.querySelector('.images');
+  // Iterate through all the files associated with this animal
+  files.forEach(item => {
+    // value: download link
+    // div: external div that will be controlled by the buttons
+    // images only
+    // img: image element that goes inside div
+    // files only
+    // header: h2 element that goes inside div
+    // button: goes inside div, gets styled as a button
+    // a: link that goes inside the button
+    var value = item.getAttribute("value");
+    var div = document.createElement('div');
+    // If the file is an image (the id stores the file type)
+    if (item.getAttribute("id") == "image") {
+      // create image tag, set src and add it to the div
+      var img = document.createElement('img');
+      img.setAttribute("src", value);
+      img.setAttribute("width", "500px");
+      div.appendChild(img);
+    }
+    // if it's not an image
+    else{
+      // make header, get file name without all the extra stuff, add to header
+      var header = document.createElement('h2');
+      var split_value = value.split("/");
+      var second_split_value = split_value[split_value.length - 1].split(/_\d_/)
+      header.innerHTML = second_split_value[second_split_value.length - 1];
+      header.setAttribute("style", "text-align: center");
+      div.appendChild(header);
+      // make download button, add to div
+      var button = document.createElement('div');
+      button.setAttribute("id", "button");
+      var a = document.createElement('a');
+      a.setAttribute("href", value);
+      a.innerHTML = "Download";
+      button.appendChild(a);
+      div.appendChild(button);
+    }
+    // add div to the frame
+    div.classList.add("image");
+    frame.appendChild(div);
+
+  })
   // image stuff
 
   function hideAllImages() {
@@ -18,7 +66,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function initImages() {
     hideAllImages();
-    images[0].setAttribute("style", "display: initial");
+    images[0].setAttribute("style", "display: flex");
     images.forEach((item, key) => {
       var newButton = document.createElement("button");
       newButton.setAttribute("class", "button");
@@ -31,7 +79,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   const images = document.querySelectorAll('.image');
-  const frame = document.querySelector('.images');
   const buttonDiv = document.querySelector('.buttons');
 
   try {
@@ -48,7 +95,7 @@ window.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', event => {
       hideAllImages();
       unpressAllImageButtons();
-      images[key].setAttribute("style", "display: initial");
+      images[key].setAttribute("style", "display: flex");
       item.classList.add("pressed");
     })
   })

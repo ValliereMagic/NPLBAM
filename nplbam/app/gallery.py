@@ -51,9 +51,9 @@ def gallery():
         info[x.questionName] = x.answer
 
     # get list of filenames
-    images = []
+    images = {}
     for x in animal_entry.files:
-        images.append(x.fileName)
+        images[x.fileName] = x.fileType
 
     # get stage info from database
     stage_entry = db_session.query(db.StageInfo).filter_by(
