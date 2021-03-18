@@ -109,8 +109,10 @@ def stage_updated():
                                        completionDate=completionDate, note=notes[substageNum - 1])
                     db_session.add(new)
                 else:
-                    substage.note = notes[substageNum - 1]
-                    substage.completionDate = completionDate
+                    # Only update if new and old notes are different
+                    if str(notes[substageNum - 1]) != str(substage.note):
+                        substage.note = notes[substageNum - 1]
+                        substage.completionDate = completionDate
 
                 db_session.commit()
             db_session.close()
