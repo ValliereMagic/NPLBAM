@@ -1,0 +1,8 @@
+[Unit]
+Description="Check for lets-encrypt certificates that need to be renewed every 6 hours and 3 minutes after boot."
+[Service]
+ExecStart=/usr/bin/docker run --rm --name nplbam_certbot_renew \
+	-v /usr/local/NPLBAM/nginx/tls:/etc/letsencrypt \
+	-v /usr/local/NPLBAM/nginx/tls:/var/lib/letsencrypt \
+	-v /usr/local/NPLBAM/nginx/root:/webroot \
+	certbot/certbot renew
