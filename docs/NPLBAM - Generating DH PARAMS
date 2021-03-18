@@ -1,0 +1,3 @@
+Do this in /NPLBAM/nginx/tls/live
+AFTER OBTAINING THE CERT
+openssl dhparam -out dhparam-4096.pem 4096
