@@ -16,11 +16,14 @@
         <h2>Stage: {{ info["stage"] }}</h2>
         <h2>Days in Stage: {{info["days"]}} </h2>
     </div>
-    <div class="images">
+    <div class="files">
         {% for x in images %}
-        <div class="image"> <img src="/downloads/{{ x }}" width="500px"> </div>
+        
+        <input type="hidden" value="/downloads/{{ x }}" class="file" id="{{ images[x] }}">
 
         {% endfor%}
+    </div>
+    <div class="images">
     </div>
     <div class="buttons">
     </div>

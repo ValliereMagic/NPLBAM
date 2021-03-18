@@ -187,10 +187,14 @@ button:hover,
     flex-wrap: wrap;
     border: solid 1px black;
     margin-top: 2em;
+    min-width: 532px;
 }
 
 .image {
     padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .buttons {
