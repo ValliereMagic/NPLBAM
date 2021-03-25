@@ -11,11 +11,6 @@
         <h1>{{ info["name"] }}</h1>
         <div id="button"><a href="view_animal?viewid={{animalID}}">View Animal</a></div>
     </div>
-    <div class="infoline">
-        <h2>&emsp; ID: {{ animalID }}</h2>
-        <h2>Stage: {{ info["stage"] }}</h2>
-        <h2>Days in Stage: {{info["days"]}} </h2>
-    </div>
     <div class="files">
         {% for x in images %}
         
@@ -362,18 +357,49 @@
             </form>
         </div>
         <div class="textareas">
-            <div class="areaContainer">
-                <label for="vet"> Vet Notes: </label>
-                <textarea name="vet" rows="4" value readonly>
-                {{ info["vet"] }}
-            </textarea>
-            </div>
-            <div class="areaContainer">
-                <label for="notes"> Additional Notes: </label>
-                <textarea name="notes" rows="4" value readonly>
-                {{ info["notes"] }}
-            </textarea>
-            </div>
+            <form class="info" method="POST" action="/gallery_info_updated">
+                <input type="hidden" value="{{animalID}}" name="animalID">
+
+                <h2>&emsp; ID: {{ animalID }}</h2>
+                <h2>Species: {{info["species"]}}</h2>
+                <h2>Stage: {{ info["stage"] }}</h2>
+                <h2>Days in Stage: {{info["days"]}} </h2>
+                <h2>Creator: {{info["creator"]}}</h2>
+                <div class="item">
+                    <label for="pound">Pound:</label>
+                    <select id="pound" name="pound">
+                        <option value=-1>None</option>
+                        {% for x in pounds %}
+                            <option value={{x.poundID}} {% if x.poundID == info["pound"] %} selected {% endif %}>{{x.poundName}}</option>      
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="item">
+                    <label for="rescue">Rescue:</label>
+                    <select id="rescue" name="rescue">
+                        <option value=-1>None</option>
+                        {% for x in rescues %}
+                            <option value={{x.rescueID}} {% if x.rescueID == info["rescue"] %} selected {% endif %}>{{x.rescueName}}</option>      
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="item">
+                    <label for="supervisor">Supervisor:</label>
+                    <select id="supervisor" name="supervisor">
+                        <option value=-1>None</option>
+                        {% for x in supervisors %}
+                            <option value={{x.userID}} {% if x.userID == info["supervisor"] %} selected {% endif %}>{{x.username}}</option>      
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="areaContainer">
+                    <label for="notes"> Notes: </label>
+                    <textarea name="notes" rows="4">{{info["notes"]}}</textarea>
+                </div>
+                <button type="submit" name="submit">Update Info</button>
+                
+            </form>
         </div>
     </div>
     <div id="button"><a href="/animal_viewed">Return</a></div>
