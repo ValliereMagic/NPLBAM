@@ -44,11 +44,32 @@ def gallery():
     info = {}
 
     info["name"] = animal_entry.name
+    info["species"] = animal_entry.animalType
     info["stage"] = animal_entry.stage
+    info["creator"] = db_session.query(db.Users).filter_by(
+        userID=animal_entry.creator).first().username
+    if animal_entry.supervisor is None:
+        info["supervisor"] = -1
+    else:
+        info["supervisor"] = animal_entry.supervisor
+
+    if animal_entry.poundID is None:
+        info["pound"] = -1
+    else:
+        info["pound"] = animal_entry.poundID
+
+    if animal_entry.rescueID is None:
+        info["rescue"] = -1
+    else:
+        info["rescue"] = animal_entry.rescueID
+
+    info["notes"] = animal_entry.notes
     info["days"] = (date.today() - animal_entry.stageDate).days
 
-    for x in animal_entry.textAnswers:
-        info[x.questionName] = x.answer
+    rescues_list = db_session.query(db.Rescues).all()
+    pounds_list = db_session.query(db.Pounds).all()
+    supervisor_list = db_session.query(
+        db.Users).filter(db.Users.userLVL < 2).all()
 
     # get list of filenames
     images = {}
@@ -69,7 +90,8 @@ def gallery():
     db_session.close()
 
     # Render the page
-    return render_template("gallery.html", animalID=viewID, title="View {}".format(animal_entry.name), info=info, images=images, current_stage=animal_entry.stage, stage_info=stage_info)
+    return render_template("gallery.html", animalID=viewID, title="View {}".format(animal_entry.name), info=info,
+                           images=images, current_stage=animal_entry.stage, stage_info=stage_info, rescues=rescues_list, pounds=pounds_list, supervisors=supervisor_list)
 
 
 @bp.route("/stage_updated", methods=['GET', 'POST'])
@@ -80,7 +102,7 @@ def stage_updated():
     # Make sure the user's userLVL is in (0, 1, 2, 3)
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
-    if (user_level is None) or user_level > 3:
+    if (user_level is None) or user_level > 1:
         # May need to change where we redirect them in the future
         return redirect("/")
     # Make sure they got here with post
@@ -126,7 +148,7 @@ def stage_completed():
     # Make sure the user's userLVL is in (0, 1, 2, 3)
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
-    if (user_level is None) or user_level > 3:
+    if (user_level is None) or user_level > 1:
         # May need to change where we redirect them in the future
         return redirect("/")
     # Make sure they got here with post
@@ -156,5 +178,47 @@ def stage_completed():
             # Update the animal
             db_session.commit()
             db_session.close()
+
+    return redirect(f"/gallery?viewid={animalID}")
+
+
+@bp.route("/gallery_info_updated", methods=['GET', 'POST'])
+def gallery_info_updated():
+    # Make sure the user's userLVL is in (0, 1, 2, 3)
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None) or user_level > 1:
+        # May need to change where we redirect them in the future
+        return redirect("/")
+    # Make sure they got here with post
+    if request.method == 'POST':
+
+        # Get our params
+        animalID: int = request.form['animalID']
+        pound: int = request.form['pound']
+        rescue: int = request.form['rescue']
+        supervisor: int = request.form['supervisor']
+
+        # Get the database engine and create a session
+        engine = db.get_db_engine()
+        db_session = (sessionmaker(bind=engine))()
+
+        # Get our animal from the database
+        animal = db_session.query(db.Animals).filter_by(
+            animalID=animalID).first()
+        # Update values
+        animal.notes = request.form['notes']
+        # Check if pound was set
+        print(pound)
+        if (pound != -1):
+            animal.poundID = pound
+        # Check if rescue was set
+        if (rescue != -1):
+            animal.rescueID = rescue
+        # Check if supervisor was set
+        if (supervisor != -1):
+            animal.supervisor = supervisor
+        db_session.commit()
+        db_session.close()
 
     return redirect(f"/gallery?viewid={animalID}")
