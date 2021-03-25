@@ -75,42 +75,42 @@ def visual_image1_png():
         # Make sure each one is not 0 before dividing. 
         # 0 Means none of that type were found in that period
         # Stage 1
-        if row.animalsCompStage1 == 0:
+        if row.animalsCompStage1 != 0:
             stage1[x] = (row.totalDaysCompStage1/row.animalsCompStage1)
         else:
             stage1[x] = 0
         # Stage 2
-        if row.animalsCompStage2 == 0:
+        if row.animalsCompStage2 != 0:
             stage2[x] = (row.totalDaysCompStage2/row.animalsCompStage2)
         else:
             stage1[x] = 0
         # Stage 3
-        if row.animalsCompStage3 == 0:
+        if row.animalsCompStage3 != 0:
             stage3[x] = (row.totalDaysCompStage3/row.animalsCompStage3)
         else:
             stage1[x] = 0
         # Stage 4
-        if row.animalsCompStage4 == 0:
+        if row.animalsCompStage4 != 0:
             stage4[x] = (row.totalDaysCompStage4/row.animalsCompStage4)
         else:
             stage1[x] = 0
         # Stage 5
-        if row.animalsCompStage5 == 0:
+        if row.animalsCompStage5 != 0:
             stage5[x] = (row.totalDaysCompStage5/row.animalsCompStage5)
         else:
             stage1[x] = 0
         # Stage 6
-        if row.animalsCompStage6 == 0:
+        if row.animalsCompStage6 != 0:
             stage6[x] = (row.totalDaysCompStage6/row.animalsCompStage6)
         else:
             stage1[x] = 0
         # Stage 7
-        if row.animalsCompStage7 == 0:
+        if row.animalsCompStage7 != 0:
             stage7[x] = (row.totalDaysCompStage7/row.animalsCompStage7)
         else:
             stage1[x] = 0
         # Complete Duration
-        if row.totalStagesAmount == 0:
+        if row.totalStagesAmount != 0:
             total[x] = (row.totalStagesLength/row.totalStagesAmount)
         else:
             stage1[x] = 0
