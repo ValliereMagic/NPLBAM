@@ -37,9 +37,9 @@ def create_app():
     app.logger.handlers = gunicorn_logger.handlers
     app.logger.setLevel(gunicorn_logger.level)
     # Set debug mode to true CHANGE FOR PROD
-    app.debug = True
+    app.debug = False
     # Set testing mode to true CHANGE FOR PROD
-    app.testing = True
+    app.testing = False
     # Set the secret key from the config file
     app.secret_key = config.SECRET_KEY
     from . import (accounts, add_organization, animals, dashboard,
