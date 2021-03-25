@@ -2,29 +2,28 @@
 {% block css %}animals{% endblock %}
 {% block main %}
 <div>
-    <form>
+    <form  method="post" action="/accounts">
         <div>
             <label for="searchBy">Search By:</label>
             <select id="searchBy" name="searchBy">
-                <option value="ID" selected>ID</option>
-                <option value="Username">Name</option>
-                <option value="Access Level">Species</option>
-                <option value="Pound">Stage</option>
+                <option value="username" {% if (predetermined.search_by == "username") %} selected {% endif %} >Name</option>
+                <option value="userID"  {% if (predetermined.search_by == "userID") %} selected {% endif %}>ID</option>
+                <option value="userLVL"  {% if (predetermined.search_by == "userLVL") %} selected {% endif %}>Access Level</option>
+                <option value="poundID"  {% if (predetermined.search_by == "poundID") %} selected {% endif %}>Pound</option>
+                <option value="rescueID"  {% if (predetermined.search_by == "rescueID") %} selected {% endif %}>Rescue</option>
             </select>
             <input type="search" id="searchText" name="searchText">
         </div>
         <div>
             <label for="sortBy">Sort By:</label>
             <select id="sortBy" name="sortBy">
-                <option value="ID" selected>ID</option>
-                <option value="Username">Username</option>
-                <option value="Access">Access Level</option>
-                <option value="Pound">Pound</option>
+                <option value="userID" {% if (predetermined.sort_by == "userID") %} selected {% endif %}>ID</option>
+                <option value="Username" {% if (predetermined.sort_by == "Username") %} selected {% endif %}>Username</option>
             </select>
             <label for="asc">Asc</label>
-            <input checked="checked" type="radio" id="asc" name="order" value="asc">
+            <input {% if (predetermined.order == "asc") %} checked="checked" {% endif %}  type="radio" id="asc" name="order" value="asc">
             <label for="desc">Desc</label>
-            <input type="radio" id="desc" name="order" value="desc">
+            <input {% if (predetermined.order == "desc") %} checked="checked" {% endif %} type="radio" id="desc" name="order" value="desc">
             <button type="submit" name="refresh">Filter</button>    
         </div>
     </form>
@@ -49,5 +48,20 @@
         </tr>
     {% endfor %}
     </table>
+    <div>
+        {% if prev_url %}
+        <div id="button">
+            <a href="{{ prev_url }}">Back</a>
+        </div>
+        {% endif %}
+        <p>Page {{ page }}</p>
+        {% if next_url %}
+        <div id="button">
+            <a href="{{ next_url }}">Forward</a>
+        </div>
+        {% endif %}
+    </div>
+    <p>Total Pages - {{total_pages}}</p>
+    <p>Total Users - {{count}}</p>
 </div>
 {% endblock %}
