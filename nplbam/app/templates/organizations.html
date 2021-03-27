@@ -2,27 +2,28 @@
 {% block css %}animals{% endblock %}
 {% block main %}
 <div>
-    <form>
+    <form method="post" action="/organizations">
         <div>
             <label for="searchBy">Search By:</label>
             <select id="searchBy" name="searchBy">
-                <option value="ID" selected>ID</option>
-                <option value="name">Name</option>
+                <option value="ID"  {% if (predetermined.search_by == "ID") %} selected {% endif %}>ID</option>
+                <option value="name"  {% if (predetermined.search_by == "name") %} selected {% endif %}>Name</option>
             </select>
             <input type="search" id="searchText" name="searchText">
         </div>
         <div>
-            <label for="sortBy">Sort By:</label>
-            <select id="sortBy" name="sortBy">
-                <option value="ID" selected>ID</option>
-                <option value="Name">Name</option>
-            </select>
-            <label for="asc">Asc</label>
-            <input type="radio" id="asc" name="order" value="asc">
-            <label for="desc">Desc</label>
-            <input type="radio" id="desc" name="order" value="desc">
-            <button type="submit" name="refresh">Refresh</button>    
+            <label for="both">Both</label>
+            <input type="radio" id="both" name="display" value=0 {%
+                if (predetermined.display==0) %}checked {% endif %}/>
+            <label for="rescue">Rescue</label>
+            <input type="radio" id="rescue" name="display" value=1 {%
+                if (predetermined.display==1) %}checked {% endif %}/>
+            <label for="pound">Pound</label>
+            <input type="radio" id="pound" name="display" value=2 {%
+                if (predetermined.display==2) %}checked {% endif %}/>
+            <button type="submit" name="refresh">Refresh</button> 
         </div>
+         
     </form>
     <div id="button">
         <a href="add_organization">New Organization</a>
