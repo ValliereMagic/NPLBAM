@@ -7,7 +7,7 @@ import json
 import math
 from datetime import date
 
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from flask import url_for
 from sqlalchemy.orm import relationship, sessionmaker
@@ -32,6 +32,7 @@ def animals():
     global PER_PAGE
     # Make sure visitor is logged in
     if flask_session.get("userID", default=None) is None:
+        flash('Not logged in')
         return redirect("/")
 
     # Get the page # of the page.

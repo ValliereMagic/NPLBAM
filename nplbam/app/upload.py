@@ -5,8 +5,8 @@ import os
 import re
 from datetime import date
 
-from flask import (Blueprint, Response, current_app, redirect, render_template,
-                   request)
+from flask import (Blueprint, Response, current_app, flash, redirect,
+                   render_template, request)
 from flask import session as flask_session
 from sqlalchemy.orm import Query, relationship, sessionmaker
 from werkzeug.datastructures import FileStorage
@@ -24,6 +24,7 @@ def upload():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
         # Get list of animal types from json
     with open('nplbam/app/jsons/animal_species.json') as json_file:
@@ -39,11 +40,13 @@ def submit_csv():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
         user_ID: int = flask_session.get("userID", default=None)
         if (user_ID is None):
+            flash("Not logged in")
             return redirect("/")
         # Get post Param
         given_type = request.form['type']
@@ -60,6 +63,7 @@ def submit_csv():
 
         # If location is empty, then it must not be a correct type of species.
         if json_location == "":
+            flash("Could not find Animal Type")
             return redirect("/")
 
         # Open the JSON with the questions for dog
@@ -70,6 +74,7 @@ def submit_csv():
         file = FileStorage(request.files['csv_file'])
         # Check if file exists
         if file.filename == '':
+            flash("No File Given")
             return redirect("/")
 
         # Save the File
@@ -151,4 +156,5 @@ def submit_csv():
         # Delete the file from server. Do I deserve a biscuit?
         os.remove(os.path.join(
             current_app.config["UPLOAD_FOLDER"], server_filename))
+        flash("Animals Added by CSV")
         return redirect("/")
