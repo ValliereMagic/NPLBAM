@@ -6,7 +6,7 @@ stored animals, as well as advancing animals through the stages.
 import json
 from datetime import date
 
-from flask import Blueprint, redirect, render_template, request, flash
+from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy import engine
 from sqlalchemy.orm import sessionmaker
