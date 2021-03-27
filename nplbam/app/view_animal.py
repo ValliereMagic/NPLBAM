@@ -72,22 +72,19 @@ def view_animal():
     # Create a view string of the animal for easy copying and pasting.
     # Create a list of strings and add to the back of the list
     string_list = []
-    string_list.append('Name: "{}", Species: "{}"'.format(
+    string_list.append('Name: "{}"\nSpecies: "{}"\n'.format(
         animal_entry.name, animal_entry.animalType))
     # Go through each of the steps of the questions
     for step in questions:
         # Go through each of the subgroups of each step
         for subgroup in step["subgroups"]:
             # Display the subgroup
-            string_list.append("  {} [".format(subgroup["name"]))
+            string_list.append("\n{}".format(subgroup["name"]))
             check = True
             # Go through each question
             for question in subgroup["questions"]:
                 # If its first in the list, don't put a ,
-                if (check == True):
-                    check = False
-                else:
-                    string_list.append(",")
+                string_list.append("\n")
                 # Check each type of question
                 if question["type"] == "radio":
                     i = 0
@@ -95,7 +92,7 @@ def view_animal():
                     for answer in question["answers"]:
                         # Check if this is what they answered
                         if (predetermined[question["name"]] == i):
-                            string_list.append(' {}: "{}"'.format(
+                            string_list.append(' {}: {}'.format(
                                 question["label"], answer["label"]))
                         i += 1
                 # Go through text types
@@ -104,20 +101,20 @@ def view_animal():
                     if (question["label"] != "Name"):
                         # Don't display empty areas.
                         if (predetermined[question["name"]] != ""):
-                            string_list.append(' {}: "{}"'.format(
+                            string_list.append(' {}: {}'.format(
                                 question["label"], predetermined[question["name"]]))
                         else:
                             string_list.pop(-1)
-                    # Since name was taken out, we don't need next comma
+                    # Since name was taken out, we don't need next new line
                     else:
-                        check = True
+                        string_list.pop(-1)
                 # Go through each textarea
                 elif question["type"] == "textarea":
-                    string_list.append(' {}: "{}"'.format(
+                    string_list.append(' {}: {}'.format(
                         question["label"], predetermined[question["name"]]))
                 # Type if checkbox
                 elif question["type"] == "checkbox":
-                    string_list.append(' {}:"'.format(question["label"]))
+                    string_list.append(' {}: '.format(question["label"]))
                     check = True
                     # Only display the boxes that were checked
                     for answer in question["answers"]:
@@ -125,11 +122,11 @@ def view_animal():
                             if check == True:
                                 check = False
                             else:
-                                string_list.append(" ")
+                                string_list.append(", ")
                             string_list.append('{}'.format(answer["label"]))
-                    string_list.append('"')
-            # Add a ] to end the subgroup
-            string_list.append("]")
+                    string_list.append('')
+            # Add a \n to end the subgroup
+            string_list.append("\n")
     # Compile into single string.
     view_string = ''.join(string_list)
     # Create the form page dynamically using the add_animal template and the questions
