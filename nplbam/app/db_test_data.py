@@ -5,7 +5,7 @@ import time
 from datetime import date, timedelta
 
 import nacl.pwhash
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.sql.sqltypes import Boolean, String
 
@@ -227,6 +227,7 @@ def test_data():
             db_session.commit()
     # Close the database like a good boy
     db_session.close()
+    flash("Test Data Added")
     return redirect("/")
 
 
@@ -283,4 +284,5 @@ def test_data2():
         db_session.commit()
 
     db_session.close()
+    flash("Test 2 Data Added")
     return redirect("/")
