@@ -6,7 +6,7 @@ that were previously entered into the system.
 import json
 from datetime import date
 
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import sessionmaker
 
@@ -28,12 +28,14 @@ def edit_organization():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Check to see if proper Get Parameter
     editID = request.args.get('editid', default=None, type=int)
     orgType = request.args.get('type', default=None, type=int)
     # Make sure both are there
     if editID is None or orgType is None:
+        flash("No organization specified")
         return redirect("/organizations")
 
     # Need open the database.
@@ -72,15 +74,12 @@ def organization_edited():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
         if 'cancel' in request.form:
             return redirect("/organizations")
-        elif 'delete' in request.form:
-            # Still need to do
-            return redirect("/organizations")
-
         # Need open the database.
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
@@ -100,4 +99,5 @@ def organization_edited():
         db_session.commit()
         # Close the database like a good boy
         db_session.close()
+        flash("Organization Modified")
     return redirect("/organizations")

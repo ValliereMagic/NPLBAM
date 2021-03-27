@@ -5,7 +5,7 @@ within the system.
 
 from datetime import date
 
-from flask import Blueprint, redirect, render_template
+from flask import Blueprint, flash, redirect, render_template
 from flask import session as flask_session
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -24,6 +24,7 @@ def dashboard():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
+        flash("Not authorized")
         # May need to change where we redirect them in the future
         return redirect("/")
     # Get the list of animals from the database
@@ -33,8 +34,8 @@ def dashboard():
     animals_list = {}
     # Find the newest entries and put it in part 0
     animals_list[0] = db_session.query(db.Animals).\
-            order_by(db.Animals.stageDate.desc()).limit(5).all()
-    # For parts 1-8 add the oldest of each Stage(1-8) 
+        order_by(db.Animals.stageDate.desc()).limit(5).all()
+    # For parts 1-8 add the oldest of each Stage(1-8)
     for n in range(1, 9, 1):
         animals_list[n] = db_session.query(db.Animals).\
             filter(db.Animals.stage == n).\

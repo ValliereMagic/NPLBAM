@@ -7,7 +7,7 @@ cannot edit.
 import json
 from datetime import date
 
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import sessionmaker
 
@@ -25,13 +25,14 @@ def view_animal():
     """
     # Check if they are logged in
     if flask_session.get("userID", default=None) is None:
+        flash("Not authorized")
         return redirect("/")
 
     # Check to see if proper Get Parameter
     viewID = request.args.get('viewid', default=None, type=int)
     if viewID is None:
+        flash("No animal selected")
         return redirect("/animals")
-
 
     # Open the database.
     engine = db.get_db_engine()
@@ -52,6 +53,7 @@ def view_animal():
 
     # If location is empty, then it must not be a correct type of species.
     if json_location == "":
+        flash("Animal type not found")
         return redirect("/")
 
     # Open the JSON with the questions for dog
@@ -150,6 +152,7 @@ def animal_viewed():
     """
     # Make sure visitor is logged in
     if flask_session.get("userID", default=None) is None:
+        flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':

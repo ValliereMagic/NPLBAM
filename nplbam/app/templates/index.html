@@ -15,11 +15,21 @@
             No Paw Left Behind
         </div>
         <div class="links">
-            <a href="https://www.facebook.com/NPLBDogs">Facebook</a>
             <a href="https://nopawleftbehind.ca">Main Site</a>
         </div>
     </header>
     <main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class=flashes>
+                <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
         <div>
             <form method="post" class="login">
                 <div>

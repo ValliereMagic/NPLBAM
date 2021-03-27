@@ -6,7 +6,7 @@ stored animals, as well as advancing animals through the stages.
 import json
 from datetime import date
 
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy import engine
 from sqlalchemy.orm import sessionmaker
@@ -26,11 +26,13 @@ def gallery():
     """
     # Check if they are logged in
     if flask_session.get("userID", default=None) is None:
+        flash("Not authorized")
         return redirect("/")
 
     # Check to see if proper Get Parameter
     viewID = request.args.get('viewid', default=None, type=int)
     if viewID is None:
+        flash("Incorrect animal ID")
         return redirect("/animals")
 
     # Open the database.
@@ -104,6 +106,7 @@ def stage_updated():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
@@ -136,6 +139,7 @@ def stage_updated():
 
                 db_session.commit()
             db_session.close()
+            flash("Substages Updated")
 
     return redirect(f"/gallery?viewid={animalID}")
 
@@ -178,7 +182,7 @@ def stage_completed():
             # Update the animal
             db_session.commit()
             db_session.close()
-
+    flash("Stage Updated")
     return redirect(f"/gallery?viewid={animalID}")
 
 
@@ -189,6 +193,7 @@ def gallery_info_updated():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
@@ -218,5 +223,5 @@ def gallery_info_updated():
             animal.supervisor = supervisor
         db_session.commit()
         db_session.close()
-
+    flash("Info updated")
     return redirect(f"/gallery?viewid={animalID}")
