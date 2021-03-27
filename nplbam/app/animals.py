@@ -58,14 +58,14 @@ def animals():
     # Otherwise make defaults
     else:
         predetermined["search_by"] = str(
-            request.args.get('search_by', "animalID"))
+            request.args.get('search_by', "name"))
         predetermined["search"] = str(request.args.get('search', ""))
         predetermined["sort_by"] = str(request.args.get('sort_by', "animalID"))
         predetermined["order"] = str(request.args.get('order', "asc"))
         predetermined["hide_stuff"] = request.args.get(
             'hide_stuff', 1, type=int)
 
-    # Get the list of animals from the database
+    # create engine for the database
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
 
@@ -116,8 +116,8 @@ def animals():
             for q in animal.textAnswers:
                 if (q.questionName == "breed"):
                     break
-        # Close the session
-        db_session.close()
+    # Close the session
+    db_session.close()
 
     # Creates the urls for the pagination
     next_url = None
