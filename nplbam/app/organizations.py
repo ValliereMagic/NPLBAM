@@ -4,7 +4,7 @@ that currently exist within the system.
 """
 
 import nacl.pwhash
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -26,6 +26,7 @@ def organizations():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Get the list of animals from the database
     engine = db.get_db_engine()

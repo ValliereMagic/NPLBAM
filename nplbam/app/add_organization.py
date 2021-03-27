@@ -6,7 +6,7 @@ Organizations in the system.
 import json
 from datetime import date
 
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import sessionmaker
 
@@ -27,6 +27,7 @@ def add_organization():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
 
     return render_template("add_organization.html", title="Add Org")
@@ -43,6 +44,7 @@ def organization_added():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
@@ -65,4 +67,5 @@ def organization_added():
         db_session.commit()
         # Close the database like a good boy
         db_session.close()
+        flash("Organization Added")
     return redirect("/organizations")

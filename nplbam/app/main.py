@@ -8,7 +8,8 @@ from datetime import datetime
 
 import nacl.exceptions
 import nacl.pwhash
-from flask import Blueprint, current_app, redirect, render_template, request
+from flask import (Blueprint, current_app, flash, redirect, render_template,
+                   request)
 from flask import session as flask_session
 from flask import url_for
 from sqlalchemy.orm import Query, Session, relationship, sessionmaker
@@ -87,6 +88,7 @@ def index():
             flask_session.clear()
             flask_session["userID"] = user_entry.userID
             flask_session["userLVL"] = user_entry.userLVL
+            flash("Login Successful")
             return redirect("animals")
         else:
             return render_template("index.html", errors=errors)

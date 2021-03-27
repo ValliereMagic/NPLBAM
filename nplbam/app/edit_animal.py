@@ -6,7 +6,7 @@ previously entered into the system.
 import json
 from datetime import date
 
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import sessionmaker
 
@@ -29,12 +29,13 @@ def edit_animal():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 3:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Check to see if proper Get Parameter
     editID = request.args.get('editid', default=None, type=int)
     if editID is None:
+        flash("Invalid Animal ID")
         return redirect("/animals")
-
 
     # Open the database.
     engine = db.get_db_engine()
@@ -43,8 +44,7 @@ def edit_animal():
     # Find the animal we are editting
     animal_entry = db_session.query(
         db.Animals).filter_by(animalID=editID).first()
-   
- 
+
     # Open Json with the different species
     with open('nplbam/app/jsons/animal_species.json') as json_file:
         species = json.load(json_file)
@@ -57,13 +57,13 @@ def edit_animal():
 
     # If location is empty, then it must not be a correct type of species.
     if json_location == "":
+        flash("Could not find Animal Type")
         return redirect("/")
 
     # Open the JSON with the questions for dog
     with open(json_location) as json_file:
         questions = json.load(json_file)
-  
-      
+
     # Get a list of all the predetermined answers stored in the relationship
     predetermined = {}
     predetermined["name"] = animal_entry.name
@@ -76,8 +76,8 @@ def edit_animal():
     # Close the database like a good boy
         db_session.close()
     # Create the form page dynamically using the add_animal template and the questions
-    return render_template("edit_animal.html", animalID=editID, questions=questions, 
-        title="Edit {}".format(animal_entry.name), predetermined=predetermined, species=animal_entry.animalType)
+    return render_template("edit_animal.html", animalID=editID, questions=questions,
+                           title="Edit {}".format(animal_entry.name), predetermined=predetermined, species=animal_entry.animalType)
 
 # Route to view animal page.
 
@@ -96,6 +96,7 @@ def animal_edited():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 3:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
@@ -114,6 +115,7 @@ def animal_edited():
 
         # If location is empty, then it must not be a correct type of species.
         if json_location == "":
+            flash("Could not find animal type")
             return redirect("/")
 
         # Open the JSON with the questions for dog
@@ -177,4 +179,5 @@ def animal_edited():
             animal.animalID, uploaded_files_list, errors)
         # Close the database like a good boy
         db_session.close()
+        flash("Animal information modified")
     return redirect("/animals")

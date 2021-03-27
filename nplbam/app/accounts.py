@@ -3,7 +3,7 @@ This module Deals with he pages that create, and edit accounts.
 """
 
 import nacl.pwhash
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import Query, relationship, sessionmaker
 
@@ -25,6 +25,7 @@ def query():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level != 0:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Get the list of user accounts from the database
     engine = db.get_db_engine()
@@ -70,6 +71,7 @@ def new_account():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level != 0:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Pull the rescue and pound info to populate the form with
     rescue_pound_info: dict = pull_pounds_and_rescue_info()
@@ -109,6 +111,7 @@ def new_account():
         # Commit the changes and close
         db_session.commit()
         db_session.close()
+        flash("Account Created")
         return redirect("/accounts")
     else:
         return redirect("/")
@@ -125,6 +128,7 @@ def edit_account():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level != 0:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # User is requesting the form to edit their user account:
     if request.method == "GET":
@@ -133,6 +137,7 @@ def edit_account():
             'account_id', default=None, type=int)
         # Otherwise redirect them to the accounts page. We have nothing to edit.
         if account_id is None:
+            flash("Incorrect account")
             return redirect("/accounts")
         # Set the actively_editing id in the session
         flask_session["actively_editing"] = account_id
@@ -201,6 +206,7 @@ def edit_account():
         db_session.commit()
         db_session.close()
         flask_session["actively_editing"] = None
+        flash("Account Modified")
         return redirect("/accounts")
     else:
         flask_session["actively_editing"] = None

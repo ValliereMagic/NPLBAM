@@ -9,7 +9,7 @@ from logging import error
 
 import nacl.exceptions
 import nacl.pwhash
-from flask import Blueprint, redirect, render_template, request
+from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import Query, relationship, sessionmaker
 
@@ -27,6 +27,7 @@ def options():
     # Make sure the user exists
     user_level: int = flask_session.get("userLVL", default=None)
     if (user_level is None):
+        flash("Not authorized")
         return redirect("/")
     errors: list = []
     return render_template("options.html", title="Options", errors=errors)
@@ -42,6 +43,7 @@ def change_password():
     # Make sure the user exists
     user_level: int = flask_session.get("userLVL", default=None)
     if (user_level is None):
+        flash("Not authorized")
         return redirect("/")
     if request.method == 'POST':
         errors: list = []
@@ -102,4 +104,5 @@ def change_password():
             db_session.commit()
             # Close the session like a good boy
             db_session.close()
+            flash("Password Changed")
             return redirect("/")

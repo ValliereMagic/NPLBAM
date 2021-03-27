@@ -3,7 +3,8 @@ from datetime import date
 
 import matplotlib.pyplot as plt
 import numpy as np
-from flask import Blueprint, Response, redirect, render_template, request
+from flask import (Blueprint, Response, flash, redirect, render_template,
+                   request)
 from flask import session as flask_session
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -13,16 +14,17 @@ from .db import db
 
 bp = Blueprint('visualize', __name__, url_prefix="")
 
+
 @bp.route("/visualize")
 def visualize():
     # Make sure the user is userLVL 0 or 1
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
+        flash("Not authorized")
         # May need to change where we redirect them in the future
         return redirect("/")
     return render_template("visualize.html", title="Visualize")
-
 
 
 @bp.route("/visual_durations.png")
@@ -36,33 +38,34 @@ def visual_image1_png():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Open a database session
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
-    
-    # Pull the last 6 months of data. 
-    # This will return a list (of up to 6) of the Class MetaInformation (from db.py) 
+
+    # Pull the last 6 months of data.
+    # This will return a list (of up to 6) of the Class MetaInformation (from db.py)
     data_list = db_session.query(db.MetaInformation).\
         order_by(db.MetaInformation.year.desc(), db.MetaInformation.month.desc()).\
         limit(6).all()
-    
+
     # Close the database like a good boy
     db_session.close()
 
     # Get the length of our list
-    x = len(data_list)    
+    x = len(data_list)
 
     # create empty numpy arrays to hold our values for visualization
     months = np.empty(x, dtype=object)
     stage1 = np.empty(x, dtype=float)
-    stage2 = np.empty(x, dtype=float)    
-    stage3 = np.empty(x, dtype=float)    
-    stage4 = np.empty(x, dtype=float)    
-    stage5 = np.empty(x, dtype=float)    
-    stage6 = np.empty(x, dtype=float)    
-    stage7 = np.empty(x, dtype=float) 
-    total = np.empty(x, dtype=float)   
+    stage2 = np.empty(x, dtype=float)
+    stage3 = np.empty(x, dtype=float)
+    stage4 = np.empty(x, dtype=float)
+    stage5 = np.empty(x, dtype=float)
+    stage6 = np.empty(x, dtype=float)
+    stage7 = np.empty(x, dtype=float)
+    total = np.empty(x, dtype=float)
 
     # Go row by row in our list taken from the database and put them in the arrays
     for row in data_list:
@@ -72,7 +75,7 @@ def visual_image1_png():
         # Month as an number with 1 leading 0
         months[x] = "{:02d}".format(row.month)
         # Figure out the average by taking total amount / #of animals
-        # Make sure each one is not 0 before dividing. 
+        # Make sure each one is not 0 before dividing.
         # 0 Means none of that type were found in that period
         # Stage 1
         if row.animalsCompStage1 != 0:
@@ -122,7 +125,8 @@ def visual_image1_png():
     # Add a y label
     fig.text(0.5, 0.04, 'Month', ha='center', va='center', fontsize='large')
     # Add a x label
-    fig.text(0.06, 0.5, 'Average Duration (Days)', ha='center', va='center', rotation='vertical', fontsize='large')
+    fig.text(0.06, 0.5, 'Average Duration (Days)', ha='center',
+             va='center', rotation='vertical', fontsize='large')
     # Add a note at the bottom left for the date
     fig.text(0, 0, 'Created on {}'.format(date.today()))
     # Set axis plots with our data

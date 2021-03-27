@@ -5,7 +5,8 @@ This module deals with adding a new animal to the system.
 import json
 from datetime import date
 
-from flask import Blueprint, current_app, redirect, render_template, request
+from flask import (Blueprint, current_app, flash, redirect, render_template,
+                   request)
 from flask import session as flask_session
 from sqlalchemy.orm import sessionmaker
 
@@ -27,9 +28,11 @@ def new_animal():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 3:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Make sure they got here through post
     if request.method != 'POST':
+        flash("Did not use POST")
         return redirect("/")
     # Get post Param
     given_type = request.form['type']
@@ -43,9 +46,10 @@ def new_animal():
     for entry in species:
         if (entry["name"] == given_type):
             json_location = "nplbam/app/jsons/" + entry["questions"]
-    
+
     # If location is empty, then it must not be a correct type of species.
     if json_location == "":
+        flash("Could not find Animal Type")
         return redirect("/")
 
     # Open the JSON with the questions for dog
@@ -66,6 +70,7 @@ def animal_added():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 3:
         # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
@@ -92,6 +97,7 @@ def animal_added():
 
             # If location is empty, then it must not be a correct type of species.
             if json_location == "":
+                flash("Could not find animal type")
                 return redirect("/")
 
             # Open the JSON with the questions for dog
@@ -164,4 +170,5 @@ def animal_added():
                 new.animalID, uploaded_files_list, errors)
             # Close the database like a good boy
             db_session.close()
+            flash("Animal Added")
     return redirect("/animals")
