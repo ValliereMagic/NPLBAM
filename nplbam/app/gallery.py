@@ -203,7 +203,6 @@ def gallery_info_updated():
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
 
-        print(type(pound))
         # Get our animal from the database
         animal = db_session.query(db.Animals).filter_by(
             animalID=animalID).first()
