@@ -36,7 +36,6 @@ def accounts():
         return redirect("/")
 
     # Get the page # of the page.
-        # Get the page # of the page.
     page = request.args.get('page', 1, type=int)
 
     predetermined = {}
