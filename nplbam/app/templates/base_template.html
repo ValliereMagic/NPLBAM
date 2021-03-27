@@ -5,7 +5,7 @@
         <title>NPLB - {{ title }}</title>
         <link rel="stylesheet" href="static/css/normalize.css" />
         <link rel="stylesheet" href="static/css/{% block css %}{% endblock %}.css" />
-        <script type="text/javascript" src="static/js/{% block js %}{% endblock %}.js"></script>
+        {% block js %}<script type="text/javascript" src="static/js/.js"></script>{% endblock %}
     </head>
     <body>
         <header>
