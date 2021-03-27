@@ -1,10 +1,12 @@
 """
 This module Deals with he pages that create, and edit accounts.
 """
+import math
 
 import nacl.pwhash
 from flask import Blueprint, redirect, render_template, request
 from flask import session as flask_session
+from flask import url_for
 from sqlalchemy.orm import Query, relationship, sessionmaker
 
 from . import account_tools
@@ -12,26 +14,94 @@ from .db import db
 
 bp = Blueprint('accounts', __name__, url_prefix="")
 
+# Pagination constant, signifying how many animals are to be shown on
+# each page.
+PER_PAGE = 10.0
 
-@bp.route("/accounts")
-def query():
+
+@bp.route("/accounts", methods=['POST', 'GET'])
+def accounts():
     """
     Page URL: /accounts
     This page shows the Admin user a list of all the accounts
     that currently exist in the system.
     """
+    global PER_PAGE
+
     # Make sure the user is userLVL 0
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level != 0:
         # May need to change where we redirect them in the future
         return redirect("/")
+
+    # Get the page # of the page.
+    page = request.args.get('page', 1, type=int)
+
+    predetermined = {}
+    # Get Post Params
+    if request.method == 'POST':
+        predetermined["search_by"] = request.form['searchBy']
+        predetermined["search"] = request.form['searchText']
+        predetermined["sort_by"] = request.form['sortBy']
+        predetermined["order"] = request.form['order']
+        # If its an ID we're searching for make sure its an int
+        if ((predetermined["search_by"] != "username") and
+                (predetermined["search"] != "")):
+            try:
+                predetermined["search"] = int(predetermined["search"])
+            except ValueError:
+                predetermined["search"] = ""
+    # Otherwise make defaults
+    else:
+        predetermined["search_by"] = str(
+            request.args.get('search_by', "username"))
+        predetermined["search"] = str(request.args.get('search', ""))
+        predetermined["sort_by"] = str(request.args.get('sort_by', "userID"))
+        predetermined["order"] = str(request.args.get('order', "asc"))
+
     # Get the list of user accounts from the database
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
-    accounts_list = db_session.query(db.Users).all()
+
+    # Query animal list based on dynamaic variables
+    _search = getattr(db.Users, predetermined["search_by"])
+    _sort = getattr(db.Users, predetermined["sort_by"])
+    _sort = getattr(_sort, predetermined["order"])
+
+    # If search is blank don't filter
+    if (predetermined["search"] != ""):
+        search_text = "%{}%".format(predetermined["search"])
+        accounts_list = db_session.query(db.Users).\
+            filter(_search.ilike(search_text)).\
+            order_by(_sort())
+    else:
+        accounts_list = db_session.query(db.Users)
+
+    count = accounts_list.count()
+    total_pages = math.ceil(count / PER_PAGE)
+    # Check if we have a page with info on it.
+    if (total_pages >= page):
+        accounts_list = accounts_list[(int)(
+            (page-1) * PER_PAGE): (int)(page * PER_PAGE)]
+
+    # Close the session like a good boy.
     db_session.close()
-    return render_template("accounts.html", title="Accounts", accounts=accounts_list)
+
+    # Creates the urls for the pagination
+    next_url = None
+    prev_url = None
+    if (total_pages > page):
+        next_page = page + 1
+        next_url = url_for('accounts.accounts', page=next_page, search_by=predetermined["search_by"],
+                           search=predetermined["search"], sort_by=predetermined["sort_by"], order=predetermined["order"])
+    if (page > 1):
+        prev_url = url_for('accounts.accounts', page=page-1, search_by=predetermined["search_by"],
+                           search=predetermined["search"], sort_by=predetermined["sort_by"], order=predetermined["order"])
+
+    return render_template("accounts.html", title="Accounts", accounts=accounts_list,
+                           next_url=next_url, prev_url=prev_url, page=page, total_pages=total_pages,
+                           count=count, predetermined=predetermined)
 
 
 def pull_pounds_and_rescue_info() -> dict:
