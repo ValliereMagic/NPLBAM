@@ -194,10 +194,10 @@ def gallery_info_updated():
     if request.method == 'POST':
 
         # Get our params
-        animalID: int = request.form['animalID']
-        pound: int = request.form['pound']
-        rescue: int = request.form['rescue']
-        supervisor: int = request.form['supervisor']
+        animalID: int = (int)(request.form['animalID'])
+        pound: int = (int)(request.form['pound'])
+        rescue: int = (int)(request.form['rescue'])
+        supervisor: int = (int)(request.form['supervisor'])
 
         # Get the database engine and create a session
         engine = db.get_db_engine()
@@ -208,8 +208,6 @@ def gallery_info_updated():
             animalID=animalID).first()
         # Update values
         animal.notes = request.form['notes']
-        # Check if pound was set
-        print(pound)
         if (pound != -1):
             animal.poundID = pound
         # Check if rescue was set
