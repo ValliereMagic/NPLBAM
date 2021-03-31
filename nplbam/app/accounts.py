@@ -4,7 +4,8 @@ This module Deals with he pages that create, and edit accounts.
 import math
 
 import nacl.pwhash
-from flask import Blueprint, flash, redirect, render_template, request
+from flask import (Blueprint, current_app, flash, redirect, render_template,
+                   request)
 from flask import session as flask_session
 from flask import url_for
 from sqlalchemy.orm import Query, relationship, sessionmaker
@@ -182,6 +183,9 @@ def new_account():
         db_session.commit()
         db_session.close()
         flash("Account Created")
+        current_app.logger.info("New user with username: {} "
+                                "created by ID: {}".format(
+                                    account.username, flask_session["userID"]))
         return redirect("/accounts")
     else:
         return redirect("/")
@@ -277,6 +281,8 @@ def edit_account():
         db_session.close()
         flask_session["actively_editing"] = None
         flash("Account Modified")
+        current_app.logger.info("Account ID: {} Edited by ID: {}".format(
+            account_id, flask_session["userID"]))
         return redirect("/accounts")
     else:
         flask_session["actively_editing"] = None

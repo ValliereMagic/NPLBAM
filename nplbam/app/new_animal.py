@@ -171,4 +171,7 @@ def animal_added():
             # Close the database like a good boy
             db_session.close()
             flash("Animal Added")
+            current_app.logger.info(
+                "An animal was added to the "
+                "system by user ID: {}".format(flask_session["userID"]))
     return redirect("/animals")
