@@ -6,7 +6,8 @@ previously entered into the system.
 import json
 from datetime import date
 
-from flask import Blueprint, flash, redirect, render_template, request
+from flask import (Blueprint, current_app, flash, redirect, render_template,
+                   request)
 from flask import session as flask_session
 from sqlalchemy.orm import sessionmaker
 
@@ -180,4 +181,6 @@ def animal_edited():
         # Close the database like a good boy
         db_session.close()
         flash("Animal information modified")
+        current_app.logger.info("Animal: {} Edited by user ID: {}".format(
+            request.form['name'], flask_session["userID"]))
     return redirect("/animals")

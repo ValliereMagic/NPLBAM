@@ -6,7 +6,8 @@ stored animals, as well as advancing animals through the stages.
 import json
 from datetime import date
 
-from flask import Blueprint, flash, redirect, render_template, request
+from flask import (Blueprint, current_app, flash, redirect, render_template,
+                   request)
 from flask import session as flask_session
 from sqlalchemy import engine
 from sqlalchemy.orm import sessionmaker
@@ -140,6 +141,9 @@ def stage_updated():
                 db_session.commit()
             db_session.close()
             flash("Substages Updated")
+            current_app.logger.info("Substages of animal ID: {} "
+                                    "edited by user ID: {}".format(
+                                        animalID, flask_session["userID"]))
 
     return redirect(f"/gallery?viewid={animalID}")
 
@@ -176,6 +180,7 @@ def stage_completed():
                 animal.stage += 1
             elif animal.stage > 8:
                 animal.stage = 8
+            animal_stage: int = animal.stage
             # Set the date
             animal.stageDate = today
 
@@ -183,11 +188,16 @@ def stage_completed():
             db_session.commit()
             db_session.close()
     flash("Stage Updated")
+    current_app.logger.info("Animal ID: {} Updated to Stage: {} "
+                            "by user ID: {}".format(animalID, animal_stage, flask_session["userID"]))
     return redirect(f"/gallery?viewid={animalID}")
 
 
 @bp.route("/gallery_info_updated", methods=['GET', 'POST'])
 def gallery_info_updated():
+    """
+    Update animal information within the gallery page
+    """
     # Make sure the user's userLVL is in (0, 1, 2, 3)
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
@@ -197,7 +207,6 @@ def gallery_info_updated():
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
-
         # Get our params
         animalID: int = (int)(request.form['animalID'])
         pound: int = (int)(request.form['pound'])
@@ -209,8 +218,9 @@ def gallery_info_updated():
         db_session = (sessionmaker(bind=engine))()
 
         # Get our animal from the database
-        animal = db_session.query(db.Animals).filter_by(
+        animal: db.Animals = db_session.query(db.Animals).filter_by(
             animalID=animalID).first()
+        animal_name: str = animal.name
         # Update values
         animal.notes = request.form['notes']
         if (pound != -1):
@@ -224,4 +234,6 @@ def gallery_info_updated():
         db_session.commit()
         db_session.close()
     flash("Info updated")
+    current_app.logger.info("Information for animal: {} "
+                            "updated by user ID: {}".format(animal_name, flask_session["userID"]))
     return redirect(f"/gallery?viewid={animalID}")
