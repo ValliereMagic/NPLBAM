@@ -6,7 +6,8 @@ that were previously entered into the system.
 import json
 from datetime import date
 
-from flask import Blueprint, flash, redirect, render_template, request
+from flask import (Blueprint, current_app, flash, redirect, render_template,
+                   request)
 from flask import session as flask_session
 from sqlalchemy.orm import sessionmaker
 
@@ -100,4 +101,6 @@ def organization_edited():
         # Close the database like a good boy
         db_session.close()
         flash("Organization Modified")
+        current_app.logger.info("Organization: {} Modified by User ID: {}".format(
+            name, flask_session["userID"]))
     return redirect("/organizations")

@@ -9,7 +9,8 @@ from logging import error
 
 import nacl.exceptions
 import nacl.pwhash
-from flask import Blueprint, flash, redirect, render_template, request
+from flask import (Blueprint, current_app, flash, redirect, render_template,
+                   request)
 from flask import session as flask_session
 from sqlalchemy.orm import Query, relationship, sessionmaker
 
@@ -105,4 +106,6 @@ def change_password():
             # Close the session like a good boy
             db_session.close()
             flash("Password Changed")
+            current_app.logger.info(
+                "User ID: {} changed their password.".format(flask_session["userID"]))
             return redirect("/")
