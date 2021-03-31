@@ -157,4 +157,6 @@ def submit_csv():
         os.remove(os.path.join(
             current_app.config["UPLOAD_FOLDER"], server_filename))
         flash("Animals Added by CSV")
+        current_app.logger.info("Some animals were added via "
+                                "CSV by User ID: {}".format(flask_session["userID"]))
         return redirect("/")
