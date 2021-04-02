@@ -112,41 +112,38 @@ def stage_updated():
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
-        if 'cancel' in request.form:
-            redirect("/animals")
-        else:
-            engine = db.get_db_engine()
-            db_session = (sessionmaker(bind=engine))()
-            # Get animalID
-            animalID: int = request.form['animalID']
-            # Get stage number
-            stageNum: int = request.form['stage']
-            # Get substage number
-            substages = [int(i) for i in request.form.getlist("substage")]
-            # Get notes
-            notes = request.form.getlist("notes")
-            # Get todays date
-            completionDate: date = date.today()
-            # If go through each substage in form and if it is new add it otherwise update it
-            for substageNum in substages:
-                substage = db_session.query(db.StageInfo).filter_by(
-                    animalID=animalID, stageNum=stageNum, substageNum=substageNum).first()
-                if substage is None:
-                    new = db.StageInfo(animalID=animalID, stageNum=stageNum, substageNum=substageNum,
-                                       completionDate=completionDate, note=notes[substageNum - 1])
-                    db_session.add(new)
-                else:
-                    # Only update if new and old notes are different
-                    if str(notes[substageNum - 1]) != str(substage.note):
-                        substage.note = notes[substageNum - 1]
-                        substage.completionDate = completionDate
+        engine = db.get_db_engine()
+        db_session = (sessionmaker(bind=engine))()
+        # Get animalID
+        animalID: int = request.form['animalID']
+        # Get stage number
+        stageNum: int = request.form['stage']
+        # Get substage number
+        substages = [int(i) for i in request.form.getlist("substage")]
+        # Get notes
+        notes = request.form.getlist("notes")
+        # Get todays date
+        completionDate: date = date.today()
+        # If go through each substage in form and if it is new add it otherwise update it
+        for substageNum in substages:
+            substage = db_session.query(db.StageInfo).filter_by(
+                animalID=animalID, stageNum=stageNum, substageNum=substageNum).first()
+            if substage is None:
+                new = db.StageInfo(animalID=animalID, stageNum=stageNum, substageNum=substageNum,
+                                    completionDate=completionDate, note=notes[substageNum - 1])
+                db_session.add(new)
+            else:
+                # Only update if new and old notes are different
+                if str(notes[substageNum - 1]) != str(substage.note):
+                    substage.note = notes[substageNum - 1]
+                    substage.completionDate = completionDate
 
-                db_session.commit()
-            db_session.close()
-            flash("Substages Updated")
-            current_app.logger.info("Substages of animal ID: {} "
-                                    "edited by user ID: {}".format(
-                                        animalID, flask_session["userID"]))
+            db_session.commit()
+        db_session.close()
+        flash("Substages Updated")
+        current_app.logger.info("Substages of animal ID: {} "
+                                "edited by user ID: {}".format(
+                                    animalID, flask_session["userID"]))
 
     return redirect(f"/gallery?viewid={animalID}")
 
@@ -163,36 +160,33 @@ def stage_completed():
         # May need to change where we redirect them in the future
         return redirect("/")
     # Make sure they got here with post
-    if request.method == 'POST':
-        if 'cancel' in request.form:
-            redirect("/animals")
-        else:
-            engine = db.get_db_engine()
-            db_session = (sessionmaker(bind=engine))()
+    if request.method == 'POST':        
+        engine = db.get_db_engine()
+        db_session = (sessionmaker(bind=engine))()
 
-            # Get animalID from form
-            animalID: int = request.form['animalID']
-            # Get todays date
-            today: date = date.today()
-            # Get the correct animal from the database
-            animal = db_session.query(db.Animals).filter_by(
-                animalID=animalID).first()
+        # Get animalID from form
+        animalID: int = request.form['animalID']
+        # Get todays date
+        today: date = date.today()
+        # Get the correct animal from the database
+        animal = db_session.query(db.Animals).filter_by(
+            animalID=animalID).first()
 
-            # Determine and set the new stage number
-            if animal.stage < 8:
-                animal.stage += 1
-            elif animal.stage > 8:
-                animal.stage = 8
-            animal_stage: int = animal.stage
-            # Set the date
-            animal.stageDate = today
+        # Determine and set the new stage number
+        if animal.stage < 8:
+            animal.stage += 1
+        elif animal.stage > 8:
+            animal.stage = 8
+        animal_stage: int = animal.stage
+        # Set the date
+        animal.stageDate = today
 
-            # Update the animal
-            db_session.commit()
-            db_session.close()
-    flash("Stage Updated")
-    current_app.logger.info("Animal ID: {} Updated to Stage: {} "
-                            "by user ID: {}".format(animalID, animal_stage, flask_session["userID"]))
+        # Update the animal
+        db_session.commit()
+        db_session.close()
+        flash("Stage Updated")
+        current_app.logger.info("Animal ID: {} Updated to Stage: {} "
+                                "by user ID: {}".format(animalID, animal_stage, flask_session["userID"]))
     return redirect(f"/gallery?viewid={animalID}")
 
 
