@@ -24,7 +24,7 @@ def visualize():
         flash("Not authorized")
         # May need to change where we redirect them in the future
         return redirect("/")
-    return render_template("visualize.html", title="Visualize")
+    return render_template("visualize.html", role=user_level, title="Visualize")
 
 
 @bp.route("/visual_durations.png")

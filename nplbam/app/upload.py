@@ -30,7 +30,7 @@ def upload():
     with open('nplbam/app/jsons/animal_species.json') as json_file:
         animal_types = json.load(json_file)
 
-    return render_template("csv.html", title="CSV", animal_types=animal_types)
+    return render_template("csv.html", role=user_level, title="CSV", animal_types=animal_types)
 
 
 @bp.route("/submit_csv", methods=['POST', 'GET'])

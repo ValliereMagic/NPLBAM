@@ -31,7 +31,7 @@ def options():
         flash("Not authorized")
         return redirect("/")
     errors: list = []
-    return render_template("options.html", title="Options", errors=errors)
+    return render_template("options.html", role=user_level, title="Options", errors=errors)
 
 
 @bp.route("/change_password", methods=("GET", "POST"))
@@ -96,7 +96,7 @@ def change_password():
         if (len(errors) > 0):
             # Close the session like a good boy
             db_session.close()
-            return render_template("options.html", title="Options", errors=errors)
+            return render_template("options.html", role=user_level, title="Options", errors=errors)
         else:
             # Add to Database
             user_entry.password = nacl.pwhash.str(

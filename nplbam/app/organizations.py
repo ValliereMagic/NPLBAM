@@ -76,5 +76,5 @@ def organizations():
             pounds_list = db_session.query(db.Pounds).all()
 
     db_session.close()
-    return render_template("organizations.html", title="Organizations", pounds=pounds_list,
+    return render_template("organizations.html", role=user_level, title="Organizations", pounds=pounds_list,
                            rescues=rescues_list, predetermined=predetermined)
