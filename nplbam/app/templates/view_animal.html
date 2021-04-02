@@ -67,7 +67,9 @@
             <textarea rows="10" readonly>{{view_string}}</textarea>        
             <div class="buttons">
                 <button type="submit" name="return" value="return">Return</button> 
+                {% if role < 4 %}
                 <button type="submit" name="edit" value="edit">Edit</button>   
+                {% endif %}
             </div>
         </form>
     </div>

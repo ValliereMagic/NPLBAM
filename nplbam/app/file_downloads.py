@@ -18,9 +18,9 @@ def download_file(filename: str):
     """
     # THESE PERMISSIONS WILL LIKELY NEED TO BE UPDATED
     # AND TAKE THINGS INTO ACCOUNT LIKE USER WHO UPLOADED THE FILE
-    # Make sure the user's userLVL is in (0, 1, 2, 3)
+    # Make sure the user's userLVL is in (0, 1)
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
-    if (user_level is None) or user_level > 3:
+    if (user_level is None) or user_level > 1:
         return redirect("/")
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)

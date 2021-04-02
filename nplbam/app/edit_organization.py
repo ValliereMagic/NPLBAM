@@ -60,7 +60,7 @@ def edit_organization():
     db_session.close()
 
     # Make the page using said information
-    return render_template("edit_organization.html", title="Edit Org", orgID=editID, predetermined=predetermined)
+    return render_template("edit_organization.html", title="Edit Org", role=user_level, orgID=editID, predetermined=predetermined)
 
 
 @bp.route("/organization_edited", methods=['GET', 'POST'])

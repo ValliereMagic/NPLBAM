@@ -15,7 +15,7 @@
             </div>
             <div class="links">
                 <!--Needs to be Hidden from non-NPLB -->
-                {% if title != "Dashboard" %}
+                {% if title != "Dashboard" and role < 1 %}
                     <a href="/dashboard">Dashboard</a>
                 {% endif %}
                 <!--Every User Can see and Use-->
@@ -23,10 +23,10 @@
                     <a href="/animals">Animals</a>
                 {% endif %}
                 <!--Needs to be Hidden from non-Admin -->
-                {% if title != "Accounts" %}
+                {% if title != "Accounts" and role < 1 %}
                     <a href="/accounts">Accounts</a>
                 {% endif %}
-                {% if title != "Organizations" %}
+                {% if title != "Organizations" and role < 2 %}
                     <a href="/organizations">Orgs</a>
                 {% endif %}
                 {% if title != "Options" %}
