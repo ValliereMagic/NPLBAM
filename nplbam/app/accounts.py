@@ -101,7 +101,7 @@ def accounts():
         prev_url = url_for('accounts.accounts', page=page-1, search_by=predetermined["search_by"],
                            search=predetermined["search"], sort_by=predetermined["sort_by"], order=predetermined["order"])
 
-    return render_template("accounts.html", title="Accounts", accounts=accounts_list,
+    return render_template("accounts.html", title="Accounts", role=user_level, accounts=accounts_list,
                            next_url=next_url, prev_url=prev_url, page=page, total_pages=total_pages,
                            count=count, predetermined=predetermined)
 
@@ -149,6 +149,7 @@ def new_account():
     # User is requesting the form to make a user page:
     if request.method == "GET":
         return render_template("new_account.html",
+                               role=user_level,
                                title="New Account",
                                rescue_pound_info=rescue_pound_info,
                                errors=[])
@@ -162,6 +163,7 @@ def new_account():
         # Check whether the user entered valid account data
         if not account.valid:
             return render_template("new_account.html",
+                                   role=user_level,
                                    title="New Account",
                                    rescue_pound_info=rescue_pound_info,
                                    errors=errors)
@@ -231,6 +233,7 @@ def edit_account():
         info["pound_id"] = user_to_edit.poundID
         # Show the form, displaying all the editable fields
         return render_template("edit_account.html",
+                               role=user_level,
                                title="Edit Account",
                                rescue_pound_info=pull_pounds_and_rescue_info(),
                                info=info,
@@ -247,6 +250,7 @@ def edit_account():
                 "Error. Account ID not passed correctly in hidden form field.")
             flask_session["actively_editing"] = None
             return render_template("error_page.html",
+                                   role=user_level,
                                    title="Account Error",
                                    redirect="/accounts",
                                    errors=errors)
@@ -257,6 +261,7 @@ def edit_account():
         if not account.valid:
             flask_session["actively_editing"] = None
             return render_template("error_page.html",
+                                   role=user_level,
                                    title="Account Error",
                                    redirect="/accounts",
                                    errors=errors)

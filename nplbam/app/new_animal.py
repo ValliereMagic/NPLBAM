@@ -56,7 +56,7 @@ def new_animal():
     with open(json_location) as json_file:
         questions = json.load(json_file)
     # Create the form page dynamically using the add_animal template and the questions
-    return render_template("add_animal.html", questions=questions,  title="Add Animal", species=given_type)
+    return render_template("add_animal.html", role=user_level, questions=questions,  title="Add Animal", species=given_type)
 
 
 @bp.route("/animal_added", methods=['GET', 'POST'])
@@ -75,7 +75,7 @@ def animal_added():
     # Make sure they got here with post
     if request.method == 'POST':
         if 'cancel' in request.form:
-            redirect("/animals")
+            return redirect("/animals")
         else:
             if ('save' in request.form):
                 animal_stage = 0
@@ -118,11 +118,15 @@ def animal_added():
             db_session.add(new)
             # Flush the session so we can get the autoincremented ID in new.animalID
             db_session.flush()
-            db_session.add(db.StageInfo(animalID=new.animalID,
-                                        stageNum=1,
-                                        substageNum=0,
-                                        completionDate=date.today(),
-                                        note="Created by user # {}".format(user_entry.userID)))
+
+            # If we submitted, add the correct substage as completed
+            if animal_stage == 1:
+                db_session.add(db.StageInfo(animalID=new.animalID,
+                                            stageNum=1,
+                                            substageNum=1,
+                                            completionDate=date.today(),
+                                            note="Created by user # {}".format(user_entry.userID)))
+
             # Go through the Json to get out find out which questions we asked
             for group in questions:
                 for subgroup in group["subgroups"]:
