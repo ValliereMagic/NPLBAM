@@ -32,6 +32,14 @@ def edit_animal():
         # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
+
+    # Get User ID
+    user_id: int = flask_session.get("userID", default=None)
+    # Make sure user ID is valid
+    if user_id is None:
+        flash('Not logged in')
+        return redirect("/")
+
     # Check to see if proper Get Parameter
     editID = request.args.get('editid', default=None, type=int)
     if editID is None:
@@ -45,6 +53,16 @@ def edit_animal():
     # Find the animal we are editting
     animal_entry = db_session.query(
         db.Animals).filter_by(animalID=editID).first()
+
+    # Check if user is a pound
+    if (user_level > 1):
+        # Find the user that is editting
+        user_entry = db_session.query(
+            db.Users).filter_by(userID=user_id).first()
+        # Check if they should have access
+        if ((animal_entry.poundID != user_entry.poundID) and (animal_entry.creator != user_id)):
+            flash("Not Authorized")
+            return redirect("/animals")
 
     # Open Json with the different species
     with open('nplbam/app/jsons/animal_species.json') as json_file:
@@ -77,7 +95,7 @@ def edit_animal():
     # Close the database like a good boy
         db_session.close()
     # Create the form page dynamically using the add_animal template and the questions
-    return render_template("edit_animal.html", animalID=editID, questions=questions,
+    return render_template("edit_animal.html", animalID=editID, questions=questions, role=user_level,
                            title="Edit {}".format(animal_entry.name), predetermined=predetermined, species=animal_entry.animalType)
 
 # Route to view animal page.
@@ -99,6 +117,14 @@ def animal_edited():
         # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
+
+    # Get User ID
+    user_id: int = flask_session.get("userID", default=None)
+    # Make sure user ID is valid
+    if user_id is None:
+        flash('Not logged in')
+        return redirect("/")
+
     # Make sure they got here with post
     if request.method == 'POST':
         # Get the species
@@ -126,12 +152,33 @@ def animal_edited():
         # Need to Add Data to database.
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
-        user_ID = flask_session.get("userID", default=None)
+
+        # Get user Entry
         user_entry = db_session.query(
-            db.Users).filter_by(userID=user_ID).first()
+            db.Users).filter_by(userID=user_id).first()
+
         # Update the Animal Entry
         animal = db_session.query(db.Animals).filter(
             db.Animals.animalID == request.form['animalId']).one()
+
+        # Check if user is a pound
+        if (user_level > 1):
+            # Check if they should have access
+            if ((animal.poundID != user_entry.poundID) and (animal.creator != user_id)):
+                flash("Not Authorized")
+                return redirect("/animals")
+
+        # Check if stage 0. If So move it to stage 1
+        if (animal.stage == 0):
+            animal.stage = 1
+            # Complete Stage 1 - 1
+            initial_stage = db.StageInfo(animalID=animal.animalID,
+                                         stageNum=1,
+                                         substageNum=1,
+                                         completionDate=date.today(),
+                                         note="Completed by {}".format(user_entry.username))
+            db_session.add(initial_stage)
+
         animal.name = request.form['name']
         # Go through the Json to get out find out which questions we asked
         for group in questions:

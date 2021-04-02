@@ -31,7 +31,7 @@ def add_organization():
         flash("Not authorized")
         return redirect("/")
 
-    return render_template("add_organization.html", title="Add Org")
+    return render_template("add_organization.html", role=user_level, title="Add Org")
 
 
 @bp.route("/organization_added", methods=['GET', 'POST'])
