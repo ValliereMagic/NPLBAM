@@ -117,21 +117,43 @@ def stage_updated():
         # Get animalID
         animalID: int = request.form['animalID']
         # Get stage number
-        stageNum: int = request.form['stage']
+        stageNum: int = int(request.form['stage'])
         # Get substage number
         substages = [int(i) for i in request.form.getlist("substage")]
         # Get notes
         notes = request.form.getlist("notes")
         # Get todays date
         completionDate: date = date.today()
+
+        # Meta table only needs for stage 8
+        if (stageNum == 8):
+            # Import tools for adding to meta table
+            from .metatable_tools import (get_metainformation_record)
+
+            # Get the most recent record (even if it needs to be created)
+            meta_info = get_metainformation_record(db_session)
+
         # If go through each substage in form and if it is new add it otherwise update it
         for substageNum in substages:
             substage = db_session.query(db.StageInfo).filter_by(
                 animalID=animalID, stageNum=stageNum, substageNum=substageNum).first()
             if substage is None:
                 new = db.StageInfo(animalID=animalID, stageNum=stageNum, substageNum=substageNum,
-                                    completionDate=completionDate, note=notes[substageNum - 1])
+                                   completionDate=completionDate, note=notes[substageNum - 1])
+                # Add a stage to the record
                 db_session.add(new)
+                # If stage 8, Set the meta table for outcomes
+                if (stageNum == 8):
+                    if (substageNum == 1):
+                        meta_info.totalOutcome1 += 1
+                    elif (substageNum == 2):
+                        meta_info.totalOutcome2 += 1
+                    elif (substageNum == 3):
+                        meta_info.totalOutcome3 += 1
+                    elif (substageNum == 4):
+                        meta_info.totalOutcome4 += 1
+                    elif (substageNum == 5):
+                        meta_info.totalOutcome5 += 1
             else:
                 # Only update if new and old notes are different
                 if str(notes[substageNum - 1]) != str(substage.note):
@@ -160,7 +182,7 @@ def stage_completed():
         # May need to change where we redirect them in the future
         return redirect("/")
     # Make sure they got here with post
-    if request.method == 'POST':        
+    if request.method == 'POST':
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
 
@@ -171,6 +193,42 @@ def stage_completed():
         # Get the correct animal from the database
         animal = db_session.query(db.Animals).filter_by(
             animalID=animalID).first()
+
+        # Import tools for adding to meta table
+        from .metatable_tools import (get_metainformation_record)
+
+        # Get the most recent record (even if it needs to be created)
+        meta_info = get_metainformation_record(db_session)
+
+        # Check which animal stage is currently is and put the meta info in
+        if animal.stage == 1:
+            meta_info.animalsCompStage1 += 1
+            meta_info.totalDaysCompStage1 += (date.today() -
+                                              animal.stageDate).days
+        elif animal.stage == 2:
+            meta_info.animalsCompStage2 += 1
+            meta_info.totalDaysCompStage2 += (date.today() -
+                                              animal.stageDate).days
+        elif animal.stage == 3:
+            meta_info.animalsCompStage3 += 1
+            meta_info.totalDaysCompStage3 += (date.today() -
+                                              animal.stageDate).days
+        elif animal.stage == 4:
+            meta_info.animalsCompStage4 += 1
+            meta_info.totalDaysCompStage4 += (date.today() -
+                                              animal.stageDate).days
+        elif animal.stage == 5:
+            meta_info.animalsCompStage5 += 1
+            meta_info.totalDaysCompStage5 += (date.today() -
+                                              animal.stageDate).days
+        elif animal.stage == 6:
+            meta_info.animalsCompStage6 += 1
+            meta_info.totalDaysCompStage6 += (date.today() -
+                                              animal.stageDate).days
+        elif animal.stage == 7:
+            meta_info.animalsCompStage7 += 1
+            meta_info.totalDaysCompStage7 += (date.today() -
+                                              animal.stageDate).days
 
         # Determine and set the new stage number
         if animal.stage < 8:
