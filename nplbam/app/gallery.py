@@ -26,7 +26,8 @@ def gallery():
     Page to view images and and limited information associated with animal
     """
     # Check if they are logged in
-    if flask_session.get("userID", default=None) is None:
+    user_level: int = flask_session.get("userLVL", default=None)
+    if (user_level is None) or user_level > 1:
         flash("Not authorized")
         return redirect("/")
 
@@ -93,7 +94,7 @@ def gallery():
     db_session.close()
 
     # Render the page
-    return render_template("gallery.html", animalID=viewID, title="View {}".format(animal_entry.name), info=info,
+    return render_template("gallery.html", animalID=viewID, role=user_level, title="View {}".format(animal_entry.name), info=info,
                            images=images, current_stage=animal_entry.stage, stage_info=stage_info, rescues=rescues_list, pounds=pounds_list, supervisors=supervisor_list)
 
 

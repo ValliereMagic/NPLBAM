@@ -10,6 +10,7 @@ from datetime import date
 from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from flask import url_for
+from sqlalchemy import or_
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.sql.sqltypes import Boolean, String
 
@@ -31,8 +32,17 @@ def animals():
     """
     global PER_PAGE
     # Make sure visitor is logged in
-    if flask_session.get("userID", default=None) is None:
+    user_id: int = flask_session.get("userID", default=None)
+    if user_id is None:
         flash('Not logged in')
+        return redirect("/")
+
+    # get user level
+    user_level: int = flask_session.get("userLVL", default=None)
+    # Rely on short circuit eval here...
+    if (user_level is None):
+        # May need to change where we redirect them in the future
+        flash("Not authorized")
         return redirect("/")
 
     # Get the page # of the page.
@@ -63,8 +73,12 @@ def animals():
         predetermined["search"] = str(request.args.get('search', ""))
         predetermined["sort_by"] = str(request.args.get('sort_by', "animalID"))
         predetermined["order"] = str(request.args.get('order', "asc"))
-        predetermined["hide_stuff"] = request.args.get(
-            'hide_stuff', 1, type=int)
+        # If user is not a pound/rescue. Default to hide info
+        if (user_level < 2):
+            predetermined["hide_stuff"] = request.args.get(
+                'hide_stuff', 1, type=int)
+        else:
+            predetermined["hide_stuff"] = 0
 
     # create engine for the database
     engine = db.get_db_engine()
@@ -74,33 +88,100 @@ def animals():
     _search = getattr(db.Animals, predetermined["search_by"])
     _sort = getattr(db.Animals, predetermined["sort_by"])
     _sort = getattr(_sort, predetermined["order"])
-    # If search is blank don't filter
-    if (predetermined["search"] != ""):
-        search_text = "%{}%".format(predetermined["search"])
-        # check if we should hide stage 0 and 8
-        if predetermined["hide_stuff"] == 1:
-            animals_list = db_session.query(db.Animals).\
-                filter(_search.ilike(search_text)).\
-                filter(db.Animals.stage != 0).filter(
-                    db.Animals.stage != 8).order_by(_sort())
+    # If user is level 0  or 1
+    if (user_level < 2):
+        # If search is blank don't filter
+        if (predetermined["search"] != ""):
+            search_text = "%{}%".format(predetermined["search"])
+            # check if we should hide stage 0 and 8
+            if predetermined["hide_stuff"] == 1:
+                animals_list = db_session.query(db.Animals).\
+                    filter(_search.ilike(search_text)).\
+                    filter(db.Animals.stage != 0).filter(
+                        db.Animals.stage != 8).order_by(_sort())
+            else:
+                animals_list = db_session.query(db.Animals).\
+                    filter(_search.ilike(search_text)).\
+                    order_by(_sort())
         else:
-            animals_list = db_session.query(db.Animals).\
-                filter(_search.ilike(search_text)).\
-                order_by(_sort())
+            # check if we should hide stage 0 and 8
+            if predetermined["hide_stuff"] == 1:
+                animals_list = db_session.query(db.Animals).\
+                    filter(db.Animals.stage != 0).filter(db.Animals.stage != 8).\
+                    order_by(_sort())
+            else:
+                animals_list = db_session.query(db.Animals).\
+                    order_by(_sort())
+    # User is 2 or 3. (Pounds)
+    elif (user_level < 4):
+        user_info = db_session.query(db.Users).filter(
+            db.Users.userID == user_id).first()
+        # If search is blank don't filter
+        if (predetermined["search"] != ""):
+            search_text = "%{}%".format(predetermined["search"])
+            # check if we should hide stage 0 and 8
+            if predetermined["hide_stuff"] == 1:
+                animals_list = db_session.query(db.Animals).\
+                    filter(or_(db.Animals.creator == user_id, db.Animals.poundID == user_info.poundID)).\
+                    filter(db.Animals.stage < 4).\
+                    filter(_search.ilike(search_text)).\
+                    filter(db.Animals.stage != 0).filter(
+                        db.Animals.stage != 8).order_by(_sort())
+            else:
+                animals_list = db_session.query(db.Animals).\
+                    filter(_search.ilike(search_text)).\
+                    filter(db.Animals.stage < 4).\
+                    filter(or_(db.Animals.creator == user_id, db.Animals.poundID == user_info.poundID)).\
+                    order_by(_sort())
+        else:
+            # check if we should hide stage 0 and 8
+            if predetermined["hide_stuff"] == 1:
+                animals_list = db_session.query(db.Animals).\
+                    filter(or_(db.Animals.creator == user_id, db.Animals.poundID == user_info.poundID)).\
+                    filter(db.Animals.stage < 4).\
+                    filter(db.Animals.stage != 0).filter(db.Animals.stage != 8).\
+                    order_by(_sort())
+            else:
+                animals_list = db_session.query(db.Animals).\
+                    filter(db.Animals.stage < 4).\
+                    filter(or_(db.Animals.creator == user_id, db.Animals.poundID == user_info.poundID)).\
+                    order_by(_sort())
+    # User level is 4/5 (Rescues)
     else:
-        # check if we should hide stage 0 and 8
-        if predetermined["hide_stuff"] == 1:
-            animals_list = db_session.query(db.Animals).\
-                filter(db.Animals.stage != 0).filter(db.Animals.stage != 8).\
-                order_by(_sort())
+        user_info = db_session.query(db.Users).filter(
+            db.Users.userID == user_id).first()
+        # If search is blank don't filter
+        if (predetermined["search"] != ""):
+            search_text = "%{}%".format(predetermined["search"])
+            # check if we should hide stage 0 and 8
+            if predetermined["hide_stuff"] == 1:
+                animals_list = db_session.query(db.Animals).\
+                    filter(db.Animals.rescueID == user_info.rescueID).\
+                    filter(_search.ilike(search_text)).\
+                    filter(db.Animals.stage != 0).filter(
+                        db.Animals.stage != 8).order_by(_sort())
+            else:
+                animals_list = db_session.query(db.Animals).\
+                    filter(_search.ilike(search_text)).\
+                    filter(db.Animals.rescueID == user_info.rescueID).\
+                    order_by(_sort())
         else:
-            animals_list = db_session.query(db.Animals).\
-                order_by(_sort())
+            # check if we should hide stage 0 and 8
+            if predetermined["hide_stuff"] == 1:
+                animals_list = db_session.query(db.Animals).\
+                    filter(db.Animals.rescueID == user_info.rescueID).\
+                    filter(db.Animals.stage != 0).filter(db.Animals.stage != 8).\
+                    order_by(_sort())
+            else:
+                animals_list = db_session.query(db.Animals).\
+                    filter(db.Animals.rescueID == user_info.rescueID).\
+                    order_by(_sort())
 
     count = animals_list.count()
     total_pages = math.ceil(count / PER_PAGE)
     # Check if we have a page with info on it.
     if (total_pages >= page):
+        # Slice our section it off by PER_PAGE and page#
         animals_list = animals_list[(int)(
             (page-1) * PER_PAGE): (int)(page * PER_PAGE)]
         # Fetch all the user and put them in an easily accessable list
@@ -116,6 +197,7 @@ def animals():
             animal.creatorName = user_list[animal.creator]
             for q in animal.textAnswers:
                 if (q.questionName == "breed"):
+                    animal.breed = q.answer
                     break
     # Close the session
     db_session.close()
@@ -137,6 +219,6 @@ def animals():
     with open('nplbam/app/jsons/animal_species.json') as json_file:
         animal_types = json.load(json_file)
 
-    return render_template("animals.html", title="Animals", animals=animals_list,
+    return render_template("animals.html", title="Animals", role=user_level, animals=animals_list,
                            next_url=next_url, prev_url=prev_url, page=page, total_pages=total_pages,
                            count=count, predetermined=predetermined, animal_types=animal_types)
