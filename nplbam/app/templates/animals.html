@@ -25,11 +25,14 @@
             <input {% if (predetermined.order == "asc") %} checked="checked" {% endif %}  type="radio" id="asc" name="order" value="asc">
             <label for="desc">Desc</label>
             <input {% if (predetermined.order == "desc") %} checked="checked" {% endif %} type="radio" id="desc" name="order" value="desc">
+            {% if role < 2 %}
             <input type="checkbox" id="hide_stuff" name="hide_stuff" value="hide_stuff" {% if (predetermined.hide_stuff == 1) %} checked {% endif %}>
             <label for="hide_stuff">Hide Stage 0&8</label>
+            {% endif %}
             <button type="submit" name="refresh">Go</button>
         </div>
     </form>
+    {% if role < 4 %}
     <form method="post" action="/new_animal">
         <select id="type" name="type">
             {% for y in animal_types %}
@@ -37,7 +40,8 @@
             {% endfor %}
         </select>
         <button type="submit" name="new_animal">New Animal</button>
-     </form>
+    </form>
+    {% endif %}
     <table cellspacing="0" cellpadding="0">
         <tr>
             <th>ID</th>
@@ -49,8 +53,14 @@
             <th>Creator</th>
         </tr>
         {% for x in animals %}
+        
+        {% if role < 2 %}
         <tr onclick="window.location='gallery?viewid={{x.animalID}}';">
             <td><a href="gallery?viewid={{x.animalID}}">{{x.animalID}}</a></td>
+        {% else %}
+        <tr onclick="window.location='view_animal?viewid={{x.animalID}}';">
+            <td><a href="view_animal?viewid={{x.animalID}}">{{x.animalID}}</a></td>
+        {% endif %}
             <td>{{x.name}}</td>
             <td>{{x.animalType}}</td>
             <td>{{x.breed}}</td>

@@ -60,4 +60,4 @@ def dashboard():
                     break
         # Close the session
     db_session.close()
-    return render_template("dashboard.html", title="Dashboard", animals=animals_list)
+    return render_template("dashboard.html", role=user_level, title="Dashboard", animals=animals_list)
