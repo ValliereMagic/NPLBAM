@@ -166,8 +166,7 @@ class Users(Base):
     username = Column('username', Text, unique=True, nullable=False)
     password = Column('password', LargeBinary, nullable=False)
     suspended = Column('suspended', Boolean, default=False)
-    # 0 = Admin, 1 = NPLB user, 2 = SudoPound, 3 = Pound, 4 = SudoRescue, 5 = Rescue
-    # SudoPound + SudoRescue both have ability to create new pound/rescue users.
+    # userLVL 0 = Admin, 1 = NPLB user, 3 = Pound, 5 = Rescue
     userLVL = Column('userLVL', Integer, nullable=False)
     rescueID = Column('rescueID', Integer, ForeignKey('Rescues.rescueID'))
     poundID = Column('poundID', Integer, ForeignKey('Pounds.poundID'))
