@@ -7,7 +7,8 @@ import nacl.pwhash
 from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from sqlalchemy.orm import relationship, sessionmaker
-
+from sqlalchemy import cast
+from sqlalchemy.sql.sqltypes import String
 from .db import db
 
 bp = Blueprint('organizations', __name__, url_prefix="")
@@ -65,10 +66,10 @@ def organizations():
         else:
             if (predetermined["display"] != 2):
                 rescues_list = db_session.query(db.Rescues).\
-                    filter(db.Rescues.rescueID.ilike(search_text)).all()
+                    filter(cast(db.Rescues.rescueID, String).ilike(search_text)).all()
             if (predetermined["display"] != 1):
                 pounds_list = db_session.query(db.Pounds).\
-                    filter(db.Pounds.poundID.ilike(search_text)).all()
+                    filter(cast(db.Pounds.poundID, String).ilike(search_text)).all()
     else:
         if (predetermined["display"] != 2):
             rescues_list = db_session.query(db.Rescues).all()
