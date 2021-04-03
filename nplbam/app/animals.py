@@ -10,7 +10,7 @@ from datetime import date
 from flask import Blueprint, flash, redirect, render_template, request
 from flask import session as flask_session
 from flask import url_for
-from sqlalchemy import or_, cast
+from sqlalchemy import cast, or_
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.sql.sqltypes import String
 
@@ -85,7 +85,7 @@ def animals():
     db_session = (sessionmaker(bind=engine))()
 
     # Query animal list based on dynamaic variables
-    _search = cast( getattr(db.Animals, predetermined["search_by"]), String)
+    _search = cast(getattr(db.Animals, predetermined["search_by"]), String)
     _sort = getattr(db.Animals, predetermined["sort_by"])
     _sort = getattr(_sort, predetermined["order"])
     # If user is level 0  or 1

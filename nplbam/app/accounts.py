@@ -8,11 +8,12 @@ from flask import (Blueprint, current_app, flash, redirect, render_template,
                    request)
 from flask import session as flask_session
 from flask import url_for
-from sqlalchemy.orm import Query, relationship, sessionmaker
 from sqlalchemy import cast
+from sqlalchemy.orm import Query, relationship, sessionmaker
+from sqlalchemy.sql.sqltypes import String
+
 from . import account_tools
 from .db import db
-from sqlalchemy.sql.sqltypes import String
 
 bp = Blueprint('accounts', __name__, url_prefix="")
 
@@ -68,7 +69,7 @@ def accounts():
     db_session = (sessionmaker(bind=engine))()
 
     # Query account list based on dynamic variables
-    _search = cast( getattr(db.Users, predetermined["search_by"]), String)
+    _search = cast(getattr(db.Users, predetermined["search_by"]), String)
     _sort = getattr(db.Users, predetermined["sort_by"])
     _sort = getattr(_sort, predetermined["order"])
 
