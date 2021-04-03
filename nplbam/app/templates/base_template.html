@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>NPLB - {{ title }}</title>
+        {% block nocache %}{% endblock %}
         <link rel="stylesheet" href="static/css/normalize.css" />
         <link rel="stylesheet" href="static/css/{% block css %}{% endblock %}.css" />
         {% block js %}{% endblock %}
