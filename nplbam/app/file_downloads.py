@@ -3,12 +3,13 @@ This module deals with downloading files
 that have been previously uploaded to the system.
 """
 
-from werkzeug.http import http_date
-from functools import update_wrapper, wraps
 from datetime import datetime
+from functools import update_wrapper, wraps
 
-from flask import Blueprint, current_app, redirect, send_from_directory, make_response
+from flask import (Blueprint, current_app, make_response, redirect,
+                   send_from_directory)
 from flask import session as flask_session
+from werkzeug.http import http_date
 
 bp = Blueprint('downloads', __name__, url_prefix="")
 
