@@ -61,7 +61,7 @@ def new_metainformation_record(db_session) -> (db.MetaInformation):
 def get_metainformation_record(db_session) -> (db.MetaInformation):
     """
     This method will get the latest record of the metainformation table.
-    If it does not exit it will make one.
+    If it does not exist it will make one.
     """
 
     # Get the latest record
