@@ -1,0 +1,27 @@
+{# Uses the inheritance to get from the base template page the head, header and navigation. Along with any footer #}
+{% extends "base_template.html" %}
+{# Add the css name to the file. #}
+{% block css %}form{% endblock %}
+{# Add the main method #}
+{% block main %} 
+<div>
+    <h1>Are you Sure?</h1>
+    <p>This will delete all uploaded files of this animal.</p>
+    <form method="post" enctype="multipart/form-data" action="/submit_delete_files">
+        <input type="hidden" id="animal_id" name="animal_id" value="{{animal.animalID}}">
+        <p>Name: {{animal.name}}</p>
+        <p>Species: {{animal.animalType}}</p>
+        <p>Creator ID: {{animal.creator}}</p>
+        <p>Animal ID: {{animal.animalID}}</p>
+        <p>These files will be deleted.</p>
+        <ul>
+            {% for x in files %}
+                <li><a href="downloads/{{x.fileName}}">{{x.fileName}}</a></li>
+            {% endfor %}
+        </ul>
+        <div class="buttons">
+            <button type="submit" name="submit">Submit</button>   
+        </div>
+    </form>    
+</div>
+{% endblock %}

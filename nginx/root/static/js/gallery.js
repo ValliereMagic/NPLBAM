@@ -24,7 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
       // create image tag, set src and add it to the div
       var img = document.createElement('img');
       img.setAttribute("src", value);
-      img.setAttribute("width", "500px");
+      img.setAttribute("width", "800px");
       div.appendChild(img);
     }
     // if it's not an image

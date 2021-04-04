@@ -1,0 +1,18 @@
+{# Uses the inheritance to get from the base template page the head, header and navigation. Along with any footer #}
+{% extends "base_template.html" %}
+{# Add the css name to the file. #}
+{% block css %}animals{% endblock %}
+{# Add the main method #}
+{% block main %} 
+<div>
+    <div id="button">
+        <a href="/delete_animal">Delete Animal</a>
+    </div>
+    <div id="button">
+        <a href="/delete_file">Delete File</a>
+    </div>
+    <div id="button">
+        <a href="/delete_files">Delete Files</a>
+    </div>
+</div>
+{% endblock %}

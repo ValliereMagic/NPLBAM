@@ -8,7 +8,9 @@ from flask import (Blueprint, current_app, flash, redirect, render_template,
                    request)
 from flask import session as flask_session
 from flask import url_for
+from sqlalchemy import cast
 from sqlalchemy.orm import Query, relationship, sessionmaker
+from sqlalchemy.sql.sqltypes import String
 
 from . import account_tools
 from .db import db
@@ -66,8 +68,8 @@ def accounts():
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
 
-    # Query animal list based on dynamaic variables
-    _search = getattr(db.Users, predetermined["search_by"])
+    # Query account list based on dynamic variables
+    _search = cast(getattr(db.Users, predetermined["search_by"]), String)
     _sort = getattr(db.Users, predetermined["sort_by"])
     _sort = getattr(_sort, predetermined["order"])
 
@@ -179,8 +181,18 @@ def new_account():
         # Create a db session:
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
+
+        # Import tools for adding to meta table
+        from .metatable_tools import (get_metainformation_record)
+
+        # Get the most recent record (even if it needs to be created)
+        meta_info = get_metainformation_record(db_session)
+        # Add an users to the record
+        meta_info.users += 1
+
         # Add the new account
         db_session.add(new_db_account)
+
         # Commit the changes and close
         db_session.commit()
         db_session.close()
