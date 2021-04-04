@@ -1,83 +1,8 @@
-/* Fancy background image*/
-:root {
-    background-image: url("../img/NPLB-Background.jpeg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-body {
-    padding: 0;
-    margin: 0;
-}
-
-/* Application logo styling */
-header>div>img {
-    margin: 0.5em;
-}
-
-header>#company {
-    display: flex;
-    align-items: center;
-    margin-right: auto;
-    color: #8e2e0b;
-    font-size: 3em;
-}
-
-header>div>a {
-    font-size: 1.5em;
-    color: #000000;
-    margin-right: 2em;
-    padding: 0.25em;
-    text-decoration: none;
-    transition: color 0.4s;
-}
-
-header>div>a:hover {
-    color: gray;
-}
-
-/* Flexbox header and styling for logo image and buttons */
-body>header {
-    background-color: #ffffff;
-    display: flex;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 80vh;
-}
-
-
 main>div {
     margin: 5em 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #ffffff;
-    min-width: 25%;
-    padding: 2em;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-main>.flashes {
-    margin: 0.5em 0;
-    padding: 0em;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    margin: 0.25em;
     width: 95%;
 }
 
@@ -96,14 +21,11 @@ form>div {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     min-height: 1em;
+    background-color: var(--row-colour-1);
 }
 
 .item:nth-child(even) {
-    background-color: #c5c5c5;
-}
-
-.item:nth-child(odd) {
-    background-color: #f0f1f2;
+    background-color: var(--row-colour-2);
 }
 
 
@@ -132,7 +54,11 @@ form>div {
 textarea,
 input[type=text] {
     width: 70%;
-    border: 1px solid #000000;
+    border: 1px solid var(--main-dark-colour);
+}
+
+input, textarea {
+    margin-right: 1em;
 }
 
 .buttons {
@@ -140,16 +66,16 @@ input[type=text] {
     justify-content: space-around;
     margin: 3em;
 }
-button {
-    padding: 0.5em 2em;
-    align-self: center;
-    background-color: #b3cfd1;
-    border: none;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    cursor: pointer;
-    transition: background-color 0.4s;
-}
 
-button:hover {
-    background-color: pink;
+@media (max-width: 700px) {
+    .radioQ {
+        flex-direction: column;
+        align-items: flex-end;
+        padding-right: 29%;
+    }
+    .checkQ {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 50%;
+    }
 }
