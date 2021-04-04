@@ -1,0 +1,232 @@
+/*
+Main style sheet for the No Paws Left Behind website
+Contains CSS variables and elements common throughout the website
+*/
+
+:root {
+
+    /* Variables */
+    --NPLBAM-red: #8e2e0b;
+    --header-link-colour: #000;
+    --header-link-hover-colour: #808080;
+
+    --main-text-colour: #000;
+    --light-text-colour: #E5F9E0;
+    --mid-text-colour: #c6c6c6;
+    --error-text-colour: #ff0000;
+
+    --main-bg-colour: #fff;
+    --main-dark-colour: #000;
+    --drop-shadow-colour: #00000040;
+    --button-colour: #b3cfd1;
+    --button-pressed-colour: #7b9697;
+    --button-hover-colour: pink;
+
+    --row-colour-1: #fff;
+    --row-colour-2: #c5c5c5;
+    --row-colour-hover: #b3cfd1;
+
+    background-image: url("../img/NPLB-Background.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: var(--main-text-colour);
+}
+
+/*
+######
+HEADER
+######
+*/
+
+/* logo size */
+header>div>img {
+    margin: 0.5em;
+    width: 25px;
+}
+
+/* Company Name */
+header>#company {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    margin-right: auto;
+    color: var(--NPLBAM-red);
+    font-size: 2em;
+}
+
+header>.links {
+    display: flex;
+}
+
+/* Links */
+header>div>a {
+    font-size: 1.25em;
+    color: var(--header-link-colour);
+    margin-right: 2em;
+    padding: 0.25em;
+    text-decoration: none;
+    transition: color 0.4s;
+    font-weight: normal;
+}
+
+/* Link hover */
+header>div>a:hover {
+    color: var(--header-link-hover-colour);
+}
+
+/* Header container */
+body>header {
+    background-color: var(--main-bg-colour);
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+    box-shadow: 0px 4px 4px var(--drop-shadow-colour);
+}
+
+@media (max-width: 700px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    header>.links {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/*
+#######
+GENERAL
+#######
+*/
+
+@media (max-width: 700px) {
+    main>div {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 80vh;
+}
+
+main>div {
+    margin: 2em 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--main-bg-colour);
+    min-width: 40%;
+    padding: 2em;
+    box-shadow: 0px 4px 4px var(--drop-shadow-colour);
+}
+
+main>.flashes {
+    /* margin: 0.5em 0; */
+    margin: 0.75em  0;
+    padding: 0em;
+    background-color: unset;
+    box-shadow: none;
+}
+
+main>.flashes>ul {
+    padding: 0;
+}
+
+main>.flashes>ul>li {
+    background-color: var(--main-bg-colour);
+    list-style-type: none;
+    padding: 0.5em;
+    margin: 0.5em;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0.25em;
+}
+
+input {
+    background-color: var(--main-bg-colour);
+}
+
+select {
+    background-attachment: var(--main-bg-colour);
+    color: var(--main-text-colour);
+    border: 1px solid var(--main-dark-colour);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px var(--drop-shadow-colour);
+
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--main-bg-colour);
+    background-image: url('../img/arrow-down.png');
+    background-repeat: no-repeat, repeat;
+    background-position: right .7em top 50%, 0 0;
+    background-size: .65em auto, 100%;
+
+    cursor: pointer;
+}
+
+select:after {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+}
+
+select>option {
+    /* margin-right: 1.2em; */
+    position: absolute;
+    color: var(--light-text-colour);
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+#button {
+    margin: 2em 0em;
+}
+
+button,
+#button>a {
+    padding: 0.5em 2em;
+    align-self: center;
+    color: black;
+    font-weight: normal;
+    text-decoration: none;
+    background-color: var(--button-colour);
+    border: none;
+    box-shadow: 0px 4px 4px var(--drop-shadow-colour);
+    cursor: pointer;
+    transition: background-color 0.4s;
+    white-space: nowrap;
+}
+
+button:hover,
+#button>a:hover {
+    background-color: var(--button-hover-colour);
+}
+
+#pages {
+    display: flex;
+    align-items: center;
+}
+
+#pages>* {
+    padding: 1em;
+}
