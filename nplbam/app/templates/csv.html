@@ -21,6 +21,19 @@
         <div class="buttons">
             <button type="submit" name="submit">Submit</button>   
         </div>
-    </form>    
+    </form> 
+    <h2>Criteria</h2>
+    <ul>
+        <li>Entries are not unique. Make sure you're not adding things already added before.</li>
+        <li>Files should be a CSV.</li>
+        <li>Should contain headers. Each header should be the same as the labels in the form. (Name, Status, etc)</li>
+        <li>All questions from the form must be in the CSV. Form meaning this application's new animal form.</li>
+        <li>Case matters.</li>
+        <li>Radio questions (questions where you choose one OR the other) should have the Label of the answer. (Stray, Surrender, Other)</li>
+        <li>Text questions should just be text</li>
+        <li>Checkbox questions (questions with multiple choices and can choose multiple) should be comma separated with labels of each.</li>
+        <li>This is the same way google forms outputs.</li>
+        <li><a href="static/csv-example.csv">Example</a></li>
+    </ul>
 </div>
 {% endblock %}
