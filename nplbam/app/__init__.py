@@ -11,7 +11,10 @@ from sqlalchemy.sql.expression import true
 from . import config
 
 UPLOAD_FOLDER = "/nplbam/files"
+# Whether we want to be able to add mock data fast
 DEBUG = 0
+# Whether we want to be able to delete
+DELETION = 1
 
 
 def create_app():
@@ -29,6 +32,7 @@ def create_app():
     """
     global UPLOAD_FOLDER
     global DEBUG
+    global DELETION
     app = Flask(__name__, instance_relative_config=True)
     # Set up folder for uploaded content
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -43,7 +47,7 @@ def create_app():
     # Set the secret key from the config file
     app.secret_key = config.SECRET_KEY
     from . import (accounts, add_organization, animals, dashboard,
-                   db_test_data, edit_animal, edit_organization,
+                   db_test_data, delete, edit_animal, edit_organization,
                    file_downloads, gallery, main, new_animal, options,
                    organizations, upload, view_animal, visualize)
 
@@ -77,7 +81,9 @@ def create_app():
     app.register_blueprint(visualize.bp)
     # CSV page
     app.register_blueprint(upload.bp)
-
+    if (DELETION == 1):
+        # Delete Page
+        app.register_blueprint(delete.bp)
     if (DEBUG == 1):
         # Test Data Page. Please Delete
         app.register_blueprint(db_test_data.bp)
