@@ -107,6 +107,15 @@ def animal_added():
             # Need to Add Data to database.
             engine = db.get_db_engine()
             db_session = (sessionmaker(bind=engine))()
+
+            # Import tools for adding to meta table
+            from .metatable_tools import (get_metainformation_record)
+
+            # Get the most recent record (even if it needs to be created)
+            meta_info = get_metainformation_record(db_session)
+            # Add an animal to the record
+            meta_info.totalAnimalsInSystem += 1
+
             user_ID = flask_session.get("userID", default=None)
             user_entry = db_session.query(
                 db.Users).filter_by(userID=user_ID).first()
@@ -116,11 +125,13 @@ def animal_added():
             new = db.Animals(poundID=user_entry.poundID, stage=animal_stage, creator=user_ID,
                              stageDate=date.today(), animalType=given_type, name=name)
             db_session.add(new)
+
             # Flush the session so we can get the autoincremented ID in new.animalID
             db_session.flush()
 
             # If we submitted, add the correct substage as completed
             if animal_stage == 1:
+                # Add the substage as completed
                 db_session.add(db.StageInfo(animalID=new.animalID,
                                             stageNum=1,
                                             substageNum=1,
