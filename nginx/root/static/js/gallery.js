@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
       // make header, get file name without all the extra stuff, add to header
       var header = document.createElement('h2');
       var split_value = value.split("/");
-      var second_split_value = split_value[split_value.length - 1].split(/_\d_/)
+      var second_split_value = split_value[split_value.length - 1].split(/_\d_/, 2)
       header.innerHTML = second_split_value[second_split_value.length - 1];
       header.setAttribute("style", "text-align: center");
       div.appendChild(header);
