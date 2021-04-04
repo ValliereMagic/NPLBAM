@@ -1,0 +1,19 @@
+{# Uses the inheritance to get from the base template page the head, header and navigation. Along with any footer #}
+{% extends "base_template.html" %}
+{# Add the css name to the file. #}
+{% block css %}form{% endblock %}
+{# Add the main method #}
+{% block main %} 
+<div>
+    <p>Delete all files of an animal (Given the animal's ID)</p>
+    <form method="post" enctype="multipart/form-data" action="/confirm_delete_files">
+        <div class="item">
+            <label for="animal_id">ID of Animal</label>
+            <input type="number" id="animal_id" name="animal_id" min="0"/>
+        </div>
+        <div class="buttons">
+            <button type="submit" name="submit">Submit</button>   
+        </div>
+    </form>    
+</div>
+{% endblock %}
