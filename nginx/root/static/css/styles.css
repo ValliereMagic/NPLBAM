@@ -193,7 +193,7 @@ select:after {
 select>option {
     /* margin-right: 1.2em; */
     position: absolute;
-    color: var(--light-text-colour);
+    color: var(--main-text-colour);
     padding: 8px 16px;
     cursor: pointer;
 }
