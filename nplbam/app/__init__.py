@@ -4,6 +4,7 @@ Initializes and sets up the flask application.
 
 import logging
 import os
+from datetime import timedelta
 
 from flask import Flask
 from sqlalchemy.sql.expression import true
@@ -46,6 +47,8 @@ def create_app():
     app.testing = False
     # Set the secret key from the config file
     app.secret_key = config.SECRET_KEY
+    # Set the session lifetime
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
     from . import (accounts, add_organization, animals, dashboard,
                    db_test_data, delete, edit_animal, edit_organization,
                    file_downloads, gallery, main, new_animal, options,
