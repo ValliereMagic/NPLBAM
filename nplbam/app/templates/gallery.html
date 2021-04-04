@@ -7,20 +7,22 @@
 {# Add the main method #}
 {% block main %}
 <div>
-    <div class="infoline">
-        <h1>{{ info["name"] }}</h1>
-        <div id="button"><a href="view_animal?viewid={{animalID}}">View Animal</a></div>
-    </div>
-    <div class="files">
-        {% for x in images %}
-        
-        <input type="hidden" value="/downloads/{{ x }}" class="file" id="{{ images[x] }}">
+        <div class="infoline">
+            <h1>{{ info["name"] }}</h1>
+            <div id="button"><a href="view_animal?viewid={{animalID}}">View Animal</a></div>
+        </div>
+    <div class="top">
+        <div class="files">
+            {% for x in images %}
+            
+            <input type="hidden" value="/downloads/{{ x }}" class="file" id="{{ images[x] }}">
 
-        {% endfor%}
-    </div>
-    <div class="images">
-    </div>
-    <div class="buttons">
+            {% endfor%}
+        </div>
+        <div class="images">
+        </div>
+        <div class="buttons">
+        </div>
     </div>
     <div class="bottom">
         <div class="stageInformation">
@@ -360,12 +362,14 @@
             <form class="info" method="POST" action="/gallery_info_updated">
                 <input type="hidden" value="{{animalID}}" name="animalID">
 
-                <h2>&emsp; ID: {{ animalID }}</h2>
-                <h2>Species: {{info["species"]}}</h2>
-                <h2>Stage: {{ info["stage"] }}</h2>
-                <h2>Days in Stage: {{info["days"]}} </h2>
-                <h2>Creator: {{info["creator"]}}</h2>
-                <div class="item">
+                <div id="info">
+                    <div>ID: {{ animalID }}</div>
+                    <div>Species: {{info["species"]}}</div>
+                    <div>Stage: {{ info["stage"] }}</div>
+                    <div>Days in Stage: {{info["days"]}} </div>
+                    <div>Creator: {{info["creator"]}}</div>
+                </div>
+                <div>
                     <label for="pound">Pound:</label>
                     <select id="pound" name="pound">
                         <option value=-1>None</option>
@@ -374,7 +378,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="item">
+                <div>
                     <label for="rescue">Rescue:</label>
                     <select id="rescue" name="rescue">
                         <option value=-1>None</option>
@@ -383,7 +387,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="item">
+                <div>
                     <label for="supervisor">Supervisor:</label>
                     <select id="supervisor" name="supervisor">
                         <option value=-1>None</option>
