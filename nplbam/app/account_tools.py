@@ -11,7 +11,7 @@ from flask import Request
 # User account types. (0, 1, 2, 3, 4, 5)
 USER_LEVEL_MAX: int = 5
 # Looked at the minimum in KeePass 2 for it to be considered green
-MIN_PASSWORD_ENTROPY_BITS: int = 128
+MIN_PASSWORD_ENTROPY_BITS: int = 64
 
 
 class AccountInfo:
