@@ -54,14 +54,23 @@ def organization_added():
         # Need to Add Data to database.
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
+
+        # Import tools for adding to meta table
+        from .metatable_tools import (get_metainformation_record)
+
+        # Get the most recent record (even if it needs to be created)
+        meta_info = get_metainformation_record(db_session)
+
         # Make an object from our ORM
         # Get the name from the
         name: str = request.form['org_name']
         # check if they entered a rescue or a pound
         if (request.form["type"] == "0"):
             new = db.Rescues(rescueName=name)
+            meta_info.rescues += 1
         else:
             new = db.Pounds(poundName=name)
+            meta_info.pounds += 1
         # Add to the DB
         db_session.add(new)
         # Commit changes to the database
