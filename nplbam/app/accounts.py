@@ -8,7 +8,9 @@ from flask import (Blueprint, current_app, flash, redirect, render_template,
                    request)
 from flask import session as flask_session
 from flask import url_for
+from sqlalchemy import cast
 from sqlalchemy.orm import Query, relationship, sessionmaker
+from sqlalchemy.sql.sqltypes import String
 
 from . import account_tools
 from .db import db
@@ -66,8 +68,8 @@ def accounts():
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
 
-    # Query animal list based on dynamaic variables
-    _search = getattr(db.Users, predetermined["search_by"])
+    # Query account list based on dynamic variables
+    _search = cast(getattr(db.Users, predetermined["search_by"]), String)
     _sort = getattr(db.Users, predetermined["sort_by"])
     _sort = getattr(_sort, predetermined["order"])
 
