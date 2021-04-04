@@ -86,6 +86,7 @@ def index():
         # If there were no errors, log the user in
         if len(errors) == 0:
             flask_session.clear()
+            flask_session.permanent = True
             flask_session["userID"] = user_entry.userID
             flask_session["userLVL"] = user_entry.userLVL
             flash("Login Successful")
