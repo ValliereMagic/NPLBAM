@@ -57,15 +57,15 @@
                     {% elif question.type == "textarea" %}
                         <div class="item">
                             <label for="{{question.name}}">{{question.label}}:</label>
-                            <textarea id="{{question.name}}" name="{{question.name}}" rows="4" value >{{predetermined[question.name]}}</textarea>
+                            <textarea id="{{question.name}}" name="{{question.name}}" rows="4">{{predetermined[question.name]}}</textarea>
                         </div>
                     {% endif %}
                 {% endfor %}
             {% endfor %}
         {% endfor %}
         <div class="item">
-            <label for="files[]">Files to Upload (Images, Videos, Documents)</label>
-            <input type="file" name="files[]" multiple=""/>
+            <label for="files">Files to Upload (Images, Videos, Documents)</label>
+            <input type="file" id="files" name="files[]" multiple=""/>
         </div>
         <div class="buttons">
             <button type="submit" name="submit">Submit</button>   
