@@ -143,7 +143,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const stageButtons = document.querySelectorAll('.stageButtons>button');
   const stages = document.querySelectorAll('.stage');
   const currentStage = document.querySelector('#current_stage');
-  const completeButton = document.querySelector('.complete')
+  const completeButton = document.querySelector('#complete')
 
   hideAllStages();
   initStageButtons();

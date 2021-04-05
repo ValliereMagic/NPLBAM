@@ -84,6 +84,7 @@
                     {% endif %}
                 </div>
                 <button type="submit" name="submit">Update Stage</button>
+                <button id="complete" type="submit" name="complete">Complete Stage</button>
             </form>
 
             <form class="stage" id="2" method="POST" enctype="multipart/form-data" action="/stage_updated">
@@ -99,7 +100,8 @@
                     <input type="text" name="notes" id="notes">
                     {% endif %}
                 </div>
-                <button>Update Stage</button>
+                <button type="submit" name="submit">Update Stage</button>
+                <button id="complete" type="submit" name="complete">Complete Stage</button>
             </form>
 
             <form class="stage" id="3" method="POST" enctype="multipart/form-data" action="/stage_updated">
@@ -148,6 +150,7 @@
                     {% endif %}
                 </div>
                 <button type="submit" name="submit">Update Stage</button>
+                <button id="complete" type="submit" name="complete">Complete Stage</button>
             </form>
 
             <form class="stage" id="4" method="POST" enctype="multipart/form-data" action="/stage_updated">
@@ -210,6 +213,7 @@
                     {% endif %}
                 </div>
                 <button type="submit" name="submit">Update Stage</button>
+                <button id="complete" type="submit" name="complete">Complete Stage</button>
             </form>
 
             <form class="stage" id="5" method="POST" enctype="multipart/form-data" action="/stage_updated">
@@ -245,6 +249,7 @@
                     {% endif %}
                 </div>
                 <button type="submit" name="submit">Update Stage</button>
+                <button id="complete" type="submit" name="complete">Complete Stage</button>
             </form>
 
             <form class="stage" id="6" method="POST" enctype="multipart/form-data" action="/stage_updated">
@@ -260,7 +265,8 @@
                     <input type="text" name="notes" id="notes">
                     {% endif %}
                 </div>
-                <button>Update Stage</button>
+                <button type="submit" name="submit">Update Stage</button>
+                <button id="complete" type="submit" name="complete">Complete Stage</button>
             </form>
 
             <form class="stage" id="7" method="POST" enctype="multipart/form-data" action="/stage_updated">
@@ -276,7 +282,8 @@
                     <input type="text" name="notes" id="notes">
                     {% endif %}
                 </div>
-                <button>Update Stage</button>
+                <button type="submit" name="submit">Update Stage</button>
+                <button id="complete" type="submit" name="complete">Complete Stage</button>
             </form>
 
             <form class="stage" id="8" method="POST" enctype="multipart/form-data" action="/stage_updated">
@@ -351,11 +358,6 @@
                     {% endif %}
                 </div>
                 <button type="submit" name="submit">Update Stage</button>
-            </form>
-
-            <form class="complete" method="POST" enctype="multipart/form-data" action="/stage_completed">
-                <input type="hidden" name="animalID" id="animalID" value="{{ animalID }}">
-                <button type="submit" name="complete">Complete Stage</button>
             </form>
         </div>
         <div class="textareas">
