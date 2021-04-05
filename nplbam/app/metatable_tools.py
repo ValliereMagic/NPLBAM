@@ -16,7 +16,7 @@ def new_metainformation_record(db_session) -> (db.MetaInformation):
     """
     # Get today's date
     today = datetime.date.today()
-    
+
     # create a new record
     new = db.MetaInformation()
 
@@ -73,7 +73,7 @@ def get_metainformation_record(db_session) -> (db.MetaInformation):
     today = datetime.date.today()
 
     # Check if our meta record is for this month
-    if (meta_record.month != int(today.strftime("%m"))):
+    if ((meta_record is None) or (meta_record.month != int(today.strftime("%m")))):
         # If not correct month, make a new one
         meta_record = new_metainformation_record(db_session)
 
