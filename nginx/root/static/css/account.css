@@ -49,7 +49,6 @@ form>div:last-child {
 form .item {
     display: flex;
     flex-direction: column;
-    align-items: left;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
