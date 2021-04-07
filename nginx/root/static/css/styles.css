@@ -6,7 +6,7 @@ Contains CSS variables and elements common throughout the website
 :root {
 
     /* Variables */
-    --NPLBAM-red: #8e2e0b;
+    --NPLB-red: #8e2e0b;
     --header-link-colour: #000;
     --header-link-hover-colour: #808080;
 
@@ -52,7 +52,7 @@ header>#company {
     flex-direction: row !important;
     align-items: center;
     margin-right: auto;
-    color: var(--NPLBAM-red);
+    color: var(--NPLB-red);
     font-size: 2em;
 }
 
