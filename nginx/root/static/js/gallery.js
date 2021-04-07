@@ -20,11 +20,11 @@ window.addEventListener('DOMContentLoaded', () => {
     var value = item.getAttribute("value");
     var div = document.createElement('div');
     // If the file is an image (the id stores the file type)
-    if (item.getAttribute("id") == "image") {
+    if (item.classList.contains("type_image")) {
       // create image tag, set src and add it to the div
       var img = document.createElement('img');
       img.setAttribute("src", value);
-      img.setAttribute("width", "800px");
+      img.setAttribute("width", "800");
       div.appendChild(img);
     }
     // if it's not an image
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
       div.appendChild(header);
       // make download button, add to div
       var button = document.createElement('div');
-      button.setAttribute("id", "button");
+      button.setAttribute("class", "button");
       var a = document.createElement('a');
       a.setAttribute("href", value);
       a.innerHTML = "Download";
@@ -60,7 +60,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function unpressAllImageButtons() {
     buttons.forEach(item => {
-      item.setAttribute("class", "button");
+      item.setAttribute("class", "file_button");
     })
   }
 
@@ -69,7 +69,7 @@ window.addEventListener('DOMContentLoaded', () => {
     images[0].setAttribute("style", "display: flex");
     images.forEach((item, key) => {
       var newButton = document.createElement("button");
-      newButton.setAttribute("class", "button");
+      newButton.setAttribute("class", "file_button");
       newButton.innerHTML = key + 1;
       if (key == 0) {
         newButton.classList.add("class", "pressed");
@@ -79,7 +79,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   const images = document.querySelectorAll('.image');
-  const buttonDiv = document.querySelector('.buttons');
+  const buttonDiv = document.querySelector('.top>.buttons');
 
   try {
     initImages();
@@ -87,7 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {
     frame.setAttribute("style", "display: none");
   }
 
-  const buttons = document.querySelectorAll('.button');
+  const buttons = document.querySelectorAll('.top>.buttons>.file_button');
 
 
   buttons.forEach((item, key) => {

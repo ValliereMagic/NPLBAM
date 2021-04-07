@@ -27,7 +27,7 @@
             <button type="submit" name="refresh">Filter</button>    
         </div>
     </form>
-    <div id="button">
+    <div class="button">
         <a href="new_account">New Account</a>
     </div>
     <table>
@@ -50,13 +50,13 @@
     </table>
     <div id="pages">
         {% if prev_url %}
-        <div id="button">
+        <div class="button">
             <a href="{{ prev_url }}">Back</a>
         </div>
         {% endif %}
         <p>Page {{ page }}</p>
         {% if next_url %}
-        <div id="button">
+        <div class="button">
             <a href="{{ next_url }}">Forward</a>
         </div>
         {% endif %}

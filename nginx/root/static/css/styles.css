@@ -198,12 +198,12 @@ select>option {
     cursor: pointer;
 }
 
-#button {
+.button {
     margin: 2em 0em;
 }
 
 button,
-#button>a {
+.button>a {
     padding: 0.5em 2em;
     align-self: center;
     color: black;
@@ -218,7 +218,7 @@ button,
 }
 
 button:hover,
-#button>a:hover {
+.button>a:hover {
     background-color: var(--button-hover-colour);
 }
 
