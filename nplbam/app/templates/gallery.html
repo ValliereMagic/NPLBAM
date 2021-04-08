@@ -13,6 +13,7 @@
         </div>
     <div class="top">
         <div class="files">
+            {# Create hidden input tags containing all files for this animal for use in gallery.js #}
             {% for x in images %}
             
             <input type="hidden" value="/downloads/{{ x }}" class="file type_{{ images[x] }}">
@@ -37,7 +38,10 @@
                 <button>7</button>
                 <button>8</button>
             </div>
-
+            {# One form for each stage, each substage has a completed and not completed version #}
+            {# Each stage has an id denoting its stage number #}
+            {# Each stage has a hidden input #}
+            {# Modifications of stages and substages need to be aware of the order of stage numbers and substage numbers #}
             <form class="stage" id="1" method="POST" enctype="multipart/form-data" action="/stage_updated">
                 <div>
                     <h2>Stage 1: Detailed information received</h2>
