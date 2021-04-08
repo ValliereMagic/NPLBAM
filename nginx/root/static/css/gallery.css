@@ -56,12 +56,12 @@ input[type=text] {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    width: 80%;
+    width: 800px;
     margin: auto;
 }
 
 .infoline>* {
-    padding-right: 1em;
+    padding: 1em;
     margin-bottom: 0;
 }
 
@@ -113,7 +113,6 @@ input[type=text] {
 
 .bottom>* {
     box-shadow: 0px 0px 4px var(--drop-shadow-colour);
-    height: 100%;
 }
 
 .stageInformation {
@@ -194,6 +193,9 @@ form>div>input {
 }
 
 @media (max-width: 700px) {
+    .infoline {
+        width: 100%;
+    }
     .buttons {
         margin: 0;
         max-width: 100%;
