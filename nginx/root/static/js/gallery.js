@@ -149,6 +149,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Adds event listeners to the buttons 
   function initStageButtons() {
+    console.log(currentStage.value)
     stages.forEach((item, key) => {
       stageButtons[key].addEventListener('click', event => { // When the button is pressed...
         hideAllStages();
@@ -157,11 +158,11 @@ window.addEventListener('DOMContentLoaded', () => {
         stageButtons[key].classList.add("pressed"); // style button as pressed
         // Hide "Complete Stage" button when...
         if (currentStage.value == 8) { // animal on stage 8
-          completeButton.setAttribute("style", "display:none")
+          completeButton[key].setAttribute("style", "display:none")
         } else if (key == currentStage.value - 1) { // it's the original stage (not 8 though)
-          completeButton.setAttribute("style", "display:initial")
+          completeButton[key].setAttribute("style", "display:initial")
         } else { // not the original stage
-          completeButton.setAttribute("style", "display:none")
+          completeButton[key].setAttribute("style", "display:none")
         }
       })
     })
@@ -183,7 +184,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Hidden input that had the animals current stage
   const currentStage = document.querySelector('#current_stage');
   // Button to complete the stage
-  const completeButton = document.querySelector('#complete')
+  const completeButton = document.querySelectorAll('.complete')
 
   hideAllStages();
   initStageButtons();
