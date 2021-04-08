@@ -1,12 +1,12 @@
 {# Uses the inheritance to get from the base template page the head, header and navigation. Along with any footer #}
 {% extends "base_template.html" %}
-{% block css %}animals{% endblock %}
+{% block css %}default{% endblock %}
 {% block main %}
 <div>
         {% for message in errors %}
         <div>{{ message }}</div>
         {% endfor %}
-        <div id="button">
+        <div class="button">
             <a href="{{ redirect }}">Ok</a>
         </div>
 </div>

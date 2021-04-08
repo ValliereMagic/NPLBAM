@@ -6,7 +6,7 @@ Contains CSS variables and elements common throughout the website
 :root {
 
     /* Variables */
-    --NPLBAM-red: #8e2e0b;
+    --NPLB-red: #8e2e0b;
     --header-link-colour: #000;
     --header-link-hover-colour: #808080;
 
@@ -52,7 +52,7 @@ header>#company {
     flex-direction: row !important;
     align-items: center;
     margin-right: auto;
-    color: var(--NPLBAM-red);
+    color: var(--NPLB-red);
     font-size: 2em;
 }
 
@@ -133,7 +133,7 @@ main>div {
 
 main>.flashes {
     /* margin: 0.5em 0; */
-    margin: 0.75em  0;
+    margin: 0.75em 0;
     padding: 0em;
     background-color: unset;
     box-shadow: none;
@@ -198,12 +198,12 @@ select>option {
     cursor: pointer;
 }
 
-#button {
+.button {
     margin: 2em 0em;
 }
 
 button,
-#button>a {
+.button>a {
     padding: 0.5em 2em;
     align-self: center;
     color: black;
@@ -218,7 +218,7 @@ button,
 }
 
 button:hover,
-#button>a:hover {
+.button>a:hover {
     background-color: var(--button-hover-colour);
 }
 
