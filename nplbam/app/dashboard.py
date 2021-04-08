@@ -25,9 +25,8 @@ def dashboard():
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
         flash("Not authorized")
-        # May need to change where we redirect them in the future
         return redirect("/")
-    # Get the list of animals from the database
+    # Open a new DB session
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
     # Create a new list

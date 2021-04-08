@@ -16,7 +16,6 @@ from .db import db
 bp = Blueprint('add_organization', __name__, url_prefix="")
 
 
-# Route for the new animal page.
 @bp.route("/add_organization")
 def add_organization():
     """
@@ -27,7 +26,6 @@ def add_organization():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -44,14 +42,15 @@ def organization_added():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
+        # If cancel was pressed, don't do anything
         if 'cancel' in request.form:
             return redirect("/organizations")
-        # Need to Add Data to database.
+        
+        # Create a DB session
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
 
@@ -64,20 +63,23 @@ def organization_added():
         # Make an object from our ORM
         # Get the name from the
         name: str = request.form['org_name']
-        # check if they entered a rescue or a pound
+        # check if they entered a rescue or a pound. If so create a new db entry.
+        # Also add to metatable for visualization
         if (request.form["type"] == "0"):
             new = db.Rescues(rescueName=name)
             meta_info.rescues += 1
         else:
             new = db.Pounds(poundName=name)
             meta_info.pounds += 1
-        # Add to the DB
+        # Add to the session
         db_session.add(new)
         # Commit changes to the database
         db_session.commit()
         # Close the database like a good boy
         db_session.close()
-        flash("Organization Added")
+
+        # Give user feedback and log
+        flash("Organization {} Added", name)
         current_app.logger.info("Organization: {} Added by UserID: {}".format(
             name, flask_session["userID"]))
     return redirect("/organizations")

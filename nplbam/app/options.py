@@ -46,16 +46,21 @@ def change_password():
     if (user_level is None):
         flash("Not authorized")
         return redirect("/")
+    # Make sure got here through post
     if request.method == 'POST':
         errors: list = []
+        # Get form information
         old_password: str = request.form['oldpassword']
         new_password1: str = request.form['password']
         new_password2: str = request.form['passwordVerify']
 
-        # Get User from database
+        # Create a new db session
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
+
+        # Get user ID from session
         user_ID = flask_session.get("userID", default=None)
+        # Get User from database
         user_entry = db_session.query(
             db.Users).filter_by(userID=user_ID).first()
 
@@ -76,6 +81,7 @@ def change_password():
         if (new_password1 != new_password2):
             errors.append("Passwords Do not Match")
 
+        # Get the account tools we need
         from .account_tools import (MIN_PASSWORD_ENTROPY_BITS,
                                     verify_password_strength)
 
@@ -83,7 +89,9 @@ def change_password():
         if (new_password1 == ""):
             errors.append("Password is not set")
         else:
+            # Get Entropy bits and whether it is valid
             entropy_bits, valid = verify_password_strength(new_password1)
+            # Check if password is valid
             if not valid:
                 errors.append(
                     "Password does not meet minimum strength requirement of {} bits. ".format(
@@ -92,7 +100,7 @@ def change_password():
                     "Please either increase its length, " +
                     "or add characters from different character sets. " +
                     "(For example: Add some numbers, or a maybe a symbol.)")
-
+        # If we have errors close the session and give user feedback
         if (len(errors) > 0):
             # Close the session like a good boy
             db_session.close()
