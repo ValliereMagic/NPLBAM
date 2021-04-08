@@ -14,8 +14,6 @@ from .db import db
 
 bp = Blueprint('organizations', __name__, url_prefix="")
 
-USER_LEVEL_MAX: int = 5
-
 
 @bp.route("/organizations", methods=['POST', 'GET'])
 def organizations():
@@ -27,7 +25,6 @@ def organizations():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -50,13 +47,17 @@ def organizations():
             request.args.get('search_by', "name"))
         predetermined["display"] = request.args.get('display', 0, type=int)
         predetermined["search"] = str(request.args.get('search', ""))
+    # Create our 2 empty lists
     rescues_list = {}
     pounds_list = {}
-    # create engine for the database
+    # create session for the db
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
+    # If they did not search
     if (predetermined["search"] != ""):
+        # Format the search text
         search_text = "%{}%".format(predetermined["search"])
+        # What method are they searching by
         if (predetermined["search_by"] == "name"):
             if (predetermined["display"] != 2):
                 rescues_list = db_session.query(db.Rescues).\
@@ -64,7 +65,7 @@ def organizations():
             if (predetermined["display"] != 1):
                 pounds_list = db_session.query(db.Pounds).\
                     filter(db.Pounds.poundName.ilike(search_text)).all()
-        else:
+        else:  # ID
             if (predetermined["display"] != 2):
                 rescues_list = db_session.query(db.Rescues).\
                     filter(cast(db.Rescues.rescueID, String).ilike(
@@ -73,12 +74,12 @@ def organizations():
                 pounds_list = db_session.query(db.Pounds).\
                     filter(cast(db.Pounds.poundID, String).ilike(
                         search_text)).all()
-    else:
+    else:  # Not Searching
         if (predetermined["display"] != 2):
             rescues_list = db_session.query(db.Rescues).all()
         if (predetermined["display"] != 1):
             pounds_list = db_session.query(db.Pounds).all()
-
+    # Close the db like a good boy
     db_session.close()
     return render_template("organizations.html", role=user_level, title="Organizations", pounds=pounds_list,
                            rescues=rescues_list, predetermined=predetermined)
