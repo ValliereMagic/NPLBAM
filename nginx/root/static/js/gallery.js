@@ -2,12 +2,21 @@
 
 window.addEventListener('DOMContentLoaded', () => {
 
-  // make files in to proper types (images or download link)
+  // The python file creates a hidden input for each file associated with an
+  // animal and the javascript turns them into images or download buttons and
+  // creates a button to view each image/file while keeping the rest hidden
 
-  // relevant selectors for this section
+  // This section makes files into proper their types (images or download link)
+
+  // Relevant selectors for this section
+  // Hidden inputs which contain filenames
   const files = document.querySelectorAll('.file');
+  //Frame contains all the images
   const frame = document.querySelector('.images');
-  // Iterate through all the files associated with this animal
+
+  // Iterate through all the files associated with this animal and if it is
+  // an image, create an image tag for it, if it is not, create a download
+  // button for the file
   files.forEach(item => {
     // value: download link
     // div: external div that will be controlled by the buttons
@@ -19,6 +28,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // a: link that goes inside the button
     var value = item.getAttribute("value");
     var div = document.createElement('div');
+
     // If the file is an image (the id stores the file type)
     if (item.classList.contains("type_image")) {
       // create image tag, set src and add it to the div
@@ -28,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
       div.appendChild(img);
     }
     // if it's not an image
-    else{
+    else {
       // make header, get file name without all the extra stuff, add to header
       var header = document.createElement('h2');
       var split_value = value.split("/");
@@ -45,25 +55,32 @@ window.addEventListener('DOMContentLoaded', () => {
       button.appendChild(a);
       div.appendChild(button);
     }
+
     // add div to the frame
     div.classList.add("image");
     frame.appendChild(div);
 
   })
-  // image stuff
 
+  // This section controls the viewing of images/files via buttons
+
+  // Sets all the images/files to hidden
   function hideAllImages() {
     images.forEach(item => {
       item.setAttribute("style", "display: none");
     })
   }
 
+  // Sets all the buttons to their unpressed version
   function unpressAllImageButtons() {
     buttons.forEach(item => {
       item.setAttribute("class", "file_button");
     })
   }
 
+  // Is run when the page loads
+  // Hides all images, shows the first one, makes a button for each image,
+  // sets the first button to pressed
   function initImages() {
     hideAllImages();
     images[0].setAttribute("style", "display: flex");
@@ -78,18 +95,27 @@ window.addEventListener('DOMContentLoaded', () => {
     })
   }
 
+  // Selectors
+  // all images/files
   const images = document.querySelectorAll('.image');
+  // the div that holds the buttons
   const buttonDiv = document.querySelector('.top>.buttons');
+  // Top section of the gallery page
+  const topDiv = document.querySelector('.top');
 
+  // If there are no images, hide the whole section
   try {
     initImages();
   } catch (error) {
-    frame.setAttribute("style", "display: none");
+    topDiv.setAttribute("style", "display: none");
   }
 
+  // All buttons in the button div
   const buttons = document.querySelectorAll('.top>.buttons>.file_button');
 
-
+  // Add an event listener to each button
+  // If it is clicked, it shows the image/file associated with it
+  // and hides the others while keeping button styles correct
   buttons.forEach((item, key) => {
     item.innerHTML = key + 1;
     item.addEventListener('click', event => {
@@ -100,19 +126,28 @@ window.addEventListener('DOMContentLoaded', () => {
     })
   })
 
-  // stage stuff
+  // This section controls the viewing of the stages
+
+  // Adds event listeners to all 8 buttons which show their respective stages
+  // while hiding the others
+  // Also controls the complete stage button by only showing it when it's
+  // meant to be shown
+
+  // Hides all the stages
   function hideAllStages() {
     stages.forEach(item => {
       item.setAttribute("style", "display: none");
     })
   }
 
+  // Sets all the buttons to an unpressed style
   function unpressAllStageButtons() {
     stageButtons.forEach(item => {
       item.setAttribute("class", "button")
     })
   }
 
+  // Adds event listeners to the buttons 
   function initStageButtons() {
     stages.forEach((item, key) => {
       stageButtons[key].addEventListener('click', event => { // When the button is pressed...
@@ -140,9 +175,14 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Relevant selectors
+  // Buttons from 1-8 that represent each stage
   const stageButtons = document.querySelectorAll('.stageButtons>button');
+  // Each stage form
   const stages = document.querySelectorAll('.stage');
+  // Hidden input that had the animals current stage
   const currentStage = document.querySelector('#current_stage');
+  // Button to complete the stage
   const completeButton = document.querySelector('#complete')
 
   hideAllStages();
