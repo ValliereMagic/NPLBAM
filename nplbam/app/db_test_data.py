@@ -1,3 +1,7 @@
+"""
+This module deals with adding test data to the system.
+can be deleted if wanted.
+"""
 import csv
 import json
 import random
@@ -13,12 +17,16 @@ from .db import db
 
 bp = Blueprint('db_test_data', __name__, url_prefix="")
 
-# Can be deleted in production
 
 
 @bp.route("/test_data")
 def test_data():
+    """
+    This route will add test data to the database relating to animals, pounds, users.
+    """
+    # Seed our random
     random.seed(int(round(time.time()*10000)))
+    # Create a DB session
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
     # Definately not an initial user
@@ -29,11 +37,13 @@ def test_data():
     # db_session.add(new)
     # db_session.flush()
     # db_session.commit()
+
     # Create some pounds
     names = ["Peterborough Pound", "Oshawa Pound", "Toronto Pound", "Pounds r Us", "One Pound Two Pounds",
              "Sunday Pound", "A Pound a Day", "Free Range Pound", "The New Pound", "Why Pound Us", "The Pound 2",
              "Great Bear Pound", "Alphabet Pound", "Amazing Pound", "Terrific Pound", "Queen Street Pound"]
     p_uids = []
+    # Add pounds to DB, keep their id's for later
     for x in names:
         new = db.Pounds(poundName=x)
         db_session.add(new)
@@ -45,6 +55,7 @@ def test_data():
     names = ["The Dog House", "Loki", "New Rescue",
              "The Perfect Rescue", "Extra Home", "Paradise"]
     r_uids = []
+    # Add rescues to DB, keep their id's for later
     for x in names:
         new = db.Rescues(rescueName=x)
         db_session.add(new)
@@ -56,6 +67,7 @@ def test_data():
     names = ["Mike", "Ted", "Loki", "Gintama",
              "User1", "User2", "Extra_Account"]
     u_uids = []
+    # Add users to DB, keep their id's for later
     for x in names:
         new = db.Users(username=x,
                        password=nacl.pwhash.str(bytes("", "utf-8")),
@@ -69,19 +81,24 @@ def test_data():
         u_uids.append(new.userID)
         db_session.commit()
 
+    # Open the json of dogs
     with open('nplbam/app/jsons/dog_questions.json') as json_file:
         questions = json.load(json_file)
 
-    # Create Animals using previous and
+    # Create Animals using previous IDs and open the CSV
     with open("nplbam/app/db/test.csv", "r") as f:
+        # Create a reader and put it into a list
         reader = csv.DictReader(f)
         test_data = list(reader)
+        # Iterate through the list adding the animals
         for x in test_data:
+            # Add the animal
             new = db.Animals(creator=u_uids[random.randint(0, len(u_uids)-1)],
                              poundID=p_uids[random.randint(0, len(p_uids)-1)],
                              stage=x["Stage"], stageDate=date.today()-timedelta(int(x["stageDate"])), animalType="Dog",
                              name=x["Name"], notes=x["Notes"])
             db_session.add(new)
+            # Flush to get the animal ID
             db_session.flush()
             # Go through the questions
             for group in questions:
@@ -122,7 +139,7 @@ def test_data():
                                     animalID=new.animalID,
                                     subQuestionName=answer["name"],
                                     answer=check))
-            db_session.commit()
+
             # Add stages for animal
             if (x["Stage1A"] != '0'):
                 db_session.add(db.StageInfo(
@@ -224,7 +241,9 @@ def test_data():
                     animalID=new.animalID, stageNum=8, substageNum=5,
                     completionDate=date.today()-timedelta(int(x["Stage8E"]))
                 ))
+            # Commit the animal
             db_session.commit()
+
     # Close the database like a good boy
     db_session.close()
     flash("Test Data Added")
@@ -233,24 +252,33 @@ def test_data():
 
 @bp.route("/test_data2")
 def test_data2():
+    """
+    This route will add test data to the metatable relating to visualization.
+    """
+    # Seed our random
     random.seed(int(round(time.time()*10000)))
+    
+    # Create a new DB session
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
 
+    # Date we start our info at
     month = 3
     year = 2021
+    # Loop through past 10 months adding info
     for x in range(0, 10, 1):
         new = db.MetaInformation()
         new.month = month
         new.year = year
+        # Go to previous month.
         month -= 1
         if month == 0:
             month = 12
             year -= 1
+        # Set info for the table randomized
         new.users = random.randint(1, 50)
         new.rescues = random.randint(1, 50)
         new.pounds = random.randint(1, 50)
-
         new.totalAnimalsInSystem = random.randint(15, 130)
         c = random.randint(1, 20)
         new.animalsCompStage1 = c
@@ -280,9 +308,11 @@ def test_data2():
         new.totalOutcome3 = random.randint(1, c)
         new.totalOutcome4 = random.randint(1, c)
         new.totalOutcome5 = random.randint(1, c)
+
+        # Commit changes
         db_session.add(new)
         db_session.commit()
-
+    # Close database
     db_session.close()
     flash("Test 2 Data Added")
     return redirect("/")

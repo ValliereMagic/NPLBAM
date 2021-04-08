@@ -13,21 +13,21 @@ from sqlalchemy.orm import sessionmaker
 from . import handle_file_operations
 from .db import db
 
-bp = Blueprint('new_animal', __name__, url_prefix="")
+bp = Blueprint('add_animal', __name__, url_prefix="")
 
 
 # Route for the new animal page.
-@bp.route("/new_animal", methods=['GET', 'POST'])
-def new_animal():
+@bp.route("/add_animal", methods=['GET', 'POST'])
+def add_animal():
     """
-    Page URL: /new_animal
-    Form page for adding a new animal to the system.
+    Page URL: /add_animal
+    Form page for adding a new animal to the system. Questions for the form is pulled from the proper 
+    json based on whatever animal it is. Data is then stored into the database
     """
     # Make sure the user's userLVL is in (0, 1, 2, 3)
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 3:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
     # Make sure they got here through post
@@ -69,7 +69,6 @@ def animal_added():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 3:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
@@ -77,6 +76,7 @@ def animal_added():
         if 'cancel' in request.form:
             return redirect("/animals")
         else:
+            # Check if save or submit was chosen.
             if ('save' in request.form):
                 animal_stage = 0
             else:
@@ -104,26 +104,31 @@ def animal_added():
             with open(json_location) as json_file:
                 questions = json.load(json_file)
 
-            # Need to Add Data to database.
+            # Get the database engine and start a new session
             engine = db.get_db_engine()
             db_session = (sessionmaker(bind=engine))()
 
-            # Import tools for adding to meta table
+            # Import tools for adding to meta table for visualizations
             from .metatable_tools import (get_metainformation_record)
 
             # Get the most recent record (even if it needs to be created)
             meta_info = get_metainformation_record(db_session)
+
             # Add an animal to the record
             meta_info.totalAnimalsInSystem += 1
 
+            # Get the user ID from the session
             user_ID = flask_session.get("userID", default=None)
+            # Use ID to find the user in the DB
             user_entry = db_session.query(
                 db.Users).filter_by(userID=user_ID).first()
+
             # Add the Animal Entry
             # Make an object from our ORM
             name: str = request.form['name']
             new = db.Animals(poundID=user_entry.poundID, stage=animal_stage, creator=user_ID,
                              stageDate=date.today(), animalType=given_type, name=name)
+            # Add the animal to the db session
             db_session.add(new)
 
             # Flush the session so we can get the autoincremented ID in new.animalID
@@ -157,6 +162,7 @@ def animal_added():
                                 questionName=q_name,
                                 answer=request.form[q_name]))
                         elif question["type"] == "checkbox":
+                            # Go to each sub question in the checkbox question and either true or false
                             for answer in question["answers"]:
                                 q_name = answer["name"]
                                 if q_name in request.form:
@@ -174,6 +180,12 @@ def animal_added():
                                 animalID=new.animalID,
                                 questionName=q_name,
                                 answer=request.form[q_name]))
+            # Log and give set user feedback
+            flash("Animal ID {} Added".format(new.animalID))
+            current_app.logger.info(
+                "An animal {} was added to the "
+                "system by user ID: {}".format(new.animalID, flask_session["userID"]))
+
             # Commit changes to the database
             db_session.commit()
             # Handle file uploads
@@ -183,10 +195,7 @@ def animal_added():
             # Save the uploaded file, and add its metadata to the database
             handle_file_operations.save_uploaded_files(
                 new.animalID, uploaded_files_list, errors)
+
             # Close the database like a good boy
             db_session.close()
-            flash("Animal Added")
-            current_app.logger.info(
-                "An animal was added to the "
-                "system by user ID: {}".format(flask_session["userID"]))
     return redirect("/animals")

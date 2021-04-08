@@ -24,7 +24,6 @@ def delete_page():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -40,7 +39,6 @@ def delete_file():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -56,7 +54,6 @@ def delete_animal():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -69,12 +66,10 @@ def delete_files():
     If they want to delete multiple files associated with an animal, they come to this 
     page to enter info
     """
-
     # Make sure the user is userLVL 0
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -90,7 +85,6 @@ def confirm_delete_animal():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -134,7 +128,6 @@ def submit_delete_animal():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -188,7 +181,6 @@ def confirm_delete_file():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -227,7 +219,6 @@ def submit_delete_file():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -251,6 +242,7 @@ def submit_delete_file():
         file_entry = db_session.query(db.Files).filter(
             db.Files.fileName == given_file_name).first()
 
+        # Remove file from server
         os.remove(os.path.join(
             current_app.config["UPLOAD_FOLDER"], file_entry.fileName))
 
@@ -280,7 +272,6 @@ def confirm_delete_files():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -319,7 +310,6 @@ def submit_delete_files():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 

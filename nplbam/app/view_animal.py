@@ -21,7 +21,7 @@ bp = Blueprint('view_animal', __name__, url_prefix="")
 def view_animal():
     """
     Page URL: /view_animal
-    Page to see all the information filled out
+    Page to see all the information filled out in the form
     """
     # Check if they are logged in
     user_level: int = flask_session.get("userLVL", default=None)
@@ -42,10 +42,11 @@ def view_animal():
         flash("No animal selected")
         return redirect("/animals")
 
-    # Open the database.
+    # Open the database session
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
 
+    # Find the entry matching the ID
     animal_entry = db_session.query(
         db.Animals).filter_by(animalID=viewID).first()
 
@@ -64,7 +65,7 @@ def view_animal():
         user_entry = db_session.query(
             db.Users).filter_by(userID=user_id).first()
         # Check if they should have access
-        if ((animal_entry.poundID != user_entry.poundID) and (animal_entry.creator != user_id)):
+        if ((animal_entry.poundID != user_entry.poundID) and (animal_entry.creator != user_id)) or (animal_entry.stage > 3):
             flash("Not Authorized")
             return redirect("/animals")
 
@@ -109,7 +110,6 @@ def view_animal():
         for subgroup in step["subgroups"]:
             # Display the subgroup
             string_list.append("\n{}".format(subgroup["name"]))
-            check = True
             # Go through each question
             for question in subgroup["questions"]:
                 # If its first in the list, don't put a ,
@@ -144,6 +144,7 @@ def view_animal():
                 # Type if checkbox
                 elif question["type"] == "checkbox":
                     string_list.append(' {}: '.format(question["label"]))
+                    # Check variable to see if we need a comma before
                     check = True
                     # Only display the boxes that were checked
                     for answer in question["answers"]:
@@ -167,8 +168,6 @@ def view_animal():
                            view_string=view_string,
                            species=animal_entry.animalType)
 
-# Route to view animal page.
-
 
 @bp.route("/animal_viewed", methods=['POST', 'GET'])
 def animal_viewed():
@@ -184,10 +183,12 @@ def animal_viewed():
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
+        # If they clicked edit, redirect to edit page
         if 'edit' in request.form:
             id: str = request.form['animalId']
             redir = "/edit_animal?editid={}".format(id)
             return redirect(redir)
+        # Else return to main page
         else:
             redirect("/animals")
     return redirect("/animals")
