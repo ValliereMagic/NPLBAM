@@ -41,17 +41,20 @@ def gallery():
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
 
+    # Get animal entry from database
     animal_entry = db_session.query(
         db.Animals).filter_by(animalID=viewID).first()
 
-    # Get a dictionary for required information
+    # Create a dictionary for required information
     info = {}
 
+    # Fill dictionary with information from database
     info["name"] = animal_entry.name
     info["species"] = animal_entry.animalType
     info["stage"] = animal_entry.stage
     info["creator"] = db_session.query(db.Users).filter_by(
         userID=animal_entry.creator).first().username
+    # Set supervisor, pound, and rescue values to -1 if unset in database
     if animal_entry.supervisor is None:
         info["supervisor"] = -1
     else:
@@ -70,22 +73,23 @@ def gallery():
     info["notes"] = animal_entry.notes
     info["days"] = (date.today() - animal_entry.stageDate).days
 
+    # Get lists for all rescues, pounds, and supervisors
     rescues_list = db_session.query(db.Rescues).all()
     pounds_list = db_session.query(db.Pounds).all()
     supervisor_list = db_session.query(
         db.Users).filter(db.Users.userLVL < 2).all()
 
-    # get list of filenames
+    # Get list of filenames associated with this animal
     images = {}
     for x in animal_entry.files:
         images[x.fileName] = x.fileType
 
-    # get stage info from database
+    # Get stage info from database
     stage_entry = db_session.query(db.StageInfo).filter_by(
         animalID=viewID).order_by(getattr(db.StageInfo, "stageNum"))
 
     stage_info = {}
-    # go through all the stages and add them to stage_info
+    # Go through all the stages and add them to stage_info
     for x in stage_entry:
         stage_info[f"{x.stageNum}:{x.substageNum}"] = (
             x.note, x.completionDate)
@@ -101,7 +105,7 @@ def gallery():
 @bp.route("/stage_updated", methods=['GET', 'POST'])
 def stage_updated():
     """
-    Route for adding stage info to database
+    Route for updating information regarding an animals stages and substages
     """
     # Make sure the user's userLVL is in (0, 1, 2, 3)
     user_level: int = flask_session.get("userLVL", default=None)
@@ -128,7 +132,7 @@ def stage_updated():
         # Meta table only needs for stage 8
         if (stageNum == 8):
             # Import tools for adding to meta table
-            from .metatable_tools import (get_metainformation_record)
+            from .metatable_tools import get_metainformation_record
 
             # Get the most recent record (even if it needs to be created)
             meta_info = get_metainformation_record(db_session)
@@ -171,10 +175,12 @@ def stage_updated():
         if 'complete' in request.form:
             # Get todays date
             today: date = date.today()
+            # Get animal ID
             animal = db_session.query(db.Animals).filter_by(
                 animalID=animalID).first()
+
             # Import tools for adding to meta table
-            from .metatable_tools import (get_metainformation_record)
+            from .metatable_tools import get_metainformation_record
 
             # Get the most recent record (even if it needs to be created)
             meta_info = get_metainformation_record(db_session)
@@ -209,7 +215,7 @@ def stage_updated():
                 meta_info.totalDaysCompStage7 += (date.today() -
                                                 animal.stageDate).days
 
-            # Determine and set the new stage number
+            # Determine and set the new stage number (cannot go over 8)
             if animal.stage < 8:
                 animal.stage += 1
             elif animal.stage > 8:
