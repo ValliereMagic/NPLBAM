@@ -1,3 +1,4 @@
+{# Uses the inheritance to get from the base template page the head, header and navigation. Along with any footer #}
 {% extends "base_template.html" %}
 {% block css %}animals{% endblock %}
 {% block main %}
@@ -49,13 +50,13 @@
         </div>
     </form>
     {% if role < 4 %}
-    <form method="post" action="/new_animal">
+    <form method="post" action="/add_animal">
         <select id="type" name="type">
             {% for y in animal_types %}
             <option value="{{y.name}}">{{y.name}}</option>
             {% endfor %}
         </select>
-        <button type="submit" name="new_animal">New Animal</button>
+        <button type="submit" name="add_animal">New Animal</button>
     </form>
     {% endif %}
     <table cellspacing="0" cellpadding="0">

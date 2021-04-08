@@ -107,7 +107,6 @@ def stage_updated():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
@@ -179,7 +178,6 @@ def stage_completed():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
-        # May need to change where we redirect them in the future
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
@@ -242,7 +240,7 @@ def stage_completed():
         # Update the animal
         db_session.commit()
         db_session.close()
-        flash("Stage Updated")
+        flash("Stage Updated to {}".format(animal_stage))
         current_app.logger.info("Animal ID: {} Updated to Stage: {} "
                                 "by user ID: {}".format(animalID, animal_stage, flask_session["userID"]))
     return redirect(f"/gallery?viewid={animalID}")
@@ -257,7 +255,6 @@ def gallery_info_updated():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post

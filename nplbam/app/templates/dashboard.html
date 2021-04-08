@@ -1,3 +1,4 @@
+{# Uses the inheritance to get from the base template page the head, header and navigation. Along with any footer #}
 {% extends "base_template.html" %}
 {% block css %}animals{% endblock %}
 {% block main %}
@@ -10,7 +11,7 @@
             <a href="/csv">Upload CSV</a>
         </div>
     </div>
-    <h2>Newest Entries</h2>
+    <h2>Recent Changes</h2>
     <table>
         <tr>
             <th>ID</th>
