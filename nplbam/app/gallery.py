@@ -45,6 +45,12 @@ def gallery():
     animal_entry = db_session.query(
         db.Animals).filter_by(animalID=viewID).first()
 
+    # Check if Animal Entry exists
+    if (animal_entry == None):
+        flash("Animal ID does not exist")
+        return redirect("/animals")
+
+    # Get a dictionary for required information
     # Create a dictionary for required information
     info = {}
 
