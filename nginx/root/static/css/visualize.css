@@ -1,0 +1,12 @@
+.image {
+    box-shadow: 0px 0px 4px var(--drop-shadow-colour);
+    padding: 0.5em;
+    margin: 1em;
+}
+
+main>div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 1100px;
+}

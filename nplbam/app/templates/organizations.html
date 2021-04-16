@@ -1,6 +1,6 @@
 {# Uses the inheritance to get from the base template page the head, header and navigation. Along with any footer #}
 {% extends "base_template.html" %}
-{% block css %}animals{% endblock %}
+{% block css %}default{% endblock %}
 {% block main %}
 <div>
     <form method="post" action="/organizations">
@@ -26,7 +26,7 @@
         </div>
          
     </form>
-    <div id="button">
+    <div class="button">
         <a href="add_organization">New Organization</a>
     </div>
     <table>

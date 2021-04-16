@@ -41,6 +41,7 @@ def gallery():
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
 
+    # Get animal entry from database
     animal_entry = db_session.query(
         db.Animals).filter_by(animalID=viewID).first()
 
@@ -50,13 +51,16 @@ def gallery():
         return redirect("/animals")
 
     # Get a dictionary for required information
+    # Create a dictionary for required information
     info = {}
 
+    # Fill dictionary with information from database
     info["name"] = animal_entry.name
     info["species"] = animal_entry.animalType
     info["stage"] = animal_entry.stage
     info["creator"] = db_session.query(db.Users).filter_by(
         userID=animal_entry.creator).first().username
+    # Set supervisor, pound, and rescue values to -1 if unset in database
     if animal_entry.supervisor is None:
         info["supervisor"] = -1
     else:
@@ -75,22 +79,23 @@ def gallery():
     info["notes"] = animal_entry.notes
     info["days"] = (date.today() - animal_entry.stageDate).days
 
+    # Get lists for all rescues, pounds, and supervisors
     rescues_list = db_session.query(db.Rescues).all()
     pounds_list = db_session.query(db.Pounds).all()
     supervisor_list = db_session.query(
         db.Users).filter(db.Users.userLVL < 2).all()
 
-    # get list of filenames
+    # Get list of filenames associated with this animal
     images = {}
     for x in animal_entry.files:
         images[x.fileName] = x.fileType
 
-    # get stage info from database
+    # Get stage info from database
     stage_entry = db_session.query(db.StageInfo).filter_by(
         animalID=viewID).order_by(getattr(db.StageInfo, "stageNum"))
 
     stage_info = {}
-    # go through all the stages and add them to stage_info
+    # Go through all the stages and add them to stage_info
     for x in stage_entry:
         stage_info[f"{x.stageNum}:{x.substageNum}"] = (
             x.note, x.completionDate)
@@ -106,7 +111,7 @@ def gallery():
 @bp.route("/stage_updated", methods=['GET', 'POST'])
 def stage_updated():
     """
-    Route for adding stage info to database
+    Route for updating information regarding an animals stages and substages
     """
     # Make sure the user's userLVL is in (0, 1, 2, 3)
     user_level: int = flask_session.get("userLVL", default=None)
@@ -132,7 +137,7 @@ def stage_updated():
         # Meta table only needs for stage 8
         if (stageNum == 8):
             # Import tools for adding to meta table
-            from .metatable_tools import (get_metainformation_record)
+            from .metatable_tools import get_metainformation_record
 
             # Get the most recent record (even if it needs to be created)
             meta_info = get_metainformation_record(db_session)
@@ -165,89 +170,73 @@ def stage_updated():
                     substage.completionDate = completionDate
 
             db_session.commit()
-        db_session.close()
+
         flash("Substages Updated")
         current_app.logger.info("Substages of animal ID: {} "
                                 "edited by user ID: {}".format(
                                     animalID, flask_session["userID"]))
 
-    return redirect(f"/gallery?viewid={animalID}")
+        # Also run this if "Complete Stage" button was pressed
+        if 'complete' in request.form:
+            # Get todays date
+            today: date = date.today()
+            # Get animal ID
+            animal = db_session.query(db.Animals).filter_by(
+                animalID=animalID).first()
 
+            # Import tools for adding to meta table
+            from .metatable_tools import get_metainformation_record
 
-@bp.route("/stage_completed", methods=['GET', 'POST'])
-def stage_completed():
-    """
-    Route for incrementing stage number in the Animals table
-    """
-    # Make sure the user's userLVL is in (0, 1, 2, 3)
-    user_level: int = flask_session.get("userLVL", default=None)
-    # Rely on short circuit eval here...
-    if (user_level is None) or user_level > 1:
-        return redirect("/")
-    # Make sure they got here with post
-    if request.method == 'POST':
-        engine = db.get_db_engine()
-        db_session = (sessionmaker(bind=engine))()
+            # Get the most recent record (even if it needs to be created)
+            meta_info = get_metainformation_record(db_session)
 
-        # Get animalID from form
-        animalID: int = request.form['animalID']
-        # Get todays date
-        today: date = date.today()
-        # Get the correct animal from the database
-        animal = db_session.query(db.Animals).filter_by(
-            animalID=animalID).first()
+            # Check which animal stage is currently is and put the meta info in
+            if animal.stage == 1:
+                meta_info.animalsCompStage1 += 1
+                meta_info.totalDaysCompStage1 += (date.today() -
+                                                animal.stageDate).days
+            elif animal.stage == 2:
+                meta_info.animalsCompStage2 += 1
+                meta_info.totalDaysCompStage2 += (date.today() -
+                                                animal.stageDate).days
+            elif animal.stage == 3:
+                meta_info.animalsCompStage3 += 1
+                meta_info.totalDaysCompStage3 += (date.today() -
+                                                animal.stageDate).days
+            elif animal.stage == 4:
+                meta_info.animalsCompStage4 += 1
+                meta_info.totalDaysCompStage4 += (date.today() -
+                                                animal.stageDate).days
+            elif animal.stage == 5:
+                meta_info.animalsCompStage5 += 1
+                meta_info.totalDaysCompStage5 += (date.today() -
+                                                animal.stageDate).days
+            elif animal.stage == 6:
+                meta_info.animalsCompStage6 += 1
+                meta_info.totalDaysCompStage6 += (date.today() -
+                                                animal.stageDate).days
+            elif animal.stage == 7:
+                meta_info.animalsCompStage7 += 1
+                meta_info.totalDaysCompStage7 += (date.today() -
+                                                animal.stageDate).days
 
-        # Import tools for adding to meta table
-        from .metatable_tools import (get_metainformation_record)
+            # Determine and set the new stage number (cannot go over 8)
+            if animal.stage < 8:
+                animal.stage += 1
+            elif animal.stage > 8:
+                animal.stage = 8
+            animal_stage: int = animal.stage
+            # Set the date
+            animal.stageDate = today
 
-        # Get the most recent record (even if it needs to be created)
-        meta_info = get_metainformation_record(db_session)
+            # Update the animal
+            db_session.commit()
 
-        # Check which animal stage is currently is and put the meta info in
-        if animal.stage == 1:
-            meta_info.animalsCompStage1 += 1
-            meta_info.totalDaysCompStage1 += (date.today() -
-                                              animal.stageDate).days
-        elif animal.stage == 2:
-            meta_info.animalsCompStage2 += 1
-            meta_info.totalDaysCompStage2 += (date.today() -
-                                              animal.stageDate).days
-        elif animal.stage == 3:
-            meta_info.animalsCompStage3 += 1
-            meta_info.totalDaysCompStage3 += (date.today() -
-                                              animal.stageDate).days
-        elif animal.stage == 4:
-            meta_info.animalsCompStage4 += 1
-            meta_info.totalDaysCompStage4 += (date.today() -
-                                              animal.stageDate).days
-        elif animal.stage == 5:
-            meta_info.animalsCompStage5 += 1
-            meta_info.totalDaysCompStage5 += (date.today() -
-                                              animal.stageDate).days
-        elif animal.stage == 6:
-            meta_info.animalsCompStage6 += 1
-            meta_info.totalDaysCompStage6 += (date.today() -
-                                              animal.stageDate).days
-        elif animal.stage == 7:
-            meta_info.animalsCompStage7 += 1
-            meta_info.totalDaysCompStage7 += (date.today() -
-                                              animal.stageDate).days
+            flash("Stage Updated to {}".format(animal_stage))
+            current_app.logger.info("Animal ID: {} Updated to Stage: {} "
+                                    "by user ID: {}".format(animalID, animal_stage, flask_session["userID"]))
 
-        # Determine and set the new stage number
-        if animal.stage < 8:
-            animal.stage += 1
-        elif animal.stage > 8:
-            animal.stage = 8
-        animal_stage: int = animal.stage
-        # Set the date
-        animal.stageDate = today
-
-        # Update the animal
-        db_session.commit()
         db_session.close()
-        flash("Stage Updated to {}".format(animal_stage))
-        current_app.logger.info("Animal ID: {} Updated to Stage: {} "
-                                "by user ID: {}".format(animalID, animal_stage, flask_session["userID"]))
     return redirect(f"/gallery?viewid={animalID}")
 
 
