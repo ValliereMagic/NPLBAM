@@ -53,6 +53,11 @@ def edit_animal():
     animal_entry = db_session.query(
         db.Animals).filter_by(animalID=editID).first()
 
+    # Check if Animal Entry exists
+    if (animal_entry == None):
+        flash("Animal ID does not exist")
+        return redirect("/animals")
+
     # Check if user is a pound
     if (user_level > 1):
         # Find the user that is editting
@@ -155,9 +160,14 @@ def animal_edited():
         user_entry = db_session.query(
             db.Users).filter_by(userID=user_id).first()
 
-        # Update the Animal Entry
+        # Get the Animal Entry
         animal = db_session.query(db.Animals).filter(
             db.Animals.animalID == request.form['animalId']).one()
+
+        # Check if Animal Entry exists
+        if (animal == None):
+            flash("Animal ID does not exist")
+            return redirect("/animals")
 
         # Check if user is a pound
         if (user_level > 1):

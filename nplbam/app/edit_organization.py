@@ -49,11 +49,19 @@ def edit_organization():
         predetermined["type"] = "rescue"
         organization = db_session.query(db.Rescues).filter(
             db.Rescues.rescueID == editID).one()
+        # Check if Entry exists
+        if (organization == None):
+            flash("Org ID does not exist")
+            return redirect("/organizations")
         predetermined["name"] = organization.rescueName
     else:  # Pound
         predetermined["type"] = "pound"
         organization = db_session.query(db.Pounds).filter(
             db.Pounds.poundID == editID).one()
+        # Check if Entry exists
+        if (organization == None):
+            flash("Org ID does not exist")
+            return redirect("/organizations")
         predetermined["name"] = organization.poundName
 
     # Close the database like a good boy
@@ -90,10 +98,18 @@ def organization_edited():
         if (request.form["orgType"] == "rescue"):
             organization = db_session.query(db.Rescues).filter(
                 db.Rescues.rescueID == request.form['orgID']).one()
+            # Check if Entry exists
+            if (organization == None):
+                flash("Org ID does not exist")
+                return redirect("/organizations")
             organization.rescueName = name
         else: # Pound
             organization = db_session.query(db.Pounds).filter(
                 db.Pounds.poundID == request.form['orgID']).one()
+            # Check if Entry exists
+            if (organization == None):
+                flash("Org ID does not exist")
+                return redirect("/organizations")
             organization.poundName = name
         # Commit changes to the database
         db_session.commit()

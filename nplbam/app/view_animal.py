@@ -50,6 +50,11 @@ def view_animal():
     animal_entry = db_session.query(
         db.Animals).filter_by(animalID=viewID).first()
 
+    # Check if Animal Entry exists
+    if (animal_entry == None):
+        flash("Animal ID does not exist")
+        return redirect("/animals")
+    
     # Check if user is a rescue
     if (user_level > 3):
         # Find the user
