@@ -192,7 +192,7 @@ form>div>input {
     margin-bottom: 1em;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1480px) {
     .infoline {
         width: 100%;
     }
