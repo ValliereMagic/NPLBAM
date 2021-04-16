@@ -35,7 +35,6 @@ def accounts():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level != 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -143,7 +142,6 @@ def new_account():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level != 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
     # Pull the rescue and pound info to populate the form with
@@ -193,10 +191,11 @@ def new_account():
         # Add the new account
         db_session.add(new_db_account)
 
+ 
         # Commit the changes and close
         db_session.commit()
         db_session.close()
-        flash("Account Created")
+        flash("Account id# {} Created".format(account.username))
         current_app.logger.info("New user with username: {} "
                                 "created by ID: {}".format(
                                     account.username, flask_session["userID"]))
@@ -215,7 +214,6 @@ def edit_account():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level != 0:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
     # User is requesting the form to edit their user account:

@@ -1,3 +1,9 @@
+"""
+This module will route the visualization page. It will also dynamically 
+create new visualizations from the database data. It will save these 
+visualizations and only update after the expiry date has been reached
+(Currently set as 7 days after creation)
+"""
 import os
 from datetime import date, datetime, timezone
 
@@ -14,7 +20,7 @@ from .db import db
 
 bp = Blueprint('visualize', __name__, url_prefix="")
 
-# Amount of days we should refresh the visualization
+# Amount of days we should wait before we refresh the visualization
 EXPIRE_DAYS = 7
 # Amount of months we should go back to visualize
 VISUALIZE_MONTHS = 6
@@ -22,6 +28,10 @@ VISUALIZE_MONTHS = 6
 
 @bp.route("/visualize")
 def visualize():
+    """
+    This will create the visualization page and call the methods for 
+    creating the other visualizations.s
+    """
     # Make sure the user is userLVL 0 or 1
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
