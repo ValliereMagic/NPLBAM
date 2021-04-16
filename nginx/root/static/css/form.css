@@ -67,6 +67,10 @@ input, textarea {
     margin: 3em;
 }
 
+ul {
+    width: 80%;
+}
+
 @media (max-width: 700px) {
     .radioQ {
         flex-direction: column;
