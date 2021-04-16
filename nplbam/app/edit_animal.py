@@ -29,7 +29,6 @@ def edit_animal():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 3:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -60,7 +59,7 @@ def edit_animal():
         user_entry = db_session.query(
             db.Users).filter_by(userID=user_id).first()
         # Check if they should have access
-        if ((animal_entry.poundID != user_entry.poundID) and (animal_entry.creator != user_id)):
+        if ((animal_entry.poundID != user_entry.poundID) and (animal_entry.creator != user_id))  or (animal_entry.stage > 3):
             flash("Not Authorized")
             return redirect("/animals")
 
@@ -114,7 +113,6 @@ def animal_edited():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 3:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -164,7 +162,7 @@ def animal_edited():
         # Check if user is a pound
         if (user_level > 1):
             # Check if they should have access
-            if ((animal.poundID != user_entry.poundID) and (animal.creator != user_id)):
+            if ((animal.poundID != user_entry.poundID) and (animal.creator != user_id)) or (animal.stage > 3):
                 flash("Not Authorized")
                 return redirect("/animals")
 
@@ -216,6 +214,9 @@ def animal_edited():
                             filter(db.IntakeTextAnswers.animalID == animal.animalID).\
                             filter(db.IntakeTextAnswers.questionName == q_name).\
                             update({"answer": request.form[q_name]})
+        flash("Animal ID {} information modified".format(animal.animalID))
+        current_app.logger.info("Animal: {} Edited by user ID: {}".format(
+            animal.animalID, flask_session["userID"]))
         # Commit changes to the database
         db_session.commit()
         # Handle file uploads
@@ -227,7 +228,4 @@ def animal_edited():
             animal.animalID, uploaded_files_list, errors)
         # Close the database like a good boy
         db_session.close()
-        flash("Animal information modified")
-        current_app.logger.info("Animal: {} Edited by user ID: {}".format(
-            request.form['name'], flask_session["userID"]))
     return redirect("/animals")

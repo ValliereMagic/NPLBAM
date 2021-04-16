@@ -28,7 +28,6 @@ def edit_organization():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
     # Check to see if proper Get Parameter
@@ -45,12 +44,13 @@ def edit_organization():
 
     # Get the information on the org
     predetermined = {}
-    if (orgType == 0):
+    # Depending on which type of org, grab from correct tables
+    if (orgType == 0):  # Rescue
         predetermined["type"] = "rescue"
         organization = db_session.query(db.Rescues).filter(
             db.Rescues.rescueID == editID).one()
         predetermined["name"] = organization.rescueName
-    else:
+    else:  # Pound
         predetermined["type"] = "pound"
         organization = db_session.query(db.Pounds).filter(
             db.Pounds.poundID == editID).one()
@@ -74,14 +74,13 @@ def organization_edited():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None) or user_level > 1:
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
     # Make sure they got here with post
     if request.method == 'POST':
         if 'cancel' in request.form:
             return redirect("/organizations")
-        # Need open the database.
+        # Open new db session for the database.
         engine = db.get_db_engine()
         db_session = (sessionmaker(bind=engine))()
         # Make an object from our ORM
@@ -92,7 +91,7 @@ def organization_edited():
             organization = db_session.query(db.Rescues).filter(
                 db.Rescues.rescueID == request.form['orgID']).one()
             organization.rescueName = name
-        else:
+        else: # Pound
             organization = db_session.query(db.Pounds).filter(
                 db.Pounds.poundID == request.form['orgID']).one()
             organization.poundName = name
@@ -100,6 +99,7 @@ def organization_edited():
         db_session.commit()
         # Close the database like a good boy
         db_session.close()
+        # Log and give user feedback
         flash("Organization Modified")
         current_app.logger.info("Organization: {} Modified by User ID: {}".format(
             name, flask_session["userID"]))

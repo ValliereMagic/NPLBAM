@@ -49,17 +49,17 @@ def create_app():
     app.secret_key = config.SECRET_KEY
     # Set the session lifetime
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
-    from . import (accounts, add_organization, animals, dashboard,
+    from . import (accounts, add_animal, add_organization, animals, dashboard,
                    db_test_data, delete, edit_animal, edit_organization,
-                   file_downloads, gallery, main, new_animal, options,
-                   organizations, upload, view_animal, visualize)
+                   file_downloads, gallery, index, options, organizations,
+                   upload, view_animal, visualize)
 
     # Index Blueprint
-    app.register_blueprint(main.bp)
+    app.register_blueprint(index.bp)
     # Animals Blueprint
     app.register_blueprint(animals.bp)
     # New Animal Blueprint
-    app.register_blueprint(new_animal.bp)
+    app.register_blueprint(add_animal.bp)
     # Edit Animal Blueprint
     app.register_blueprint(edit_animal.bp)
     # View Animal Blueprint

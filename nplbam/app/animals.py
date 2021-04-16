@@ -41,7 +41,6 @@ def animals():
     user_level: int = flask_session.get("userLVL", default=None)
     # Rely on short circuit eval here...
     if (user_level is None):
-        # May need to change where we redirect them in the future
         flash("Not authorized")
         return redirect("/")
 
@@ -84,11 +83,11 @@ def animals():
     engine = db.get_db_engine()
     db_session = (sessionmaker(bind=engine))()
 
-    # Query animal list based on dynamaic variables
+    # create Query functions for list based on dynamic variables
     _search = cast(getattr(db.Animals, predetermined["search_by"]), String)
     _sort = getattr(db.Animals, predetermined["sort_by"])
     _sort = getattr(_sort, predetermined["order"])
-    # If user is level 0  or 1
+    # If user is level 0  or 1 (NPLB users)
     if (user_level < 2):
         # If search is blank don't filter
         if (predetermined["search"] != ""):
@@ -114,38 +113,22 @@ def animals():
                     order_by(_sort())
     # User is 2 or 3. (Pounds)
     elif (user_level < 4):
+        # Get user info
         user_info = db_session.query(db.Users).filter(
             db.Users.userID == user_id).first()
         # If search is blank don't filter
         if (predetermined["search"] != ""):
             search_text = "%{}%".format(predetermined["search"])
-            # check if we should hide stage 0 and 8
-            if predetermined["hide_stuff"] == 1:
-                animals_list = db_session.query(db.Animals).\
-                    filter(or_(db.Animals.creator == user_id, db.Animals.poundID == user_info.poundID)).\
-                    filter(db.Animals.stage < 4).\
-                    filter(_search.ilike(search_text)).\
-                    filter(db.Animals.stage != 0).filter(
-                        db.Animals.stage != 8).order_by(_sort())
-            else:
-                animals_list = db_session.query(db.Animals).\
-                    filter(_search.ilike(search_text)).\
-                    filter(db.Animals.stage < 4).\
-                    filter(or_(db.Animals.creator == user_id, db.Animals.poundID == user_info.poundID)).\
-                    order_by(_sort())
+            animals_list = db_session.query(db.Animals).\
+                filter(_search.ilike(search_text)).\
+                filter(db.Animals.stage < 4).\
+                filter(or_(db.Animals.creator == user_id, db.Animals.poundID == user_info.poundID)).\
+                order_by(_sort())
         else:
-            # check if we should hide stage 0 and 8
-            if predetermined["hide_stuff"] == 1:
-                animals_list = db_session.query(db.Animals).\
-                    filter(or_(db.Animals.creator == user_id, db.Animals.poundID == user_info.poundID)).\
-                    filter(db.Animals.stage < 4).\
-                    filter(db.Animals.stage != 0).filter(db.Animals.stage != 8).\
-                    order_by(_sort())
-            else:
-                animals_list = db_session.query(db.Animals).\
-                    filter(db.Animals.stage < 4).\
-                    filter(or_(db.Animals.creator == user_id, db.Animals.poundID == user_info.poundID)).\
-                    order_by(_sort())
+            animals_list = db_session.query(db.Animals).\
+                filter(db.Animals.stage < 4).\
+                filter(or_(db.Animals.creator == user_id, db.Animals.poundID == user_info.poundID)).\
+                order_by(_sort())
     # User level is 4/5 (Rescues)
     else:
         user_info = db_session.query(db.Users).filter(
@@ -153,31 +136,17 @@ def animals():
         # If search is blank don't filter
         if (predetermined["search"] != ""):
             search_text = "%{}%".format(predetermined["search"])
-            # check if we should hide stage 0 and 8
-            if predetermined["hide_stuff"] == 1:
-                animals_list = db_session.query(db.Animals).\
-                    filter(db.Animals.rescueID == user_info.rescueID).\
-                    filter(_search.ilike(search_text)).\
-                    filter(db.Animals.stage != 0).filter(
-                        db.Animals.stage != 8).order_by(_sort())
-            else:
-                animals_list = db_session.query(db.Animals).\
-                    filter(_search.ilike(search_text)).\
-                    filter(db.Animals.rescueID == user_info.rescueID).\
-                    order_by(_sort())
+            animals_list = db_session.query(db.Animals).\
+                filter(_search.ilike(search_text)).\
+                filter(db.Animals.rescueID == user_info.rescueID).\
+                order_by(_sort())
         else:
-            # check if we should hide stage 0 and 8
-            if predetermined["hide_stuff"] == 1:
-                animals_list = db_session.query(db.Animals).\
-                    filter(db.Animals.rescueID == user_info.rescueID).\
-                    filter(db.Animals.stage != 0).filter(db.Animals.stage != 8).\
-                    order_by(_sort())
-            else:
-                animals_list = db_session.query(db.Animals).\
-                    filter(db.Animals.rescueID == user_info.rescueID).\
-                    order_by(_sort())
-
+            animals_list = db_session.query(db.Animals).\
+                filter(db.Animals.rescueID == user_info.rescueID).\
+                order_by(_sort())
+    # Count how big our list is
     count = animals_list.count()
+    # Figure out amount of pages based on global
     total_pages = math.ceil(count / PER_PAGE)
     # Check if we have a page with info on it.
     if (total_pages >= page):
